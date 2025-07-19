@@ -37,22 +37,23 @@ class _TripsScreenState extends State<TripsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(AppConstants.backgroundColorValue),
+      backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         title: const Text(
           'Seferlerim',
           style: TextStyle(
-            color: Color(AppConstants.textColorValue),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: Color(AppConstants.primaryColorValue),
+        foregroundColor: Colors.white,
+        elevation: 1,
         bottom: TabBar(
           controller: _tabController,
-          labelColor: const Color(AppConstants.primaryColorValue),
-          unselectedLabelColor: const Color(AppConstants.textColorValue).withOpacity(0.6),
-          indicatorColor: const Color(AppConstants.primaryColorValue),
+          labelColor: Color(AppConstants.primaryColorValue),
+          unselectedLabelColor: Color(0xFF888888),
+                      indicatorColor: Color(AppConstants.primaryColorValue),
           tabs: const [
             Tab(text: 'Bekleyen'),
             Tab(text: 'Aktif'),
@@ -105,14 +106,14 @@ class _TripsScreenState extends State<TripsScreen>
                 Icon(
                   Icons.directions_car_outlined,
                   size: 64,
-                  color: const Color(AppConstants.textColorValue).withOpacity(0.5),
+                  color: Color(AppConstants.primaryColorValue).withOpacity(0.5),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   _getEmptyMessage(status),
                   style: TextStyle(
                     fontSize: 16,
-                    color: const Color(AppConstants.textColorValue).withOpacity(0.7),
+                    color: Color(AppConstants.primaryColorValue).withOpacity(0.7),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -123,7 +124,7 @@ class _TripsScreenState extends State<TripsScreen>
 
         return RefreshIndicator(
           onRefresh: _loadTrips,
-          color: const Color(AppConstants.primaryColorValue),
+                          color: Color(AppConstants.primaryColorValue),
           child: ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: trips.length,

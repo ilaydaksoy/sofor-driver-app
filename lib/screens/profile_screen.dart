@@ -11,36 +11,29 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(AppConstants.backgroundColorValue),
+      backgroundColor: const Color(AppConstants.primaryColorValue),
       appBar: AppBar(
+        backgroundColor: Color(0xFF111111),
+        foregroundColor: Colors.white,
+        elevation: 1,
         title: const Text(
           'Profil',
           style: TextStyle(
-            color: Color(AppConstants.textColorValue),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout, color: Color(AppConstants.errorColorValue)),
-            onPressed: () => _showLogoutDialog(context),
-          ),
-        ],
       ),
       body: Consumer<AuthProvider>(
         builder: (context, authProvider, child) {
           final user = authProvider.currentUser;
-          
           if (user == null) {
             return const Center(
               child: CircularProgressIndicator(
-                color: Color(AppConstants.primaryColorValue),
+                color: Color(0xFFE53E3E),
               ),
             );
           }
-
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -48,6 +41,7 @@ class ProfileScreen extends StatelessWidget {
                 // Profil Kartı
                 Card(
                   elevation: 2,
+                  color: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -56,50 +50,89 @@ class ProfileScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         // Profil Fotoğrafı
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: const Color(AppConstants.primaryColorValue),
-                          backgroundImage: user.profileImage != null
-                              ? NetworkImage(user.profileImage!)
-                              : null,
-                          child: user.profileImage == null
-                              ? const Icon(Icons.person, size: 50, color: Colors.white)
-                              : null,
+                        ClipOval(
+                          child: Container(
+                            width: 100,
+                            height: 100,
+                            child: user.profileImage != null
+                                ? Image.network(
+                                    user.profileImage!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        width: 100,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(
+                                          Icons.person,
+                                          size: 50,
+                                          color: Color(AppConstants.primaryColorValue),
+                                        ),
+                                      );
+                                    },
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Container(
+                                        width: 100,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 3,
+                                            valueColor: AlwaysStoppedAnimation<Color>(Color(AppConstants.primaryColorValue)),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                : Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      color: Color(AppConstants.primaryColorValue),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(Icons.person, size: 50, color: Colors.white),
+                                  ),
+                          ),
                         ),
                         const SizedBox(height: 16),
-                        
                         // Kullanıcı Adı
                         Text(
                           user.name,
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
-                            color: Color(AppConstants.textColorValue),
+                            color: Color(0xFF111111),
                           ),
                         ),
                         const SizedBox(height: 8),
-                        
                         // E-posta
                         Text(
                           user.email,
                           style: TextStyle(
                             fontSize: 16,
-                            color: const Color(AppConstants.textColorValue).withOpacity(0.7),
+                            color: const Color(0xFF444444),
                           ),
                         ),
                         const SizedBox(height: 16),
-                        
                         // Online Durumu
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             color: user.isOnline
-                                ? const Color(AppConstants.successColorValue).withOpacity(0.1)
+                                ? const Color(AppConstants.primaryColorValue).withOpacity(0.1)
                                 : Colors.grey.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
                               color: user.isOnline
-                                  ? const Color(AppConstants.successColorValue)
+                                  ? const Color(AppConstants.primaryColorValue)
                                   : Colors.grey,
                             ),
                           ),
@@ -110,7 +143,7 @@ class ProfileScreen extends StatelessWidget {
                                 user.isOnline ? Icons.circle : Icons.circle_outlined,
                                 size: 12,
                                 color: user.isOnline
-                                    ? const Color(AppConstants.successColorValue)
+                                    ? const Color(AppConstants.primaryColorValue)
                                     : Colors.grey,
                               ),
                               const SizedBox(width: 6),
@@ -120,7 +153,7 @@ class ProfileScreen extends StatelessWidget {
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
                                   color: user.isOnline
-                                      ? const Color(AppConstants.successColorValue)
+                                      ? const Color(AppConstants.primaryColorValue)
                                       : Colors.grey,
                                 ),
                               ),
@@ -132,7 +165,6 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                
                 // İstatistikler
                 Row(
                   children: [
@@ -154,7 +186,6 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 24),
-                
                 // Bilgi Kartları
                 _buildInfoCard(
                   'Kişisel Bilgiler',
@@ -169,7 +200,6 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                
                 _buildInfoCard(
                   'Hesap Bilgileri',
                   [
@@ -180,34 +210,47 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 24),
-                
                 // Aksiyon Butonları
-                CustomButton(
-                  text: 'Profili Düzenle',
-                  onPressed: () {
-                    // TODO: Profil düzenleme ekranına git
-                  },
-                  icon: Icons.edit,
+                ElevatedButton.icon(
+                  icon: Icon(Icons.edit, color: Color(0xFF111111)),
+                  label: Text('Profili Düzenle', style: TextStyle(color: Color(0xFF111111))),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(AppConstants.primaryColorValue),
+                    foregroundColor: Color(0xFF111111),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                  ),
+                  onPressed: () {},
                 ),
                 const SizedBox(height: 12),
-                
-                CustomButton(
-                  text: 'Ayarlar',
-                  onPressed: () {
-                    // TODO: Ayarlar ekranına git
-                  },
-                  icon: Icons.settings,
-                  backgroundColor: Colors.grey[600],
+                ElevatedButton.icon(
+                  icon: Icon(Icons.settings, color: Colors.white),
+                  label: Text('Ayarlar', style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFF111111),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                  ),
+                  onPressed: () {},
                 ),
                 const SizedBox(height: 12),
-                
-                CustomButton(
-                  text: 'Yardım',
-                  onPressed: () {
-                    // TODO: Yardım ekranına git
-                  },
-                  icon: Icons.help,
-                  backgroundColor: const Color(AppConstants.accentColorValue),
+                ElevatedButton.icon(
+                  icon: Icon(Icons.help, color: Color(0xFF111111)),
+                  label: Text('Yardım', style: TextStyle(color: Color(0xFF111111))),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(AppConstants.primaryColorValue),
+                    foregroundColor: Color(0xFF111111),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                  ),
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -238,7 +281,7 @@ class ProfileScreen extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color(AppConstants.textColorValue),
+                color: Color(0xFF111111),
               ),
             ),
             const SizedBox(height: 4),
@@ -246,7 +289,7 @@ class ProfileScreen extends StatelessWidget {
               title,
               style: TextStyle(
                 fontSize: 12,
-                color: const Color(AppConstants.textColorValue).withOpacity(0.6),
+                color: const Color(0xFF444444),
               ),
               textAlign: TextAlign.center,
             ),
@@ -272,7 +315,7 @@ class ProfileScreen extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(AppConstants.textColorValue),
+                color: Color(0xFF111111),
               ),
             ),
             const SizedBox(height: 12),
@@ -293,7 +336,7 @@ class ProfileScreen extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 14,
-              color: const Color(AppConstants.textColorValue).withOpacity(0.7),
+              color: const Color(0xFF444444),
             ),
           ),
           Text(
@@ -301,7 +344,7 @@ class ProfileScreen extends StatelessWidget {
             style: const TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: Color(AppConstants.textColorValue),
+              color: Color(0xFF111111),
             ),
           ),
         ],
@@ -332,9 +375,9 @@ class ProfileScreen extends StatelessWidget {
                 );
               }
             },
-            child: const Text(
+            child: Text(
               'Çıkış Yap',
-              style: TextStyle(color: Color(AppConstants.errorColorValue)),
+              style: TextStyle(color: Color(AppConstants.primaryColorValue)),
             ),
           ),
         ],

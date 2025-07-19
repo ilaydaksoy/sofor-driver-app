@@ -34,12 +34,12 @@ class CustomButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor ?? const Color(AppConstants.primaryColorValue),
-          foregroundColor: textColor ?? Colors.white,
+          foregroundColor: textColor ?? Color(0xFF111111),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           elevation: 2,
-          shadowColor: const Color(AppConstants.primaryColorValue).withOpacity(0.3),
+          shadowColor: const Color(0xFF111111).withOpacity(0.08),
         ),
         child: isLoading
             ? const SizedBox(

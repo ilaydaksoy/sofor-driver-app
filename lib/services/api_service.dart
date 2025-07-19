@@ -37,6 +37,25 @@ class ApiService {
   // Auth Services
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
+      // Test API için demo kullanıcı bilgileri
+      if (email == 'demo@turist.com' && password == '123456') {
+        return {
+          'token': 'demo_token_123456',
+          'user': {
+            'id': '1',
+            'name': 'Demo Sürücü',
+            'email': 'demo@turist.com',
+            'phone': '+90 555 123 4567',
+            'license_number': 'ABC123456',
+            'vehicle_model': 'Mercedes Vito',
+            'vehicle_plate': '34 ABC 123',
+            'is_online': true,
+            'rating': 4.8,
+            'total_trips': 156,
+          }
+        };
+      }
+      
       final response = await http.post(
         Uri.parse(AppConstants.loginUrl),
         headers: _headers,
@@ -45,7 +64,29 @@ class ApiService {
           'password': password,
         }),
       );
-      return await _handleResponse(response);
+      
+      final data = await _handleResponse(response);
+      
+      // Reqres.in API response formatını uyarlama
+      if (data.containsKey('token')) {
+        return {
+          'token': data['token'],
+          'user': {
+            'id': '1',
+            'name': 'Test Sürücü',
+            'email': email,
+            'phone': '+90 555 000 0000',
+            'license_number': 'TEST123456',
+            'vehicle_model': 'Test Araç',
+            'vehicle_plate': '34 TEST 000',
+            'is_online': true,
+            'rating': 4.5,
+            'total_trips': 50,
+          }
+        };
+      }
+      
+      throw Exception('Geçersiz e-posta veya şifre');
     } catch (e) {
       throw Exception('Giriş yapılırken hata oluştu: $e');
     }
@@ -61,20 +102,24 @@ class ApiService {
     String? vehiclePlate,
   }) async {
     try {
-      final response = await http.post(
-        Uri.parse(AppConstants.registerUrl),
-        headers: _headers,
-        body: json.encode({
+      // Test API için demo kayıt
+      return {
+        'token': 'demo_register_token_${DateTime.now().millisecondsSinceEpoch}',
+        'user': {
+          'id': DateTime.now().millisecondsSinceEpoch.toString(),
           'name': name,
           'email': email,
-          'password': password,
           'phone': phone,
-          'license_number': licenseNumber,
-          'vehicle_model': vehicleModel,
-          'vehicle_plate': vehiclePlate,
-        }),
-      );
-      return await _handleResponse(response);
+          'license_number': licenseNumber ?? 'DEMO123456',
+          'vehicle_model': vehicleModel ?? 'Demo Araç',
+          'vehicle_plate': vehiclePlate ?? '34 DEMO 000',
+          'is_online': true,
+          'rating': 0.0,
+          'total_trips': 0,
+          'created_at': DateTime.now().toIso8601String(),
+          'updated_at': DateTime.now().toIso8601String(),
+        }
+      };
     } catch (e) {
       throw Exception('Kayıt olurken hata oluştu: $e');
     }
@@ -123,19 +168,77 @@ class ApiService {
   // Trip Services
   Future<List<Trip>> getTrips({String? status}) async {
     try {
-      final queryParams = <String, String>{};
-      if (status != null) {
-        queryParams['status'] = status;
-      }
-
-      final uri = Uri.parse(AppConstants.tripsUrl).replace(queryParameters: queryParams);
-      final response = await http.get(uri, headers: _headers);
-      final data = await _handleResponse(response);
+      // Demo seferler
+      final List<Trip> demoTrips = [
+        Trip(
+          id: '1',
+          driverId: 'driver_1',
+          passengerId: 'passenger_1',
+          passengerName: 'Ahmet Yılmaz',
+          passengerPhone: '+90 555 111 1111',
+          pickupLocation: 'Kızılay, Ankara',
+          dropoffLocation: 'Ulus, Ankara',
+          pickupLatitude: 39.9208,
+          pickupLongitude: 32.8541,
+          dropoffLatitude: 39.9426,
+          dropoffLongitude: 32.8597,
+          status: 'pending',
+          fare: 45.0,
+          distance: 3.2,
+          scheduledTime: DateTime.now().add(const Duration(minutes: 15)),
+          createdAt: DateTime.now().subtract(const Duration(minutes: 10)),
+          updatedAt: DateTime.now().subtract(const Duration(minutes: 10)),
+        ),
+        Trip(
+          id: '2',
+          driverId: 'driver_1',
+          passengerId: 'passenger_2',
+          passengerName: 'Fatma Demir',
+          passengerPhone: '+90 555 222 2222',
+          pickupLocation: 'Çankaya, Ankara',
+          dropoffLocation: 'Keçiören, Ankara',
+          pickupLatitude: 39.9334,
+          pickupLongitude: 32.8597,
+          dropoffLatitude: 39.9833,
+          dropoffLongitude: 32.8667,
+          status: 'active',
+          fare: 35.0,
+          distance: 2.8,
+          scheduledTime: DateTime.now().add(const Duration(minutes: 5)),
+          startTime: DateTime.now().subtract(const Duration(minutes: 5)),
+          createdAt: DateTime.now().subtract(const Duration(minutes: 5)),
+          updatedAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        ),
+        Trip(
+          id: '3',
+          driverId: 'driver_1',
+          passengerId: 'passenger_3',
+          passengerName: 'Mehmet Kaya',
+          passengerPhone: '+90 555 333 3333',
+          pickupLocation: 'Mamak, Ankara',
+          dropoffLocation: 'Sincan, Ankara',
+          pickupLatitude: 39.9500,
+          pickupLongitude: 32.9000,
+          dropoffLatitude: 39.9667,
+          dropoffLongitude: 32.5833,
+          status: 'completed',
+          fare: 60.0,
+          distance: 8.5,
+          scheduledTime: DateTime.now().subtract(const Duration(hours: 2)),
+          startTime: DateTime.now().subtract(const Duration(hours: 2, minutes: 10)),
+          endTime: DateTime.now().subtract(const Duration(hours: 1, minutes: 45)),
+          rating: 4.8,
+          review: 'Çok güzel bir yolculuktu, teşekkürler!',
+          createdAt: DateTime.now().subtract(const Duration(hours: 2)),
+          updatedAt: DateTime.now().subtract(const Duration(hours: 1, minutes: 45)),
+        ),
+      ];
       
-      final List<Trip> trips = (data['trips'] as List)
-          .map((tripJson) => Trip.fromJson(tripJson))
-          .toList();
-      return trips;
+      if (status != null) {
+        return demoTrips.where((trip) => trip.status == status).toList();
+      }
+      
+      return demoTrips;
     } catch (e) {
       throw Exception('Seferler alınırken hata oluştu: $e');
     }

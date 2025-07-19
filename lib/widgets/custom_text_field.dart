@@ -1,4 +1,4 @@
-mport 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import '../constants/app_constants.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -7,7 +7,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool obscureText;
   final TextInputType? keyboardType;
-  final Widget? prefixIcon;
+  final IconData? prefixIcon;
   final Widget? suffixIcon;
   final int? maxLines;
   final int? maxLength;
@@ -44,19 +44,19 @@ class CustomTextField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       style: const TextStyle(
-        color: Color(AppConstants.textColorValue),
+        color: Color(0xFF111111),
         fontSize: 16,
       ),
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: TextStyle(
-          color: const Color(AppConstants.textColorValue).withOpacity(0.5),
+          color: const Color(0xFF888888),
           fontSize: 16,
         ),
         prefixIcon: prefixIcon != null
             ? Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: prefixIcon!,
+                child: Icon(prefixIcon!, color: Color(AppConstants.primaryColorValue)),
               )
             : null,
         suffixIcon: suffixIcon,
@@ -65,13 +65,13 @@ class CustomTextField extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: const Color(AppConstants.textColorValue).withOpacity(0.2),
+            color: const Color(AppConstants.primaryColorValue),
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: const Color(AppConstants.textColorValue).withOpacity(0.2),
+            color: const Color(AppConstants.primaryColorValue),
           ),
         ),
         focusedBorder: OutlineInputBorder(

@@ -23,7 +23,7 @@ class TripCard extends StatelessWidget {
       case 'cancelled':
         return const Color(AppConstants.errorColorValue);
       default:
-        return const Color(AppConstants.textColorValue);
+        return const Color(AppConstants.textPrimaryColorValue);
     }
   }
 
@@ -64,7 +64,7 @@ class TripCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Color(AppConstants.textColorValue),
+                      color: Color(0xFF111111),
                     ),
                   ),
                 ),
@@ -93,7 +93,7 @@ class TripCard extends StatelessWidget {
               children: [
                 const CircleAvatar(
                   backgroundColor: Color(AppConstants.primaryColorValue),
-                  child: Icon(Icons.person, color: Colors.white),
+                  child: Icon(Icons.person, color: Color(0xFF111111)),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -105,14 +105,14 @@ class TripCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
-                          color: Color(AppConstants.textColorValue),
+                          color: Color(0xFF111111),
                         ),
                       ),
                       Text(
                         trip.passengerPhone,
                         style: TextStyle(
                           fontSize: 14,
-                          color: const Color(AppConstants.textColorValue).withOpacity(0.7),
+                          color: const Color(0xFF444444),
                         ),
                       ),
                     ],
@@ -134,7 +134,7 @@ class TripCard extends StatelessWidget {
               Icons.location_on_outlined,
               'Bırakış Noktası',
               trip.dropoffLocation,
-              Colors.red,
+              Color(AppConstants.primaryColorValue),
             ),
             const SizedBox(height: 16),
             
@@ -255,14 +255,14 @@ class TripCard extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontSize: 12,
-                  color: const Color(AppConstants.textColorValue).withOpacity(0.6),
+                  color: const Color(AppConstants.textPrimaryColorValue).withOpacity(0.6),
                 ),
               ),
               Text(
                 location,
                 style: const TextStyle(
                   fontSize: 14,
-                  color: Color(AppConstants.textColorValue),
+                  color: Color(AppConstants.textPrimaryColorValue),
                 ),
               ),
             ],
@@ -281,7 +281,7 @@ class TripCard extends StatelessWidget {
           title,
           style: TextStyle(
             fontSize: 12,
-            color: const Color(AppConstants.textColorValue).withOpacity(0.6),
+            color: const Color(AppConstants.textPrimaryColorValue).withOpacity(0.6),
           ),
         ),
         const SizedBox(height: 2),
@@ -290,7 +290,7 @@ class TripCard extends StatelessWidget {
           style: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w600,
-            color: Color(AppConstants.textColorValue),
+            color: Color(AppConstants.textPrimaryColorValue),
           ),
         ),
       ],
