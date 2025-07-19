@@ -11,11 +11,12 @@ class _ChatScreenState extends State<ChatScreen> {
     {
       'id': '1',
       'driverName': 'Ahmet Yılmaz',
-      'driverImage': 'https://randomuser.me/api/portraits/men/1.jpg',
+      'driverImage': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
       'lastMessage': 'Merhaba, ne zaman geleceksiniz?',
       'lastMessageTime': '14:30',
       'unreadCount': 2,
       'isOnline': true,
+      'rating': 9.2,
       'messages': [
         {'text': 'Merhaba, ne zaman geleceksiniz?', 'isMe': false, 'time': '14:30'},
         {'text': '5 dakika içinde orada olacağım', 'isMe': true, 'time': '14:25'},
@@ -25,11 +26,12 @@ class _ChatScreenState extends State<ChatScreen> {
     {
       'id': '2',
       'driverName': 'Mehmet Kaya',
-      'driverImage': 'https://randomuser.me/api/portraits/men/2.jpg',
+      'driverImage': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
       'lastMessage': 'Sefer tamamlandı, teşekkürler!',
       'lastMessageTime': '12:15',
       'unreadCount': 0,
       'isOnline': false,
+      'rating': 9.8,
       'messages': [
         {'text': 'Sefer tamamlandı, teşekkürler!', 'isMe': false, 'time': '12:15'},
         {'text': 'Rica ederim, iyi yolculuklar', 'isMe': true, 'time': '12:10'},
@@ -38,11 +40,12 @@ class _ChatScreenState extends State<ChatScreen> {
     {
       'id': '3',
       'driverName': 'Ali Demir',
-      'driverImage': 'https://randomuser.me/api/portraits/men/3.jpg',
+      'driverImage': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
       'lastMessage': 'Sesli mesaj gönderdi',
       'lastMessageTime': '09:45',
       'unreadCount': 1,
       'isOnline': true,
+      'rating': 8.9,
       'messages': [
         {'text': 'Sesli mesaj', 'isMe': false, 'time': '09:45', 'isVoice': true, 'duration': '0:15'},
         {'text': 'Anladım, teşekkürler', 'isMe': true, 'time': '09:40'},
@@ -51,11 +54,12 @@ class _ChatScreenState extends State<ChatScreen> {
     {
       'id': '4',
       'driverName': 'Fatma Özkan',
-      'driverImage': 'https://randomuser.me/api/portraits/women/1.jpg',
+      'driverImage': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
       'lastMessage': 'Konumunuzu paylaşabilir misiniz?',
       'lastMessageTime': 'Dün',
       'unreadCount': 0,
       'isOnline': false,
+      'rating': 9.5,
       'messages': [
         {'text': 'Konumunuzu paylaşabilir misiniz?', 'isMe': false, 'time': 'Dün'},
         {'text': 'Tabii, hemen gönderiyorum', 'isMe': true, 'time': 'Dün'},

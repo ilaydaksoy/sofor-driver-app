@@ -73,9 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Favoriler',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings_outlined),
-              activeIcon: Icon(Icons.settings),
-              label: 'Ayarlar',
+              icon: Icon(Icons.person_outline),
+              activeIcon: Icon(Icons.person),
+              label: 'Hesabım',
             ),
           ],
         ),
@@ -135,29 +135,29 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
   final List<Map<String, dynamic>> drivers = [
     {
       'name': 'Ahmet Yılmaz',
-      'rating': 4.8,
+      'rating': 9.2,
       'experience': '5 yıl',
       'car': 'Mercedes C200',
       'city': 'İstanbul',
-      'image': 'https://randomuser.me/api/portraits/men/1.jpg',
+      'image': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
       'isOnline': true,
     },
     {
       'name': 'Mehmet Kaya',
-      'rating': 4.9,
+      'rating': 9.8,
       'experience': '8 yıl',
       'car': 'BMW 320i',
       'city': 'Ankara',
-      'image': 'https://randomuser.me/api/portraits/men/2.jpg',
+      'image': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
       'isOnline': true,
     },
     {
       'name': 'Ali Demir',
-      'rating': 4.7,
+      'rating': 8.9,
       'experience': '3 yıl',
       'car': 'Audi A4',
       'city': 'İzmir',
-      'image': 'https://randomuser.me/api/portraits/men/3.jpg',
+      'image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
       'isOnline': false,
     },
   ];
@@ -445,7 +445,7 @@ class _DriverCard extends StatelessWidget {
                     ),
                     SizedBox(width: 4),
                     Text(
-                      rating.toString(),
+                      '${rating}/10',
                       style: TextStyle(
                         color: Color(AppConstants.textSecondaryColorValue),
                         fontSize: 14,

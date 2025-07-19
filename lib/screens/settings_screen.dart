@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
+import '../providers/auth_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _showFAQ = false;
   bool isEmailVerified = true;
   bool isPhoneVerified = false;
-  String? profileImagePath;
+  String? get profileImagePath => Provider.of<AuthProvider>(context, listen: false).currentUser?.profileImage ?? 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face';
   
   // Ayarlar için state değişkenleri
   bool _notificationsEnabled = true;
@@ -108,9 +110,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Profil Kartı
+          child: Column(
+            children: [
+              // Profil Kartı
             _buildProfileCard(),
             const SizedBox(height: 16),
             
@@ -153,10 +155,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _buildProfileCard() {
     return Container(
-      width: double.infinity,
+                width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
             const Color(AppConstants.primaryColorValue),
@@ -173,22 +175,68 @@ class _SettingsScreenState extends State<SettingsScreen> {
             offset: const Offset(0, 5),
           ),
         ],
-      ),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.bottomRight,
-            children: [
-              profileImagePath == null
-                  ? CircleAvatar(
-                      radius: 45,
-                      backgroundColor: Colors.white,
-                      child: Icon(Icons.person, size: 50, color: Color(AppConstants.primaryColorValue)),
-                    )
-                  : CircleAvatar(
-                      radius: 45,
-                      backgroundImage: AssetImage(profileImagePath!),
-                    ),
+                ),
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+              ClipOval(
+                child: Container(
+                  width: 90,
+                  height: 90,
+                  child: profileImagePath != null
+                      ? Image.network(
+                          profileImagePath!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 90,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.person,
+                                size: 50,
+                                color: Color(AppConstants.primaryColorValue),
+                              ),
+                            );
+                          },
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Container(
+                              width: 90,
+                              height: 90,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 3,
+                                  valueColor: AlwaysStoppedAnimation<Color>(Color(AppConstants.primaryColorValue)),
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                      : Container(
+                          width: 90,
+                          height: 90,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Color(AppConstants.primaryColorValue),
+                          ),
+                        ),
+                ),
+              ),
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
@@ -196,46 +244,46 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Icon(Icons.camera_alt, size: 16, color: Color(AppConstants.primaryColorValue)),
-              ),
-            ],
-          ),
+                        ),
+                      ],
+                    ),
           const SizedBox(height: 16),
-          const Text(
-            'Demo Turist',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
+                    const Text(
+                      'Demo Turist',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
               fontSize: 22,
-            ),
-          ),
+                      ),
+                    ),
           const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
               const Icon(Icons.email, color: Colors.white70, size: 16),
               const SizedBox(width: 4),
-              const Text(
-                'demo@turist.com',
+                        const Text(
+                          'demo@turist.com',
                 style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-              const SizedBox(width: 8),
-              _verificationBadge(isEmailVerified),
-            ],
-          ),
+                        ),
+                        const SizedBox(width: 8),
+                        _verificationBadge(isEmailVerified),
+                      ],
+                    ),
           const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
               const Icon(Icons.phone, color: Colors.white70, size: 16),
               const SizedBox(width: 4),
-              const Text(
-                '+90 555 123 4567',
+                        const Text(
+                          '+90 555 123 4567',
                 style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-              const SizedBox(width: 8),
-              _verificationBadge(isPhoneVerified),
-            ],
-          ),
+                        ),
+                        const SizedBox(width: 8),
+                        _verificationBadge(isPhoneVerified),
+                      ],
+                    ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -269,7 +317,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         children: [
           _statItem('Toplam Seyahat', '24', Icons.directions_car),
           _statItem('Favori Sürücü', '3', Icons.favorite),
-          _statItem('Puan', '4.8', Icons.star),
+          _statItem('Puan', '9.2/10', Icons.star),
         ],
       ),
     );
@@ -421,10 +469,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   _notificationsEnabled = value;
                 });
               },
-            ),
-          ),
-        ],
-      ),
+                      ),
+                    ),
+                  ],
+                ),
     );
   }
 
@@ -501,49 +549,49 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildFAQSection() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () {
-              setState(() {
-                _showFAQ = !_showFAQ;
-              });
-            },
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _showFAQ = !_showFAQ;
+                        });
+                      },
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: const [
-                      Icon(Icons.help_outline, color: Color(AppConstants.primaryColorValue)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: const [
+                              Icon(Icons.help_outline, color: Color(AppConstants.primaryColorValue)),
                       SizedBox(width: 12),
-                      Text(
-                        'Sıkça Sorulan Sorular',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              Text(
+                                'Sıkça Sorulan Sorular',
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                          Icon(_showFAQ ? Icons.expand_less : Icons.expand_more, color: Color(AppConstants.primaryColorValue)),
+                        ],
                       ),
-                    ],
-                  ),
-                  Icon(_showFAQ ? Icons.expand_less : Icons.expand_more, color: Color(AppConstants.primaryColorValue)),
-                ],
-              ),
-            ),
+                    ),
           ),
           if (_showFAQ) ...[
             _divider(),
-            ...faqs.map((faq) => _faqTile(faq['question']!, faq['answer']!)).toList(),
-          ],
+                      ...faqs.map((faq) => _faqTile(faq['question']!, faq['answer']!)).toList(),
+                  ],
         ],
       ),
     );
@@ -564,7 +612,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
       child: Column(
-        children: [
+                children: [
           _settingsTile(
             icon: Icons.support_agent,
             title: 'Müşteri Desteği',
@@ -604,24 +652,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildLogoutButton() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      width: double.infinity,
+                width: double.infinity,
       height: 50,
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
           backgroundColor: Colors.red[600],
-          shape: RoundedRectangleBorder(
+                    shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        onPressed: () {
+                    ),
+                  ),
+                  onPressed: () {
           _showLogoutDialog();
-        },
-        icon: const Icon(Icons.logout, color: Colors.white),
-        label: const Text(
-          'Çıkış Yap',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-      ),
+                  },
+                  icon: const Icon(Icons.logout, color: Colors.white),
+                  label: const Text(
+                    'Çıkış Yap',
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
     );
   }
 

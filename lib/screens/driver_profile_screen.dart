@@ -125,7 +125,7 @@ class DriverProfileScreen extends StatelessWidget {
                       Icon(Icons.star, color: Color(AppConstants.primaryColorValue), size: 20),
                       const SizedBox(width: 4),
                       Text(
-                        (driver['rating'] ?? 0).toString(),
+                        '${driver['rating'] ?? 0}/10',
                         style: TextStyle(color: Color(0xFF111111), fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       const SizedBox(width: 16),

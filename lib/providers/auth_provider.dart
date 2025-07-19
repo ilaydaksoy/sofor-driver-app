@@ -43,9 +43,6 @@ class AuthProvider extends ChangeNotifier {
     required String email,
     required String password,
     required String phone,
-    String? licenseNumber,
-    String? vehicleModel,
-    String? vehiclePlate,
   }) async {
     _setLoading(true);
     _clearError();
@@ -56,9 +53,6 @@ class AuthProvider extends ChangeNotifier {
         email: email,
         password: password,
         phone: phone,
-        licenseNumber: licenseNumber,
-        vehicleModel: vehicleModel,
-        vehiclePlate: vehiclePlate,
       );
       
       if (success) {
@@ -90,9 +84,6 @@ class AuthProvider extends ChangeNotifier {
   Future<User?> updateProfile({
     String? name,
     String? phone,
-    String? licenseNumber,
-    String? vehicleModel,
-    String? vehiclePlate,
   }) async {
     _setLoading(true);
     _clearError();
@@ -101,9 +92,6 @@ class AuthProvider extends ChangeNotifier {
       final updatedUser = await _authService.updateProfile(
         name: name,
         phone: phone,
-        licenseNumber: licenseNumber,
-        vehicleModel: vehicleModel,
-        vehiclePlate: vehiclePlate,
       );
       
       notifyListeners();

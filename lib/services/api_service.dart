@@ -41,18 +41,19 @@ class ApiService {
       if (email == 'demo@turist.com' && password == '123456') {
         return {
           'token': 'demo_token_123456',
-          'user': {
-            'id': '1',
-            'name': 'Demo Sürücü',
-            'email': 'demo@turist.com',
-            'phone': '+90 555 123 4567',
-            'license_number': 'ABC123456',
-            'vehicle_model': 'Mercedes Vito',
-            'vehicle_plate': '34 ABC 123',
-            'is_online': true,
-            'rating': 4.8,
-            'total_trips': 156,
-          }
+                  'user': {
+          'id': '1',
+          'name': 'Demo Sürücü',
+          'email': 'demo@turist.com',
+          'phone': '+90 555 123 4567',
+          'profile_image': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
+          'license_number': 'ABC123456',
+          'vehicle_model': 'Mercedes Vito',
+          'vehicle_plate': '34 ABC 123',
+          'is_online': true,
+          'rating': 4.8,
+          'total_trips': 156,
+        }
         };
       }
       
@@ -71,18 +72,19 @@ class ApiService {
       if (data.containsKey('token')) {
         return {
           'token': data['token'],
-          'user': {
-            'id': '1',
-            'name': 'Test Sürücü',
-            'email': email,
-            'phone': '+90 555 000 0000',
-            'license_number': 'TEST123456',
-            'vehicle_model': 'Test Araç',
-            'vehicle_plate': '34 TEST 000',
-            'is_online': true,
-            'rating': 4.5,
-            'total_trips': 50,
-          }
+                  'user': {
+          'id': '1',
+          'name': 'Test Sürücü',
+          'email': email,
+          'phone': '+90 555 000 0000',
+          'profile_image': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
+          'license_number': 'TEST123456',
+          'vehicle_model': 'Test Araç',
+          'vehicle_plate': '34 TEST 000',
+          'is_online': true,
+          'rating': 4.5,
+          'total_trips': 50,
+        }
         };
       }
       
@@ -97,9 +99,6 @@ class ApiService {
     required String email,
     required String password,
     required String phone,
-    String? licenseNumber,
-    String? vehicleModel,
-    String? vehiclePlate,
   }) async {
     try {
       // Test API için demo kayıt
@@ -110,9 +109,7 @@ class ApiService {
           'name': name,
           'email': email,
           'phone': phone,
-          'license_number': licenseNumber ?? 'DEMO123456',
-          'vehicle_model': vehicleModel ?? 'Demo Araç',
-          'vehicle_plate': vehiclePlate ?? '34 DEMO 000',
+          'profile_image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
           'is_online': true,
           'rating': 0.0,
           'total_trips': 0,
@@ -142,9 +139,6 @@ class ApiService {
   Future<User> updateProfile({
     String? name,
     String? phone,
-    String? licenseNumber,
-    String? vehicleModel,
-    String? vehiclePlate,
   }) async {
     try {
       final response = await http.put(
@@ -153,9 +147,6 @@ class ApiService {
         body: json.encode({
           if (name != null) 'name': name,
           if (phone != null) 'phone': phone,
-          if (licenseNumber != null) 'license_number': licenseNumber,
-          if (vehicleModel != null) 'vehicle_model': vehicleModel,
-          if (vehiclePlate != null) 'vehicle_plate': vehiclePlate,
         }),
       );
       final data = await _handleResponse(response);

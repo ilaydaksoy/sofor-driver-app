@@ -73,9 +73,6 @@ class AuthService {
     required String email,
     required String password,
     required String phone,
-    String? licenseNumber,
-    String? vehicleModel,
-    String? vehiclePlate,
   }) async {
     try {
       final response = await _apiService.register(
@@ -83,9 +80,6 @@ class AuthService {
         email: email,
         password: password,
         phone: phone,
-        licenseNumber: licenseNumber,
-        vehicleModel: vehicleModel,
-        vehiclePlate: vehiclePlate,
       );
       
       _token = response['token'];
@@ -110,17 +104,11 @@ class AuthService {
   Future<User> updateProfile({
     String? name,
     String? phone,
-    String? licenseNumber,
-    String? vehicleModel,
-    String? vehiclePlate,
   }) async {
     try {
       final updatedUser = await _apiService.updateProfile(
         name: name,
         phone: phone,
-        licenseNumber: licenseNumber,
-        vehicleModel: vehicleModel,
-        vehiclePlate: vehiclePlate,
       );
       
       _currentUser = updatedUser;
