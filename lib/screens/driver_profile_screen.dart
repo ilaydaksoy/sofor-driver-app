@@ -94,7 +94,7 @@ class DriverProfileScreen extends StatelessWidget {
                   Text(
                     driver['name'] ?? '',
                     style: TextStyle(
-                      color: Color(0xFF111111),
+                      color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -103,18 +103,18 @@ class DriverProfileScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.location_on, color: Color(0xFF111111), size: 18),
+                      Icon(Icons.location_on, color: Colors.white, size: 18),
                       const SizedBox(width: 4),
                       Text(
                         driver['city'] ?? '',
-                        style: TextStyle(color: Color(0xFF444444), fontSize: 15),
+                        style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                       const SizedBox(width: 16),
-                      Icon(Icons.circle, color: (driver['isOnline'] ?? false) ? Color(AppConstants.primaryColorValue) : Color(0xFF888888), size: 12),
+                      Icon(Icons.circle, color: (driver['isOnline'] ?? false) ? Colors.white : Colors.white70, size: 12),
                       const SizedBox(width: 4),
                       Text(
                         (driver['isOnline'] ?? false) ? 'Çevrimiçi' : 'Çevrimdışı',
-                        style: TextStyle(color: Color(0xFF444444), fontSize: 14),
+                        style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                     ],
                   ),
@@ -122,25 +122,25 @@ class DriverProfileScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.star, color: Color(AppConstants.primaryColorValue), size: 20),
+                      Icon(Icons.star, color: Colors.white, size: 20),
                       const SizedBox(width: 4),
                       Text(
                         '${driver['rating'] ?? 0}/10',
-                        style: TextStyle(color: Color(0xFF111111), fontWeight: FontWeight.bold, fontSize: 16),
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       const SizedBox(width: 16),
-                      Icon(Icons.directions_car, color: Color(0xFF888888), size: 20),
+                      Icon(Icons.directions_car, color: Colors.white70, size: 20),
                       const SizedBox(width: 4),
                       Text(
                         driver['car'] ?? '',
-                        style: TextStyle(color: Color(0xFF444444), fontSize: 15),
+                        style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                       const SizedBox(width: 16),
-                      Icon(Icons.timer, color: Color(0xFF888888), size: 20),
+                      Icon(Icons.timer, color: Colors.white70, size: 20),
                       const SizedBox(width: 4),
                       Text(
                         driver['experience'] ?? '',
-                        style: TextStyle(color: Color(0xFF444444), fontSize: 15),
+                        style: TextStyle(color: Colors.white, fontSize: 15),
                       ),
                     ],
                   ),
@@ -221,7 +221,7 @@ class DriverProfileScreen extends StatelessWidget {
                     label: Text('Ara'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(AppConstants.primaryColorValue),
-                      foregroundColor: Color(0xFF111111),
+                      foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
             ),
@@ -236,7 +236,7 @@ class DriverProfileScreen extends StatelessWidget {
                     ),
                   ),
                 IconButton(
-                    icon: Icon(Icons.favorite, color: Color(0xFF111111), size: 32),
+                    icon: Icon(Icons.favorite, color: Colors.white, size: 32),
                     tooltip: 'Favorilere ekle/çıkar',
                   onPressed: () {},
                 ),

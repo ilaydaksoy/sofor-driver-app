@@ -109,10 +109,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Profil Kartı
+            body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            // Profil Kartı
             _buildProfileCard(),
             const SizedBox(height: 16),
             

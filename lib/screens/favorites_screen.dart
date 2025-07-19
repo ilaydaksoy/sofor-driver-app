@@ -317,18 +317,24 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           children: [
                             Icon(Icons.star, size: 16, color: Colors.amber),
                             const SizedBox(width: 4),
-                            Text(
-                              '${driver['rating']}/10',
-                              style: TextStyle(
-                                color: Color(0xFF111111),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
+                            Flexible(
+                              child: Text(
+                                '${driver['rating']}/10',
+                                style: TextStyle(
+                                  color: Color(0xFF111111),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             const SizedBox(width: 8),
-                            Text(
-                              '(${driver['totalRides']} seyahat)',
-                              style: TextStyle(color: Color(0xFF666666), fontSize: 12),
+                            Flexible(
+                              child: Text(
+                                '(${driver['totalRides']} seyahat)',
+                                style: TextStyle(color: Color(0xFF666666), fontSize: 12),
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
