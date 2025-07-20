@@ -1,0 +1,60 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Arka plan -->
+    <path
+        android:fillColor="#D32F2F"
+        android:pathData="M0,0h108v108h-108z"/>
+    
+    <!-- Araba gövdesi -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,60 L88,60 L88,75 L20,75 Z"/>
+    
+    <!-- Araba üst kısmı -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,45 L78,45 L78,60 L30,60 Z"/>
+    
+    <!-- Ön cam -->
+    <path
+        android:fillColor="#E3F2FD"
+        android:pathData="M32,47 L76,47 L76,58 L32,58 Z"/>
+    
+    <!-- Tekerlekler -->
+    <path
+        android:fillColor="#424242"
+        android:pathData="M25,70 A8,8 0 1,1 25,86 A8,8 0 1,1 25,70 Z"/>
+    <path
+        android:fillColor="#424242"
+        android:pathData="M83,70 A8,8 0 1,1 83,86 A8,8 0 1,1 83,70 Z"/>
+    
+    <!-- Tekerlek içi -->
+    <path
+        android:fillColor="#757575"
+        android:pathData="M25,72 A6,6 0 1,1 25,84 A6,6 0 1,1 25,72 Z"/>
+    <path
+        android:fillColor="#757575"
+        android:pathData="M83,72 A6,6 0 1,1 83,84 A6,6 0 1,1 83,72 Z"/>
+    
+    <!-- Farlar -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M20,50 L25,50 L25,55 L20,55 Z"/>
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M83,50 L88,50 L88,55 L83,55 Z"/>
+    
+    <!-- Kapı -->
+    <path
+        android:fillColor="#F5F5F5"
+        android:pathData="M40,47 L68,47 L68,58 L40,58 Z"/>
+    
+    <!-- Koltuk -->
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M35,50 L73,50 L73,55 L35,55 Z"/>
+</vector> 

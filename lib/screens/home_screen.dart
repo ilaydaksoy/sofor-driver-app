@@ -152,6 +152,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
   double selectedRating = 0.0;
   bool showOnlineOnly = false;
   bool showVerifiedOnly = false;
+  String selectedPaymentMethod = 'Nakit';
   
   final List<String> categories = [
     'Tümü',
@@ -451,17 +452,231 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         _buildBannerSection(),
         const SizedBox(height: 20),
 
+        // Önerilen Sürücüler
+        _buildDriversSection(),
+        const SizedBox(height: 20),
+
+        // Hızlı Aksiyonlar
+        _buildQuickActions(),
+        const SizedBox(height: 20),
+
         // Araç Reklamları
         _buildVehicleAdsSection(),
         const SizedBox(height: 20),
 
         // Kategoriler
         _buildCategoriesSection(),
-        const SizedBox(height: 20),
-
-        // Önerilen Sürücüler
-        _buildDriversSection(),
       ],
+    );
+  }
+
+  Widget _buildQuickActions() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Hızlı Aksiyonlar',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.textPrimaryColorValue),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          height: 120,
+          child: Row(
+            children: [
+              Expanded(
+                child: _buildActionCard(
+                  icon: Icons.history,
+                  title: 'Son Seyahat',
+                  subtitle: 'Ahmet Yılmaz',
+                  color: Color(AppConstants.primaryColorValue),
+                  onTap: () {
+                    _showLastTripDialog();
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildActionCard(
+                  icon: Icons.location_on,
+                  title: 'Konum Paylaş',
+                  subtitle: 'Sürücü ile Paylaş',
+                  color: Colors.green,
+                  onTap: () {
+                    _shareLocationWithDriver();
+                  },
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildActionCard(
+                  icon: _getPaymentIcon(selectedPaymentMethod),
+                  title: 'Ödeme',
+                  subtitle: selectedPaymentMethod,
+                  color: _getPaymentColor(selectedPaymentMethod),
+                  onTap: () {
+                    _showPaymentMethodDialog();
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+
+      ],
+    );
+  }
+
+    Widget _buildPaymentOptions() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Ödeme Yöntemi',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.textPrimaryColorValue),
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: _getPaymentColor(selectedPaymentMethod).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  _getPaymentIcon(selectedPaymentMethod),
+                  color: _getPaymentColor(selectedPaymentMethod),
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      selectedPaymentMethod,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(AppConstants.textPrimaryColorValue),
+                      ),
+                    ),
+                    Text(
+                      _getPaymentSubtitle(selectedPaymentMethod),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(AppConstants.textSecondaryColorValue),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  _showPaymentMethodDialog();
+                },
+                icon: Icon(
+                  Icons.arrow_forward_ios,
+                  color: Color(AppConstants.textSecondaryColorValue),
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
+  Widget _buildActionCard({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                icon,
+                color: color,
+                size: 28,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color(AppConstants.textPrimaryColorValue),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 11,
+                color: Color(AppConstants.textSecondaryColorValue),
+              ),
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -807,68 +1022,92 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Hizmet Kategorileri',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(AppConstants.textPrimaryColorValue),
-          ),
-        ),
-        const SizedBox(height: 12),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1.2,
-          ),
-          itemCount: categories.length,
-          itemBuilder: (context, index) {
-            final category = categories[index];
-            final isSelected = selectedCategory == category;
-            return GestureDetector(
-              onTap: () => setState(() => selectedCategory = category),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: isSelected ? Color(AppConstants.primaryColorValue) : Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: isSelected ? Color(AppConstants.primaryColorValue) : Colors.grey[300]!,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 8,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      _getCategoryIcon(category),
-                      color: isSelected ? Colors.white : Color(AppConstants.primaryColorValue),
-                      size: 24,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      category,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: isSelected ? Colors.white : Color(AppConstants.textPrimaryColorValue),
-                      ),
-                    ),
-                  ],
-                ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Hizmet Kategorileri',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(AppConstants.textPrimaryColorValue),
               ),
-            );
-          },
+            ),
+            Text(
+              '${categories.length} kategori',
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(AppConstants.textSecondaryColorValue),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        SizedBox(
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: categories.length,
+            itemBuilder: (context, index) {
+              final category = categories[index];
+              final isSelected = selectedCategory == category;
+              return Container(
+                width: 120,
+                margin: EdgeInsets.only(right: 12),
+                child: GestureDetector(
+                  onTap: () => setState(() => selectedCategory = category),
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.easeInOut,
+                    decoration: BoxDecoration(
+                      color: isSelected ? Color(AppConstants.primaryColorValue) : Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isSelected ? Color(AppConstants.primaryColorValue) : Colors.grey[200]!,
+                        width: isSelected ? 2 : 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 12,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: isSelected ? Colors.white.withOpacity(0.2) : Colors.grey[50],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Icon(
+                            _getCategoryIcon(category),
+                            color: isSelected ? Colors.white : Color(AppConstants.primaryColorValue),
+                            size: 32,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          category,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: isSelected ? Colors.white : Color(AppConstants.textPrimaryColorValue),
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
         ),
       ],
     );
@@ -876,12 +1115,14 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
 
   IconData _getCategoryIcon(String category) {
     switch (category) {
+      case 'Tümü':
+        return Icons.apps;
       case 'Havalimanı Transferi':
-        return Icons.flight;
+        return Icons.flight_takeoff;
       case 'Şehir Turu':
         return Icons.explore;
       case 'İş Seyahati':
-        return Icons.business;
+        return Icons.business_center;
       case 'VIP Hizmet':
         return Icons.star;
       case 'Grup Seyahati':
@@ -967,6 +1208,530 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         ],
     );
   }
+
+  void _showLastTripDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.history, color: Color(AppConstants.primaryColorValue)),
+            const SizedBox(width: 8),
+            Text('Son Seyahat'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face'),
+                  radius: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Ahmet Yılmaz',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        'Mercedes C200 • 9.2/10',
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Son Seyahat:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Icon(Icons.location_on, color: Colors.green, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('İstanbul Havalimanı'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Row(
+              children: [
+                Icon(Icons.location_on, color: Colors.red, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text('Taksim'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Fiyat: 150 TL • Tarih: 15 Mart 2024',
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: 12,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('İptal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _callLastDriver();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(AppConstants.primaryColorValue),
+            ),
+            child: Text('Tekrar Çağır', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _shareLocation() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(Icons.location_on, color: Colors.green),
+            const SizedBox(width: 8),
+            Text('Konum Paylaş'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Konumunuzu kiminle paylaşmak istiyorsunuz?',
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildShareOption(Icons.family_restroom, 'Aile'),
+                _buildShareOption(Icons.people, 'Arkadaşlar'),
+                _buildShareOption(Icons.work, 'İş'),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('İptal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _performLocationShare();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+            ),
+            child: Text('Paylaş', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShareOption(IconData icon, String label) {
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.green.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: Colors.green, size: 24),
+        ),
+        const SizedBox(height: 8),
+        Text(label, style: TextStyle(fontSize: 12)),
+      ],
+    );
+  }
+
+
+
+
+
+  void _callLastDriver() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Ahmet Yılmaz aranıyor...'),
+        backgroundColor: Color(AppConstants.primaryColorValue),
+      ),
+    );
+  }
+
+  void _performLocationShare() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Konum paylaşıldı'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+  void _shareLocationWithDriver() {
+    print('Konum paylaş dialog açılıyor...');
+    print('Drivers listesi uzunluğu: ${drivers.length}');
+    
+    // Test için basit dialog
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Test Dialog'),
+        content: Text('Konum paylaş dialog açıldı!'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Tamam'),
+          ),
+        ],
+      ),
+    );
+    return;
+    
+    if (drivers.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Henüz sürücü bulunmuyor'),
+          backgroundColor: Colors.orange,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Sürücü ile Konum Paylaş'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Hangi sürücü ile konumunuzu paylaşmak istiyorsunuz?',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(AppConstants.textSecondaryColorValue),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              height: 200,
+              child: ListView.builder(
+                itemCount: drivers.length > 5 ? 5 : drivers.length,
+                itemBuilder: (context, index) {
+                  final driver = drivers[index];
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(driver['image']),
+                      radius: 20,
+                    ),
+                    title: Text(
+                      driver['name'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color(AppConstants.textPrimaryColorValue),
+                      ),
+                    ),
+                    subtitle: Text(
+                      '${driver['car']} • ${driver['city']}',
+                      style: TextStyle(
+                        color: Color(AppConstants.textSecondaryColorValue),
+                      ),
+                    ),
+                    trailing: driver['isOnline'] 
+                      ? Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                            color: Colors.green,
+                            shape: BoxShape.circle,
+                          ),
+                        )
+                      : null,
+                    onTap: () {
+                      Navigator.pop(context);
+                      _confirmLocationShare(driver);
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('İptal'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmLocationShare(Map<String, dynamic> driver) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Konum Paylaşımı Onayı'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: NetworkImage(driver['image']),
+                  radius: 25,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        driver['name'],
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(AppConstants.textPrimaryColorValue),
+                        ),
+                      ),
+                      Text(
+                        '${driver['car']} • ${driver['city']}',
+                        style: TextStyle(
+                          color: Color(AppConstants.textSecondaryColorValue),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Konumunuzu ${driver['name']} ile paylaşmak istediğinizden emin misiniz?',
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(AppConstants.textSecondaryColorValue),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.blue.withOpacity(0.3)),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.info_outline, color: Colors.blue, size: 20),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Sürücü sadece seyahat süresince konumunuza erişebilecek',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('İptal'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _executeLocationShare(driver);
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+              foregroundColor: Colors.white,
+            ),
+            child: Text('Paylaş'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _executeLocationShare(Map<String, dynamic> driver) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text('Konum ${driver['name']} ile paylaşıldı'),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(
+          label: 'Görüntüle',
+          textColor: Colors.white,
+          onPressed: () {
+            // Konum paylaşım detaylarını gösterebilir
+          },
+        ),
+      ),
+    );
+  }
+
+  void _selectPaymentMethod(String method) {
+    setState(() {
+      selectedPaymentMethod = method;
+    });
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Ödeme yöntemi: $method seçildi'),
+        backgroundColor: Color(AppConstants.primaryColorValue),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+  Color _getPaymentColor(String method) {
+    switch (method) {
+      case 'Nakit':
+        return Colors.green;
+      case 'Kredi Kartı':
+        return Colors.blue;
+      case 'Dijital Cüzdan':
+        return Colors.purple;
+      case 'Kripto Para':
+        return Colors.orange;
+      default:
+        return Colors.green;
+    }
+  }
+
+  IconData _getPaymentIcon(String method) {
+    switch (method) {
+      case 'Nakit':
+        return Icons.money;
+      case 'Kredi Kartı':
+        return Icons.credit_card;
+      case 'Dijital Cüzdan':
+        return Icons.account_balance_wallet;
+      case 'Kripto Para':
+        return Icons.currency_bitcoin;
+      default:
+        return Icons.money;
+    }
+  }
+
+  String _getPaymentSubtitle(String method) {
+    switch (method) {
+      case 'Nakit':
+        return 'Peşin Ödeme';
+      case 'Kredi Kartı':
+        return 'Güvenli Ödeme';
+      case 'Dijital Cüzdan':
+        return 'PayPal, Apple Pay';
+      case 'Kripto Para':
+        return 'Bitcoin, Ethereum';
+      default:
+        return 'Peşin Ödeme';
+    }
+  }
+
+  void _showPaymentMethodDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Ödeme Yöntemi Seçin'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildPaymentOptionTile('Nakit', 'Peşin Ödeme', Icons.money, Colors.green),
+            _buildPaymentOptionTile('Kredi Kartı', 'Güvenli Ödeme', Icons.credit_card, Colors.blue),
+            _buildPaymentOptionTile('Dijital Cüzdan', 'PayPal, Apple Pay', Icons.account_balance_wallet, Colors.purple),
+            _buildPaymentOptionTile('Kripto Para', 'Bitcoin, Ethereum', Icons.currency_bitcoin, Colors.orange),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('İptal'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentOptionTile(String title, String subtitle, IconData icon, Color color) {
+    final isSelected = selectedPaymentMethod == title;
+    
+    return ListTile(
+      leading: Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(icon, color: color, size: 20),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          color: isSelected ? color : Color(AppConstants.textPrimaryColorValue),
+        ),
+      ),
+      subtitle: Text(subtitle),
+      trailing: isSelected ? Icon(Icons.check, color: color) : null,
+      onTap: () {
+        _selectPaymentMethod(title);
+        Navigator.pop(context);
+      },
+    );
+  }
+
+
 
   void _showFilterDialog() {
     showModalBottomSheet(
