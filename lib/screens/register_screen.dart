@@ -261,7 +261,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
-                        onPressed: _emailController.text.isNotEmpty ? _sendEmailVerification : null,
+                        onPressed: () {
+                          if (_emailController.text.isNotEmpty) {
+                            _sendEmailVerification();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Lütfen önce e-posta adresinizi girin'),
+                                backgroundColor: Colors.orange,
+                              ),
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(AppConstants.primaryColorValue),
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -272,7 +283,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   const SizedBox(height: 8),
                   ElevatedButton(
-                    onPressed: _emailCodeController.text.isNotEmpty ? _verifyEmail : null,
+                    onPressed: () {
+                      if (_emailCodeController.text.isNotEmpty) {
+                        _verifyEmail();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Lütfen doğrulama kodunu girin'),
+                            backgroundColor: Colors.orange,
+                          ),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -330,7 +352,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
-                        onPressed: _phoneController.text.isNotEmpty ? _sendPhoneVerification : null,
+                        onPressed: () {
+                          if (_phoneController.text.isNotEmpty) {
+                            _sendPhoneVerification();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Lütfen önce telefon numaranızı girin'),
+                                backgroundColor: Colors.orange,
+                              ),
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color(AppConstants.primaryColorValue),
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -341,7 +374,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   const SizedBox(height: 8),
                   ElevatedButton(
-                    onPressed: _phoneCodeController.text.isNotEmpty ? _verifyPhone : null,
+                    onPressed: () {
+                      if (_phoneCodeController.text.isNotEmpty) {
+                        _verifyPhone();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Lütfen doğrulama kodunu girin'),
+                            backgroundColor: Colors.orange,
+                          ),
+                        );
+                      }
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       padding: const EdgeInsets.symmetric(vertical: 12),

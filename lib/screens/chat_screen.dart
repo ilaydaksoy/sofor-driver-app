@@ -7,6 +7,8 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  int _currentTabIndex = 0;
+  
   final List<Map<String, dynamic>> chats = [
     {
       'id': '1',
@@ -67,6 +69,69 @@ class _ChatScreenState extends State<ChatScreen> {
     },
   ];
 
+  final List<Map<String, dynamic>> contacts = [
+    {
+      'id': '1',
+      'name': 'Ahmet Yılmaz',
+      'image': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
+      'isOnline': true,
+      'rating': 9.2,
+      'car': 'Mercedes C200',
+      'lastSeen': 'Çevrimiçi',
+      'isVerified': true,
+    },
+    {
+      'id': '2',
+      'name': 'Mehmet Kaya',
+      'image': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
+      'isOnline': false,
+      'rating': 9.8,
+      'car': 'BMW 320i',
+      'lastSeen': '2 saat önce',
+      'isVerified': true,
+    },
+    {
+      'id': '3',
+      'name': 'Ali Demir',
+      'image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+      'isOnline': true,
+      'rating': 8.9,
+      'car': 'Audi A4',
+      'lastSeen': 'Çevrimiçi',
+      'isVerified': false,
+    },
+    {
+      'id': '4',
+      'name': 'Fatma Özkan',
+      'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+      'isOnline': false,
+      'rating': 9.5,
+      'car': 'Volkswagen Passat',
+      'lastSeen': '1 gün önce',
+      'isVerified': true,
+    },
+    {
+      'id': '5',
+      'name': 'Can Yıldız',
+      'image': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+      'isOnline': true,
+      'rating': 9.0,
+      'car': 'Toyota Camry',
+      'lastSeen': 'Çevrimiçi',
+      'isVerified': true,
+    },
+    {
+      'id': '6',
+      'name': 'Zeynep Kaya',
+      'image': 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+      'isOnline': false,
+      'rating': 8.7,
+      'car': 'Honda Civic',
+      'lastSeen': '3 saat önce',
+      'isVerified': false,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,50 +148,343 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.search, color: Color(0xFF111111)),
+            icon: Icon(Icons.search, color: Colors.white),
             onPressed: () {
               // TODO: Sohbet arama özelliği
             },
           ),
         ],
       ),
-      body: chats.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.chat_bubble_outline,
-                    size: 80,
-                    color: const Color(0xFF111111).withOpacity(0.5),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Henüz sohbetiniz yok',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF111111).withOpacity(0.7),
+      body: Column(
+        children: [
+          // Tab Bar
+          Container(
+            margin: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => setState(() => _currentTabIndex = 0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: _currentTabIndex == 0 
+                            ? Color(AppConstants.primaryColorValue)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.chat_bubble_outline,
+                            color: _currentTabIndex == 0 
+                                ? Colors.white
+                                : Color(AppConstants.textSecondaryColorValue),
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Sohbetler',
+                            style: TextStyle(
+                              color: _currentTabIndex == 0 
+                                  ? Colors.white
+                                  : Color(AppConstants.textSecondaryColorValue),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Sürücülerle sohbet etmeye başlayın',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: const Color(0xFF111111).withOpacity(0.5),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () => setState(() => _currentTabIndex = 1),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        color: _currentTabIndex == 1 
+                            ? Color(AppConstants.primaryColorValue)
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.people_outline,
+                            color: _currentTabIndex == 1 
+                                ? Colors.white
+                                : Color(AppConstants.textSecondaryColorValue),
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Kişiler',
+                            style: TextStyle(
+                              color: _currentTabIndex == 1 
+                                  ? Colors.white
+                                  : Color(AppConstants.textSecondaryColorValue),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
+                ),
+              ],
+            ),
+          ),
+          // Content
+          Expanded(
+            child: _currentTabIndex == 0 
+                ? _buildChatsTab()
+                : _buildContactsTab(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildChatsTab() {
+    if (chats.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.chat_bubble_outline,
+              size: 80,
+              color: const Color(0xFF111111).withOpacity(0.5),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Henüz sohbetiniz yok',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF111111).withOpacity(0.7),
               ),
-            )
-          : ListView.builder(
-              itemCount: chats.length,
-              itemBuilder: (context, index) {
-                final chat = chats[index];
-                return _buildChatItem(chat);
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Sürücülerle sohbet etmeye başlayın',
+              style: TextStyle(
+                fontSize: 16,
+                color: const Color(0xFF111111).withOpacity(0.5),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    
+    return ListView.builder(
+      itemCount: chats.length,
+      itemBuilder: (context, index) {
+        final chat = chats[index];
+        return _buildChatItem(chat);
+      },
+    );
+  }
+
+  Widget _buildContactsTab() {
+    return ListView.builder(
+      itemCount: contacts.length,
+      itemBuilder: (context, index) {
+        final contact = contacts[index];
+        return _buildContactItem(contact);
+      },
+    );
+  }
+
+  Widget _buildContactItem(Map<String, dynamic> contact) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xFF111111).withOpacity(0.05),
+            blurRadius: 8,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(16),
+        leading: Stack(
+          children: [
+            ClipOval(
+              child: Container(
+                width: 56,
+                height: 56,
+                child: Image.network(
+                  contact['image'],
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.person,
+                        size: 28,
+                        color: Color(AppConstants.primaryColorValue),
+                      ),
+                    );
+                  },
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color(AppConstants.primaryColorValue)),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            if (contact['isOnline'])
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                ),
+              ),
+            if (contact['isVerified'])
+              Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: Color(AppConstants.primaryColorValue),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                  child: Icon(
+                    Icons.verified,
+                    color: Colors.white,
+                    size: 10,
+                  ),
+                ),
+              ),
+          ],
+        ),
+        title: Row(
+          children: [
+            Text(
+              contact['name'],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Color(AppConstants.textPrimaryColorValue),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.star,
+              color: Colors.amber,
+              size: 16,
+            ),
+            Text(
+              contact['rating'].toString(),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.amber,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 4),
+            Text(
+              contact['car'],
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(AppConstants.textSecondaryColorValue),
+              ),
+            ),
+            const SizedBox(height: 2),
+            Row(
+              children: [
+                Icon(
+                  contact['isOnline'] ? Icons.circle : Icons.circle_outlined,
+                  color: contact['isOnline'] ? Colors.green : Colors.grey,
+                  size: 12,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  contact['lastSeen'],
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: contact['isOnline'] ? Colors.green : Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.message,
+                color: Color(AppConstants.primaryColorValue),
+                size: 20,
+              ),
+              onPressed: () {
+                // Sohbet başlat
               },
             ),
+            IconButton(
+              icon: Icon(
+                Icons.phone,
+                color: Color(AppConstants.primaryColorValue),
+                size: 20,
+              ),
+              onPressed: () {
+                // Arama yap
+              },
+            ),
+          ],
+        ),
+        onTap: () {
+          // Kişi detayına git
+        },
+      ),
     );
   }
 
@@ -523,7 +881,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
               decoration: BoxDecoration(
                 color: isMe
                     ? Color(AppConstants.primaryColorValue)
-                    : Color(0xFFF5F5F5),
+                    : isVoice 
+                        ? Color(0xFFE53E3E).withOpacity(0.8) // Sesli mesaj için kırmızı ton
+                        : Color(0xFFE8E8E8),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
@@ -543,7 +903,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   : Text(
                       msg['text'],
                       style: TextStyle(
-                        color: isMe ? Colors.white : Color(0xFF111111),
+                        color: isMe ? Colors.white : isVoice ? Colors.white : Color(0xFF111111),
                         fontSize: 16,
                       ),
                     ),

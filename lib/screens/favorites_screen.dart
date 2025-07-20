@@ -390,7 +390,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {
-                        // Mesaj gönder
+                        Navigator.pushNamed(context, '/chat');
                       },
                       icon: Icon(Icons.message, size: 16),
                       label: Text('Mesaj'),
@@ -582,7 +582,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         child: OutlinedButton.icon(
                           onPressed: () {
                             Navigator.pop(context);
-                            // Mesaj gönder
+                            Navigator.pushNamed(context, '/chat');
                           },
                           icon: Icon(Icons.message, size: 20),
                           label: Text('Mesaj Gönder', style: TextStyle(fontSize: 16)),
