@@ -427,11 +427,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           ),
                                   ),
                                 ),
-                                SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+                                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                                 
                                 // Demo Info
                                 Container(
-                                  padding: const EdgeInsets.all(16),
+                                  padding: const EdgeInsets.all(12),
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       begin: Alignment.topLeft,
@@ -495,7 +495,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                     },
                   ),
                   
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   
                   // Register Link
                   AnimatedBuilder(
@@ -504,7 +504,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                       return Opacity(
                         opacity: _formFadeAnimation.value,
                         child: Container(
-                          padding: EdgeInsets.all(16),
+                          padding: EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(16),

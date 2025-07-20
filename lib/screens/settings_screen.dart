@@ -9,7 +9,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _showFAQ = false;
+
   bool isEmailVerified = true;
   bool isPhoneVerified = false;
   String? get profileImagePath => Provider.of<AuthProvider>(context, listen: false).currentUser?.profileImage ?? 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face';
@@ -17,11 +17,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   // Ayarlar için state değişkenleri
   bool _notificationsEnabled = true;
   bool _locationEnabled = true;
-  bool _darkModeEnabled = false;
-  String _selectedLanguage = 'Türkçe';
-  String _selectedCurrency = 'TL';
   bool _biometricEnabled = false;
-  bool _autoLoginEnabled = true;
   
   // Demo veriler
   final List<Map<String, dynamic>> recentTrips = [
@@ -60,32 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     },
   ];
 
-  final List<Map<String, String>> faqs = [
-    {
-      'question': 'Uygulama nasıl çalışıyor?',
-      'answer': 'Turistler ve sürücüler uygulama üzerinden iletişim kurabilir. Konumunuzu belirleyin, sürücü seçin ve güvenle seyahat edin.'
-    },
-    {
-      'question': 'Ödeme nasıl yapılır?',
-      'answer': 'Nakit, kredi kartı veya uygulama içi cüzdan ile ödeme yapabilirsiniz. Tüm ödemeler güvenli şekilde işlenir.'
-    },
-    {
-      'question': 'Sürücü seçimi nasıl yapılır?',
-      'answer': 'Size yakın sürücüler listelenir. Puanları, araç bilgileri ve fiyatları görebilir, tercih ettiğiniz sürücüyü seçebilirsiniz.'
-    },
-    {
-      'question': 'Güvenlik nasıl sağlanır?',
-      'answer': 'Tüm sürücüler kimlik doğrulaması yapılmıştır. Seyahat sırasında konum paylaşımı ve acil durum butonu mevcuttur.'
-    },
-    {
-      'question': 'İptal işlemi nasıl yapılır?',
-      'answer': 'Sürücü gelmeden önce ücretsiz iptal edebilirsiniz. Sürücü yola çıktıktan sonra iptal ücreti uygulanabilir.'
-    },
-    {
-      'question': 'Destek ile nasıl iletişime geçerim?',
-      'answer': 'Destek için info@turist.com adresine mail atabilir veya uygulama içi destek hattını kullanabilirsiniz.'
-    },
-  ];
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,17 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildNotificationSettings(),
             const SizedBox(height: 16),
             
-            // Uygulama Ayarları
-            _buildAppSettings(),
-            const SizedBox(height: 16),
-            
-            // SSS Bölümü
-            _buildFAQSection(),
-            const SizedBox(height: 16),
-            
-            // Destek ve İletişim
-            _buildSupportSection(),
-            const SizedBox(height: 16),
+
             
             // Çıkış Butonu
             _buildLogoutButton(),
@@ -477,178 +438,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Widget _buildAppSettings() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          _settingsTile(
-            icon: Icons.language,
-            title: 'Dil',
-            subtitle: _selectedLanguage,
-            onTap: () {
-              _showLanguageDialog();
-            },
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-          _divider(),
-          _settingsTile(
-            icon: Icons.attach_money,
-            title: 'Para Birimi',
-            subtitle: _selectedCurrency,
-            onTap: () {
-              _showCurrencyDialog();
-            },
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-          _divider(),
-          _settingsTile(
-            icon: Icons.dark_mode,
-            title: 'Karanlık Mod',
-            subtitle: 'Karanlık tema kullan',
-            onTap: () {},
-            trailing: Switch(
-              value: _darkModeEnabled,
-              onChanged: (value) {
-                setState(() {
-                  _darkModeEnabled = value;
-                });
-              },
-            ),
-          ),
-          _divider(),
-          _settingsTile(
-            icon: Icons.auto_awesome,
-            title: 'Otomatik Giriş',
-            subtitle: 'Uygulama açıldığında otomatik giriş',
-            onTap: () {},
-            trailing: Switch(
-              value: _autoLoginEnabled,
-              onChanged: (value) {
-                setState(() {
-                  _autoLoginEnabled = value;
-                });
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildFAQSection() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          _showFAQ = !_showFAQ;
-                        });
-                      },
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: const [
-                              Icon(Icons.help_outline, color: Color(AppConstants.primaryColorValue)),
-                      SizedBox(width: 12),
-                              Text(
-                                'Sıkça Sorulan Sorular',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          Icon(_showFAQ ? Icons.expand_less : Icons.expand_more, color: Color(AppConstants.primaryColorValue)),
-                        ],
-                      ),
-                    ),
-          ),
-          if (_showFAQ) ...[
-            _divider(),
-                      ...faqs.map((faq) => _faqTile(faq['question']!, faq['answer']!)).toList(),
-                  ],
-        ],
-      ),
-    );
-  }
 
-  Widget _buildSupportSection() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-                children: [
-          _settingsTile(
-            icon: Icons.support_agent,
-            title: 'Müşteri Desteği',
-            subtitle: '7/24 canlı destek',
-            onTap: () {},
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-          _divider(),
-          _settingsTile(
-            icon: Icons.email,
-            title: 'E-posta Desteği',
-            subtitle: 'info@turist.com',
-            onTap: () {},
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-          _divider(),
-          _settingsTile(
-            icon: Icons.phone,
-            title: 'Telefon Desteği',
-            subtitle: '+90 212 123 4567',
-            onTap: () {},
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-          _divider(),
-          _settingsTile(
-            icon: Icons.info,
-            title: 'Hakkında',
-            subtitle: 'Uygulama bilgileri',
-            onTap: () {},
-            trailing: Icon(Icons.arrow_forward_ios),
-          ),
-        ],
-      ),
-    );
-  }
+
+
+
 
   Widget _buildLogoutButton() {
     return Container(
@@ -730,25 +524,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return const Divider(height: 1, indent: 56);
   }
 
-  Widget _faqTile(String question, String answer) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            question,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.black87),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            answer,
-            style: const TextStyle(color: Colors.black54, fontSize: 13),
-          ),
-        ],
-      ),
-    );
-  }
+
 
   Widget _verificationBadge(bool verified) {
     return Container(
@@ -775,52 +551,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  // Dialog'lar
-  void _showLanguageDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Dil Seçin'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: ['Türkçe', 'English', 'Deutsch', 'Français', 'Español']
-              .map((lang) => ListTile(
-                    title: Text(lang),
-                    onTap: () {
-                      setState(() {
-                        _selectedLanguage = lang;
-                      });
-                      Navigator.pop(context);
-                    },
-                  ))
-              .toList(),
-        ),
-      ),
-    );
-  }
 
-  void _showCurrencyDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Para Birimi Seçin'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: ['TL', 'USD', 'EUR', 'GBP']
-              .map((currency) => ListTile(
-                    title: Text(currency),
-                    onTap: () {
-                      setState(() {
-                        _selectedCurrency = currency;
-                      });
-                      Navigator.pop(context);
-                    },
-                  ))
-              .toList(),
-        ),
-      ),
-    );
-  }
 
   void _showLogoutDialog() {
     showDialog(
@@ -835,8 +566,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              // Çıkış işlemi
+              // Dialog'u kapat
               Navigator.pop(context);
+              
+              // Gerçek çıkış işlemi
+              _performLogout();
             },
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             child: const Text('Çıkış Yap', style: TextStyle(color: Colors.white)),
@@ -844,5 +578,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ],
       ),
     );
+  }
+
+  void _performLogout() {
+    // AuthProvider'dan çıkış yap
+    try {
+      Provider.of<AuthProvider>(context, listen: false).logout();
+      
+      // Login ekranına yönlendir
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        '/login',
+        (route) => false, // Tüm önceki sayfaları temizle
+      );
+      
+      // Başarı mesajı göster
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Başarıyla çıkış yapıldı'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      // Hata durumunda
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Çıkış yapılırken bir hata oluştu'),
+          backgroundColor: Colors.red,
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
   }
 } 
