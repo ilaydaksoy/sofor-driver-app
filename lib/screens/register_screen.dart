@@ -156,49 +156,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
         title: const Text(
           'Kayıt Ol',
           style: TextStyle(
-            color: Color(AppConstants.textColorValue),
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Color(AppConstants.primaryColorValue),
         elevation: 0,
-        iconTheme: const IconThemeData(color: Color(AppConstants.textColorValue)),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.all(20.0),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Hoş Geldin Mesajı
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: Color(AppConstants.primaryColorValue).withOpacity(0.3),
-                    ),
-                  ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
                   child: Column(
                     children: [
                       Icon(
                         Icons.person_add,
-                        size: 48,
+                        size: 56,
                         color: Color(AppConstants.primaryColorValue),
                       ),
-                      const SizedBox(height: 12),
-                      Text(
+                      const SizedBox(height: 10),
+                Text(
                         'Hesap Oluştur',
                         style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                    fontWeight: FontWeight.bold,
                           color: Color(AppConstants.primaryColorValue),
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Text(
                         'Güvenli şoför bulma hizmeti için hesabınızı oluşturun',
                         textAlign: TextAlign.center,
@@ -210,125 +203,130 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-                
-                // Kişisel Bilgiler
-                _buildSectionTitle('Kişisel Bilgiler'),
-                const SizedBox(height: 16),
-                
+                // Kişisel Bilgiler Kartı
+                Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildSectionTitle('Kişisel Bilgiler'),
+                        const SizedBox(height: 14),
                 CustomTextField(
                   controller: _nameController,
-                  hintText: 'Ad Soyad',
+                          hintText: 'Ad Soyad',
                   prefixIcon: Icons.person,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Ad soyad gereklidir';
+                              return 'Ad soyad gereklidir';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
-                
-                // E-posta ve Doğrulama
                 CustomTextField(
                   controller: _emailController,
-                  hintText: 'E-posta Adresi',
+                          hintText: 'E-posta Adresi',
                   keyboardType: TextInputType.emailAddress,
                   prefixIcon: Icons.email,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'E-posta gereklidir';
+                              return 'E-posta gereklidir';
                     }
                     if (!Provider.of<AuthProvider>(context, listen: false)
                         .validateEmail(value)) {
-                      return 'Geçersiz e-posta adresi';
+                              return 'Geçersiz e-posta adresi';
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 8),
-                
-                if (!_emailVerified) ...[
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextField(
-                          controller: _emailCodeController,
-                          hintText: 'Doğrulama Kodu',
-                          keyboardType: TextInputType.number,
-                          prefixIcon: Icons.security,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_emailController.text.isNotEmpty) {
-                            _sendEmailVerification();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Lütfen önce e-posta adresinizi girin'),
-                                backgroundColor: Colors.orange,
+                        const SizedBox(height: 10),
+                        // E-posta doğrulama
+                        if (!_emailVerified) ...[
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  controller: _emailCodeController,
+                                  hintText: 'Doğrulama Kodu',
+                                  keyboardType: TextInputType.number,
+                                  prefixIcon: Icons.security,
+                                ),
                               ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(AppConstants.primaryColorValue),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        ),
-                        child: const Text('Kod Gönder', style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_emailCodeController.text.isNotEmpty) {
-                        _verifyEmail();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Lütfen doğrulama kodunu girin'),
-                            backgroundColor: Colors.orange,
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_emailController.text.isNotEmpty) {
+                                    _sendEmailVerification();
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Lütfen önce e-posta adresinizi girin'),
+                                        backgroundColor: Colors.orange,
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(AppConstants.primaryColorValue),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                  minimumSize: const Size(0, 44),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                ),
+                                child: const Text('Kod Gönder', style: TextStyle(color: Colors.white, fontSize: 13)),
+                              ),
+                            ],
                           ),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: const Text('E-posta Doğrula', style: TextStyle(color: Colors.white)),
-                  ),
-                ] else ...[
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.green),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.check_circle, color: Colors.green, size: 16),
-                        const SizedBox(width: 8),
-                        Text('E-posta doğrulandı', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                ],
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_emailCodeController.text.isNotEmpty) {
+                                _verifyEmail();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Lütfen doğrulama kodunu girin'),
+                                    backgroundColor: Colors.orange,
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
+                            child: const Text('E-posta Doğrula', style: TextStyle(color: Colors.white)),
+                          ),
+                        ] else ...[
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.green),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.check_circle, color: Colors.green, size: 16),
+                                const SizedBox(width: 8),
+                                Text('E-posta doğrulandı', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ],
                 const SizedBox(height: 16),
-                
-                // Telefon ve Doğrulama
                 CustomTextField(
                   controller: _phoneController,
-                  hintText: 'Telefon Numarası',
+                          hintText: 'Telefon Numarası',
                   keyboardType: TextInputType.phone,
                   prefixIcon: Icons.phone,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Telefon numarası gereklidir';
+                              return 'Telefon numarası gereklidir';
                     }
                     if (!Provider.of<AuthProvider>(context, listen: false)
                         .validatePhone(value)) {
@@ -337,87 +335,99 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 8),
-                
-                if (!_phoneVerified) ...[
-                  Row(
-                    children: [
-                      Expanded(
-                        child: CustomTextField(
-                          controller: _phoneCodeController,
-                          hintText: 'Doğrulama Kodu',
-                          keyboardType: TextInputType.number,
-                          prefixIcon: Icons.security,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_phoneController.text.isNotEmpty) {
-                            _sendPhoneVerification();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Lütfen önce telefon numaranızı girin'),
-                                backgroundColor: Colors.orange,
+                        const SizedBox(height: 10),
+                        if (!_phoneVerified) ...[
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  controller: _phoneCodeController,
+                                  hintText: 'Doğrulama Kodu',
+                                  keyboardType: TextInputType.number,
+                                  prefixIcon: Icons.security,
+                                ),
                               ),
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(AppConstants.primaryColorValue),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        ),
-                        child: const Text('Kod Gönder', style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_phoneCodeController.text.isNotEmpty) {
-                        _verifyPhone();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Lütfen doğrulama kodunu girin'),
-                            backgroundColor: Colors.orange,
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_phoneController.text.isNotEmpty) {
+                                    _sendPhoneVerification();
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Lütfen önce telefon numaranızı girin'),
+                                        backgroundColor: Colors.orange,
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(AppConstants.primaryColorValue),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                  minimumSize: const Size(0, 44),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                ),
+                                child: const Text('Kod Gönder', style: TextStyle(color: Colors.white, fontSize: 13)),
+                              ),
+                            ],
                           ),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                    child: const Text('Telefon Doğrula', style: TextStyle(color: Colors.white)),
-                  ),
-                ] else ...[
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.green),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.check_circle, color: Colors.green, size: 16),
-                        const SizedBox(width: 8),
-                        Text('Telefon doğrulandı', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              if (_phoneCodeController.text.isNotEmpty) {
+                                _verifyPhone();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Lütfen doğrulama kodunu girin'),
+                                    backgroundColor: Colors.orange,
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                            ),
+                            child: const Text('Telefon Doğrula', style: TextStyle(color: Colors.white)),
+                          ),
+                        ] else ...[
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.green),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.check_circle, color: Colors.green, size: 16),
+                                const SizedBox(width: 8),
+                                Text('Telefon doğrulandı', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),
-                ],
-                const SizedBox(height: 24),
-                
-                // Şifre Bilgileri
-                _buildSectionTitle('Güvenlik Bilgileri'),
-                const SizedBox(height: 16),
-                
+                ),
+                // Şifre Bilgileri Kartı
+                Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  margin: const EdgeInsets.only(bottom: 24),
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildSectionTitle('Güvenlik Bilgileri'),
+                        const SizedBox(height: 14),
                 CustomTextField(
                   controller: _passwordController,
-                  hintText: 'Şifre',
+                          hintText: 'Şifre',
                   obscureText: _obscurePassword,
                   prefixIcon: Icons.lock,
                   suffixIcon: IconButton(
@@ -432,19 +442,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Şifre gereklidir';
+                              return 'Şifre gereklidir';
                     }
                     if (value.length < 6) {
-                      return 'Şifre en az 6 karakter olmalıdır';
+                              return 'Şifre en az 6 karakter olmalıdır';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 16),
-                
                 CustomTextField(
                   controller: _confirmPasswordController,
-                  hintText: 'Şifre Tekrar',
+                          hintText: 'Şifre Tekrar',
                   obscureText: _obscureConfirmPassword,
                   prefixIcon: Icons.lock,
                   suffixIcon: IconButton(
@@ -459,7 +468,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Şifre tekrarı gereklidir';
+                              return 'Şifre tekrarı gereklidir';
                     }
                     if (value != _passwordController.text) {
                       return 'Şifreler eşleşmiyor';
@@ -467,8 +476,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 32),
-                
+                      ],
+                    ),
+                  ),
+                ),
                 // Kayıt Butonu
                 Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
@@ -480,7 +491,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                
                 // Hata Mesajı
                 Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
@@ -508,38 +518,64 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 const SizedBox(height: 24),
-                
                 // Bilgilendirme
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                Card(
+                  elevation: 0,
+                  color: Color(AppConstants.primaryColorValue).withOpacity(0.08),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(14),
+                    child: Row(
+                      children: [
+                        Icon(Icons.info_outline, color: Color(AppConstants.primaryColorValue), size: 24),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Güvenlik ve Gizlilik',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(AppConstants.primaryColorValue),
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                'Bilgileriniz güvenle saklanır ve üçüncü taraflarla paylaşılmaz.',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(AppConstants.primaryColorValue),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    children: [
-                      Icon(Icons.info_outline, color: Colors.blue, size: 24),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Güvenlik ve Gizlilik',
+                ),
+                const SizedBox(height: 20),
+                // Girişe yönlendirme
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Zaten hesabın var mı? '),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(context, '/login');
+                      },
+                      child: Text(
+                        'Giriş Yap',
                         style: TextStyle(
-                          fontSize: 16,
+                          color: Color(AppConstants.primaryColorValue),
                           fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Bilgileriniz güvenle saklanır ve üçüncü taraflarla paylaşılmaz.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.blue[700],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),

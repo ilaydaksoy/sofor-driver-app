@@ -56,6 +56,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     },
   ];
 
+  // Dil seçimi için state
+  String _selectedLanguage = 'Türkçe';
+  final List<String> _languages = ['Türkçe', 'English', 'Deutsch', 'Русский', 'العربية'];
 
 
   @override
@@ -80,32 +83,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ],
       ),
-            body: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 16),
             // Profil Kartı
             _buildProfileCard(),
             const SizedBox(height: 16),
-            
             // Hızlı İstatistikler
             _buildQuickStats(),
             const SizedBox(height: 16),
-            
-            // Hesap Ayarları
+            // Hesap Ayarları (dil seçimi dahil)
             _buildAccountSettings(),
             const SizedBox(height: 16),
-            
             // Güvenlik Ayarları
             _buildSecuritySettings(),
             const SizedBox(height: 16),
-            
             // Bildirim Ayarları
             _buildNotificationSettings(),
             const SizedBox(height: 16),
-            
-
-            
             // Çıkış Butonu
             _buildLogoutButton(),
             const SizedBox(height: 32),
@@ -120,14 +116,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-        gradient: LinearGradient(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
           colors: [
             const Color(AppConstants.primaryColorValue),
             const Color(AppConstants.primaryColorValue).withOpacity(0.8),
           ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
@@ -144,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       alignment: Alignment.bottomRight,
                       children: [
               ClipOval(
-                child: Container(
+                          child: Container(
                   width: 90,
                   height: 90,
                   child: profileImagePath != null
@@ -155,7 +151,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             return Container(
                               width: 90,
                               height: 90,
-                              decoration: BoxDecoration(
+                            decoration: BoxDecoration(
                                 color: Colors.white,
                                 shape: BoxShape.circle,
                               ),
@@ -171,9 +167,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             return Container(
                               width: 90,
                               height: 90,
-                              decoration: BoxDecoration(
+                                      decoration: BoxDecoration(
                                 color: Colors.grey[200],
-                                shape: BoxShape.circle,
+                                        shape: BoxShape.circle,
                               ),
                               child: Center(
                                 child: CircularProgressIndicator(
@@ -187,35 +183,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       : Container(
                           width: 90,
                           height: 90,
-                          decoration: BoxDecoration(
+                                        decoration: BoxDecoration(
                             color: Colors.white,
-                            shape: BoxShape.circle,
+                                          shape: BoxShape.circle,
                           ),
                           child: Icon(
                             Icons.person,
                             size: 50,
                             color: Color(AppConstants.primaryColorValue),
-                          ),
-                        ),
-                ),
-              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
               Container(
                 padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
+                                        decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Icon(Icons.camera_alt, size: 16, color: Color(AppConstants.primaryColorValue)),
-                        ),
-                      ],
-                    ),
-          const SizedBox(height: 16),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
                     const Text(
                       'Demo Turist',
-                      style: TextStyle(
+                                  style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-              fontSize: 22,
+                                    fontSize: 22,
                       ),
                     ),
           const SizedBox(height: 8),
@@ -231,8 +227,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         const SizedBox(width: 8),
                         _verificationBadge(isEmailVerified),
                       ],
-                    ),
-          const SizedBox(height: 4),
+                                ),
+                                const SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -263,20 +259,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
+                      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
+                        boxShadow: [
+                          BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+                          ),
+                        ],
+                      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
+                              children: [
           _statItem('Toplam Seyahat', '24', Icons.directions_car),
           _statItem('Favori Sürücü', '3', Icons.favorite),
           _statItem('Puan', '9.2/10', Icons.star),
@@ -288,7 +284,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildAccountSettings() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
+                                    decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
@@ -304,7 +300,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _settingsTile(
             icon: Icons.person,
             title: 'Profil Bilgileri',
-            subtitle: 'Ad, soyad, doğum tarihi',
             onTap: () {},
             trailing: Icon(Icons.arrow_forward_ios),
           ),
@@ -312,27 +307,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _settingsTile(
             icon: Icons.email,
             title: 'E-posta Adresi',
-            subtitle: 'demo@turist.com',
             onTap: () {},
             trailing: Icon(Icons.arrow_forward_ios),
+            subtitle: 'demo@turist.com',
           ),
           _divider(),
           _settingsTile(
             icon: Icons.phone,
             title: 'Telefon Numarası',
-            subtitle: '+90 555 123 4567',
             onTap: () {},
             trailing: Icon(Icons.arrow_forward_ios),
+            subtitle: '+90 555 123 4567',
           ),
           _divider(),
           _settingsTile(
             icon: Icons.lock,
             title: 'Şifre Değiştir',
-            subtitle: 'Güvenlik için şifrenizi güncelleyin',
             onTap: () {},
             trailing: Icon(Icons.arrow_forward_ios),
+            subtitle: 'Güvenlik için şifrenizi güncelleyin',
           ),
-        ],
+          // Divider yok! Direkt dil seçimi geliyor
+          _settingsTile(
+            icon: Icons.language,
+            title: 'Dil Seçimi',
+            onTap: _showLanguageDialog,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(_selectedLanguage, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black)),
+                const SizedBox(width: 8),
+                Icon(Icons.arrow_forward_ios, size: 20, color: Color(0xFF111111)),
+              ],
+            ),
+                                ),
+                              ],
+                            ),
+    );
+  }
+
+  void _showLanguageDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Dil Seçimi'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: _languages.map((lang) => RadioListTile<String>(
+            value: lang,
+            groupValue: _selectedLanguage,
+            title: Text(lang),
+            onChanged: (value) {
+              if (value != null) {
+                setState(() {
+                  _selectedLanguage = value;
+                });
+                Navigator.pop(context);
+              }
+            },
+          )).toList(),
+        ),
       ),
     );
   }
@@ -340,19 +374,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildSecuritySettings() {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
+                      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
+                        boxShadow: [
+                          BoxShadow(
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
         ],
-      ),
-      child: Column(
-        children: [
+                            ),
+                            child: Column(
+                              children: [
           _settingsTile(
             icon: Icons.security,
             title: 'Güvenlik Ayarları',
@@ -406,9 +440,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+                                ),
+                              ],
+                            ),
       child: Column(
         children: [
           _settingsTile(
@@ -507,16 +541,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _settingsTile({
     required IconData icon,
     required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-    required Widget trailing,
+    VoidCallback? onTap,
+    Widget? trailing,
+    String? subtitle,
+    bool centerTitle = false,
   }) {
     return ListTile(
       leading: Icon(icon, color: Color(AppConstants.primaryColorValue)),
-      title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-      subtitle: Text(subtitle, style: const TextStyle(color: Colors.grey)),
+      title: centerTitle
+          ? Center(child: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)))
+          : Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+      subtitle: subtitle != null && subtitle.isNotEmpty ? Text(subtitle, style: const TextStyle(color: Colors.grey)) : null,
       trailing: trailing,
       onTap: onTap,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
     );
   }
 
@@ -529,7 +567,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _verificationBadge(bool verified) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
+          decoration: BoxDecoration(
         color: verified ? Colors.green : Colors.orange,
         borderRadius: BorderRadius.circular(8),
       ),

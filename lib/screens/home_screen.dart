@@ -408,11 +408,11 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
   @override
   Widget build(BuildContext context) {
     return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
         // Arama Çubuğu
-        Container(
-          decoration: BoxDecoration(
+                  Container(
+                    decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
@@ -548,15 +548,15 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
                 color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
+                          blurRadius: 10,
                 offset: Offset(0, 2),
-              ),
-            ],
-          ),
+                        ),
+                      ],
+                    ),
           child: Row(
             children: [
               Container(
@@ -573,27 +573,27 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
                       selectedPaymentMethod,
-                      style: TextStyle(
+                          style: TextStyle(
                         fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                         color: Color(AppConstants.textPrimaryColorValue),
-                      ),
-                    ),
-                    Text(
+                          ),
+                        ),
+                        Text(
                       _getPaymentSubtitle(selectedPaymentMethod),
-                      style: TextStyle(
+                          style: TextStyle(
                         fontSize: 14,
                         color: Color(AppConstants.textSecondaryColorValue),
-                      ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
+                  ),
               IconButton(
                 onPressed: () {
                   _showPaymentMethodDialog();
@@ -639,7 +639,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
+                  Container(
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
@@ -883,23 +883,23 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                 margin: const EdgeInsets.only(right: 16),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
                       color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
+                          blurRadius: 10,
                       offset: Offset(0, 2),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                      children: [
                     ClipRRect(
                       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                       child: Image.network(
                         ad['image'],
-                        height: 100,
+                            height: 100,
                         width: double.infinity,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
@@ -952,8 +952,8 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1028,20 +1028,20 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
             Text(
               'Hizmet Kategorileri',
               style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                 color: Color(AppConstants.textPrimaryColorValue),
-              ),
-            ),
-            Text(
+                                ),
+                              ),
+                              Text(
               '${categories.length} kategori',
-              style: TextStyle(
-                fontSize: 14,
+                                style: TextStyle(
+                                  fontSize: 14,
                 color: Color(AppConstants.textSecondaryColorValue),
-              ),
-            ),
-          ],
-        ),
+                                ),
+                              ),
+                            ],
+                          ),
         const SizedBox(height: 16),
         SizedBox(
           height: 200,
@@ -1141,12 +1141,12 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Önerilen Sürücüler',
-              style: TextStyle(
+                  Text(
+                    'Önerilen Sürücüler',
+                    style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Color(AppConstants.textPrimaryColorValue),
+                      color: Color(AppConstants.textPrimaryColorValue),
               ),
             ),
             Text(
@@ -1238,7 +1238,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                       Text(
                         'Ahmet Yılmaz',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
@@ -1255,19 +1255,19 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
               ],
             ),
             const SizedBox(height: 16),
-            Text(
+                  Text(
               'Son Seyahat:',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
                 fontSize: 14,
-              ),
-            ),
+                    ),
+                  ),
             const SizedBox(height: 8),
-            Row(
-              children: [
+                  Row(
+                    children: [
                 Icon(Icons.location_on, color: Colors.green, size: 16),
                 const SizedBox(width: 8),
-                Expanded(
+                      Expanded(
                   child: Text('İstanbul Havalimanı'),
                 ),
               ],
@@ -1277,7 +1277,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
               children: [
                 Icon(Icons.location_on, color: Colors.red, size: 16),
                 const SizedBox(width: 8),
-                Expanded(
+                      Expanded(
                   child: Text('Taksim'),
                 ),
               ],
@@ -1288,10 +1288,10 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
               style: TextStyle(
                 color: Colors.grey[600],
                 fontSize: 12,
-              ),
-            ),
-          ],
-        ),
+                        ),
+                      ),
+                    ],
+                  ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -1333,7 +1333,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+                    children: [
                 _buildShareOption(Icons.family_restroom, 'Aile'),
                 _buildShareOption(Icons.people, 'Arkadaşlar'),
                 _buildShareOption(Icons.work, 'İş'),
@@ -1517,7 +1517,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                   radius: 25,
                 ),
                 const SizedBox(width: 12),
-                Expanded(
+                      Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -1560,20 +1560,20 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                 children: [
                   Icon(Icons.info_outline, color: Colors.blue, size: 20),
                   const SizedBox(width: 8),
-                  Expanded(
+                      Expanded(
                     child: Text(
                       'Sürücü sadece seyahat süresince konumunuza erişebilecek',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.blue[700],
                       ),
-                    ),
+                        ),
+                      ),
+                    ],
+              ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -1642,8 +1642,6 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         return Colors.blue;
       case 'Dijital Cüzdan':
         return Colors.purple;
-      case 'Kripto Para':
-        return Colors.orange;
       default:
         return Colors.green;
     }
@@ -1657,8 +1655,6 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         return Icons.credit_card;
       case 'Dijital Cüzdan':
         return Icons.account_balance_wallet;
-      case 'Kripto Para':
-        return Icons.currency_bitcoin;
       default:
         return Icons.money;
     }
@@ -1672,8 +1668,6 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         return 'Güvenli Ödeme';
       case 'Dijital Cüzdan':
         return 'PayPal, Apple Pay';
-      case 'Kripto Para':
-        return 'Bitcoin, Ethereum';
       default:
         return 'Peşin Ödeme';
     }
@@ -1690,7 +1684,6 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
             _buildPaymentOptionTile('Nakit', 'Peşin Ödeme', Icons.money, Colors.green),
             _buildPaymentOptionTile('Kredi Kartı', 'Güvenli Ödeme', Icons.credit_card, Colors.blue),
             _buildPaymentOptionTile('Dijital Cüzdan', 'PayPal, Apple Pay', Icons.account_balance_wallet, Colors.purple),
-            _buildPaymentOptionTile('Kripto Para', 'Bitcoin, Ethereum', Icons.currency_bitcoin, Colors.orange),
           ],
         ),
         actions: [
