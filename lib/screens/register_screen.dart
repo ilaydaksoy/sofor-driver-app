@@ -143,14 +143,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     Icon(
                       Icons.person_add,
-                      size: 60,
+                      size: 45,
                       color: Color(AppConstants.primaryColorValue),
                     ),
                     const SizedBox(height: 16),
                     Text(
                       'Hesap Oluştur',
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Color(AppConstants.primaryColorValue),
                       ),
@@ -172,10 +172,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   elevation: 2,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
-                    side: BorderSide(
-                      color: Color(AppConstants.textColorValue),
-                      width: 1,
-                    ),
                   ),
                   margin: const EdgeInsets.only(bottom: 8),
                   child: Padding(
@@ -642,6 +638,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     children: [
                                       TextSpan(text: 'KVKK metni '),
                                       WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
                                         child: GestureDetector(
                                           onTap: () {
                                             showDialog(
@@ -726,6 +723,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     children: [
                                       TextSpan(text: 'Aydınlatma metni '),
                                       WidgetSpan(
+                                        alignment: PlaceholderAlignment.middle,
                                         child: GestureDetector(
                                           onTap: () {
                                             showDialog(
@@ -848,7 +846,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Text(
       title,
       style: TextStyle(
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: FontWeight.bold,
         color: Color(AppConstants.textColorValue),
       ),
