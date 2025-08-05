@@ -55,7 +55,7 @@ class CustomButton extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   if (icon != null) ...[
-                    Icon(icon, size: 20),
+                    Icon(icon, size: 18),
                     const SizedBox(width: 8),
                   ],
                   Flexible(

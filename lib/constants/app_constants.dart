@@ -70,4 +70,10 @@ class AppConstants {
   static const String nameHint = 'Adınız Soyadınız';
   static const String phoneHint = 'Telefon Numaranız';
   static const String confirmPasswordHint = 'Şifreyi Onayla';
+
+  // Trip Status Constants
+  static const String tripStatusPending = 'pending';
+  static const String tripStatusActive = 'active';
+  static const String tripStatusCompleted = 'completed';
+  static const String tripStatusCancelled = 'cancelled';
 } 

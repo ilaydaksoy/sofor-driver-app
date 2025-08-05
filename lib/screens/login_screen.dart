@@ -25,9 +25,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-    // Demo credentials
-    _emailController.text = AppConstants.demoEmail;
-    _passwordController.text = AppConstants.demoPassword;
+    // Demo credentials kaldırıldı
     
     // Animasyon controller'ları
     _logoAnimationController = AnimationController(
@@ -427,135 +425,39 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                           ),
                                   ),
                                 ),
-                                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                                 
-                                // Demo Info
-                                Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                      colors: [
-                                        Color(0xFFE53E3E).withOpacity(0.1),
-                                        Color(0xFFE53E3E).withOpacity(0.05),
-                                      ],
+                                // Register Link
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Hesabınız yok mu? ',
+                                      style: TextStyle(
+                                        color: Color(0xFF666666),
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(
-                                      color: Color(0xFFE53E3E).withOpacity(0.2),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFFE53E3E).withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
-                                        child: Icon(
-                                          Icons.info_outline,
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (context) => RegisterScreen()),
+                                        );
+                                      },
+                                      child: Text(
+                                        'Kayıt Ol',
+                                        style: TextStyle(
                                           color: Color(0xFFE53E3E),
-                                          size: 20,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          decoration: TextDecoration.underline,
                                         ),
                                       ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Demo Hesap',
-                                              style: TextStyle(
-                                                color: Color(0xFFE53E3E),
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(height: 2),
-                                            Text(
-                                              'demo@turist.com / demo123',
-                                              style: TextStyle(
-                                                color: Color(0xFF666666),
-                                                fontSize: 13,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-                  
-                  // Register Link
-                  AnimatedBuilder(
-                    animation: _formAnimationController,
-                    builder: (context, child) {
-                      return Opacity(
-                        opacity: _formFadeAnimation.value,
-                        child: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: Colors.white.withOpacity(0.2),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.person_add,
-                                color: Colors.white.withOpacity(0.8),
-                                size: 20,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                'Hesabınız yok mu? ',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.8),
-                                  fontSize: 16,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (context) => RegisterScreen()),
-                                  );
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color(0xFFE53E3E),
-                                        Color(0xFFC53030),
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    'Kayıt Ol',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
                         ),
                       );

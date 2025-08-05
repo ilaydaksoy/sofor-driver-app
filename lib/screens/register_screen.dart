@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../constants/app_constants.dart';
 import '../providers/auth_provider.dart';
-import '../widgets/custom_text_field.dart';
 import '../widgets/custom_button.dart';
-import 'home_screen.dart';
+import '../widgets/custom_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -20,15 +19,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
-  bool _emailVerified = false;
-  bool _phoneVerified = false;
-  String? _emailVerificationCode;
-  String? _phoneVerificationCode;
   final _emailCodeController = TextEditingController();
   final _phoneCodeController = TextEditingController();
+
+  bool _showEmailCode = false;
+  bool _showPhoneCode = false;
+  bool _emailVerified = false;
+  bool _phoneVerified = false;
+  bool _kvkkAccepted = false;
+  bool _aydinlatmaAccepted = false;
 
   @override
   void dispose() {
@@ -43,45 +42,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _sendEmailVerification() {
-    // Demo e-posta doğrulama kodu
-    _emailVerificationCode = '123456';
-    setState(() {});
-    
+    setState(() {
+      _showEmailCode = true;
+    });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Doğrulama kodu ${_emailController.text} adresine gönderildi'),
+      const SnackBar(
+        content: Text('Doğrulama kodu e-posta adresinize gönderildi'),
         backgroundColor: Colors.green,
       ),
     );
   }
 
   void _sendPhoneVerification() {
-    // Demo telefon doğrulama kodu
-    _phoneVerificationCode = '789012';
-    setState(() {});
-    
+    setState(() {
+      _showPhoneCode = true;
+    });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Doğrulama kodu ${_phoneController.text} numarasına gönderildi'),
+      const SnackBar(
+        content: Text('Doğrulama kodu telefonunuza gönderildi'),
         backgroundColor: Colors.green,
       ),
     );
   }
 
   void _verifyEmail() {
-    if (_emailCodeController.text == _emailVerificationCode) {
+    if (_emailCodeController.text == '123456') {
       setState(() {
         _emailVerified = true;
+        _showEmailCode = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('E-posta doğrulandı!'),
+        const SnackBar(
+          content: Text('E-posta doğrulandı'),
           backgroundColor: Colors.green,
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Yanlış kod!'),
           backgroundColor: Colors.red,
         ),
@@ -90,19 +88,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _verifyPhone() {
-    if (_phoneCodeController.text == _phoneVerificationCode) {
+    if (_phoneCodeController.text == '123456') {
       setState(() {
         _phoneVerified = true;
+        _showPhoneCode = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Telefon doğrulandı!'),
+        const SnackBar(
+          content: Text('Telefon doğrulandı'),
           backgroundColor: Colors.green,
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Yanlış kod!'),
           backgroundColor: Colors.red,
         ),
@@ -110,40 +109,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<void> _register() async {
-    if (!_formKey.currentState!.validate()) return;
-    
-    if (!_emailVerified) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Lütfen e-posta adresinizi doğrulayın'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-    
-    if (!_phoneVerified) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Lütfen telefon numaranızı doğrulayın'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final success = await authProvider.register(
-      name: _nameController.text.trim(),
-      email: _emailController.text.trim(),
-      password: _passwordController.text,
-      phone: _phoneController.text.trim(),
-    );
-
-    if (success && mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+  void _register() {
+    if (_formKey.currentState!.validate()) {
+      Provider.of<AuthProvider>(context, listen: false).register(
+        name: _nameController.text,
+        email: _emailController.text,
+        phone: _phoneController.text,
+        password: _passwordController.text,
       );
     }
   }
@@ -151,109 +123,100 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(AppConstants.backgroundColorValue),
+      backgroundColor: Color(AppConstants.backgroundColorValue),
       appBar: AppBar(
-        title: const Text(
-          'Kayıt Ol',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         backgroundColor: Color(AppConstants.primaryColorValue),
+        foregroundColor: Colors.white,
+        title: const Text('Kayıt Ol'),
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20),
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Hoş Geldin Mesajı
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.person_add,
-                        size: 56,
+                // Başlık
+                Column(
+                  children: [
+                    Icon(
+                      Icons.person_add,
+                      size: 60,
+                      color: Color(AppConstants.primaryColorValue),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Hesap Oluştur',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                         color: Color(AppConstants.primaryColorValue),
                       ),
-                      const SizedBox(height: 10),
-                Text(
-                        'Hesap Oluştur',
-                        style: TextStyle(
-                          fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                          color: Color(AppConstants.primaryColorValue),
-                        ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      'Güvenli şoför bulma hizmeti için hesabınızı oluşturun',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(AppConstants.textSecondaryColorValue),
                       ),
-                      const SizedBox(height: 6),
-                      Text(
-                        'Güvenli şoför bulma hizmeti için hesabınızı oluşturun',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(AppConstants.textSecondaryColorValue),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 24),
                 // Kişisel Bilgiler Kartı
                 Card(
                   elevation: 2,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  margin: const EdgeInsets.only(bottom: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: BorderSide(
+                      color: Color(AppConstants.textColorValue),
+                      width: 1,
+                    ),
+                  ),
+                  margin: const EdgeInsets.only(bottom: 8),
                   child: Padding(
-                    padding: const EdgeInsets.all(18),
+                    padding: const EdgeInsets.all(16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         _buildSectionTitle('Kişisel Bilgiler'),
-                        const SizedBox(height: 14),
-                CustomTextField(
-                  controller: _nameController,
+                        const SizedBox(height: 12),
+                        CustomTextField(
+                          controller: _nameController,
                           hintText: 'Ad Soyad',
-                  prefixIcon: Icons.person,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
+                          prefixIcon: Icons.person,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
                               return 'Ad soyad gereklidir';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                CustomTextField(
-                  controller: _emailController,
-                          hintText: 'E-posta Adresi',
-                  keyboardType: TextInputType.emailAddress,
-                  prefixIcon: Icons.email,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                              return 'E-posta gereklidir';
-                    }
-                    if (!Provider.of<AuthProvider>(context, listen: false)
-                        .validateEmail(value)) {
-                              return 'Geçersiz e-posta adresi';
-                    }
-                    return null;
-                  },
-                ),
-                        const SizedBox(height: 10),
-                        // E-posta doğrulama
-                        if (!_emailVerified) ...[
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        // E-posta alanı
+                        if (!_showEmailCode) ...[
                           Row(
                             children: [
                               Expanded(
                                 child: CustomTextField(
-                                  controller: _emailCodeController,
-                                  hintText: 'Doğrulama Kodu',
-                                  keyboardType: TextInputType.number,
-                                  prefixIcon: Icons.security,
+                                  controller: _emailController,
+                                  hintText: 'E-posta Adresi',
+                                  keyboardType: TextInputType.emailAddress,
+                                  prefixIcon: Icons.email,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'E-posta gereklidir';
+                                    }
+                                    if (!Provider.of<AuthProvider>(context, listen: false)
+                                        .validateEmail(value)) {
+                                      return 'Geçersiz e-posta adresi';
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ),
                               const SizedBox(width: 8),
@@ -276,32 +239,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   minimumSize: const Size(0, 44),
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                 ),
-                                child: const Text('Kod Gönder', style: TextStyle(color: Colors.white, fontSize: 13)),
+                                child: const Text('Doğrula', style: TextStyle(color: Colors.white, fontSize: 13)),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_emailCodeController.text.isNotEmpty) {
-                                _verifyEmail();
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Lütfen doğrulama kodunu girin'),
-                                    backgroundColor: Colors.orange,
-                                  ),
-                                );
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                            ),
-                            child: const Text('E-posta Doğrula', style: TextStyle(color: Colors.white)),
-                          ),
                         ] else ...[
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  controller: _emailCodeController,
+                                  hintText: 'Doğrulama Kodu',
+                                  keyboardType: TextInputType.number,
+                                  prefixIcon: Icons.security,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_emailCodeController.text.isNotEmpty) {
+                                    _verifyEmail();
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Lütfen doğrulama kodunu girin'),
+                                        backgroundColor: Colors.orange,
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                  minimumSize: const Size(0, 44),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                ),
+                                child: const Text('Doğrula', style: TextStyle(color: Colors.white, fontSize: 13)),
+                              ),
+                            ],
+                          ),
+                        ],
+                        if (_emailVerified) ...[
+                          const SizedBox(height: 8),
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
@@ -318,33 +297,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ],
-                const SizedBox(height: 16),
-                CustomTextField(
-                  controller: _phoneController,
-                          hintText: 'Telefon Numarası',
-                  keyboardType: TextInputType.phone,
-                  prefixIcon: Icons.phone,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                              return 'Telefon numarası gereklidir';
-                    }
-                    if (!Provider.of<AuthProvider>(context, listen: false)
-                        .validatePhone(value)) {
-                      return 'Geçersiz telefon numarası';
-                    }
-                    return null;
-                  },
-                ),
-                        const SizedBox(height: 10),
-                        if (!_phoneVerified) ...[
+                        const SizedBox(height: 16),
+                        // Telefon alanı
+                        if (!_showPhoneCode) ...[
                           Row(
                             children: [
                               Expanded(
                                 child: CustomTextField(
-                                  controller: _phoneCodeController,
-                                  hintText: 'Doğrulama Kodu',
-                                  keyboardType: TextInputType.number,
-                                  prefixIcon: Icons.security,
+                                  controller: _phoneController,
+                                  hintText: 'Telefon Numarası',
+                                  keyboardType: TextInputType.phone,
+                                  prefixIcon: Icons.phone,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Telefon numarası gereklidir';
+                                    }
+                                    if (!Provider.of<AuthProvider>(context, listen: false)
+                                        .validatePhone(value)) {
+                                      return 'Geçersiz telefon numarası';
+                                    }
+                                    return null;
+                                  },
                                 ),
                               ),
                               const SizedBox(width: 8),
@@ -367,32 +340,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   minimumSize: const Size(0, 44),
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                 ),
-                                child: const Text('Kod Gönder', style: TextStyle(color: Colors.white, fontSize: 13)),
+                                child: const Text('Doğrula', style: TextStyle(color: Colors.white, fontSize: 13)),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_phoneCodeController.text.isNotEmpty) {
-                                _verifyPhone();
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Lütfen doğrulama kodunu girin'),
-                                    backgroundColor: Colors.orange,
-                                  ),
-                                );
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                            ),
-                            child: const Text('Telefon Doğrula', style: TextStyle(color: Colors.white)),
-                          ),
                         ] else ...[
+                          Row(
+                            children: [
+                              Expanded(
+                                child: CustomTextField(
+                                  controller: _phoneCodeController,
+                                  hintText: 'Doğrulama Kodu',
+                                  keyboardType: TextInputType.number,
+                                  prefixIcon: Icons.security,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_phoneCodeController.text.isNotEmpty) {
+                                    _verifyPhone();
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text('Lütfen doğrulama kodunu girin'),
+                                        backgroundColor: Colors.orange,
+                                      ),
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                  minimumSize: const Size(0, 44),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                                ),
+                                child: const Text('Doğrula', style: TextStyle(color: Colors.white, fontSize: 13)),
+                              ),
+                            ],
+                          ),
+                        ],
+                        if (_phoneVerified) ...[
+                          const SizedBox(height: 8),
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
@@ -409,75 +398,383 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ],
-                      ],
-                    ),
-                  ),
-                ),
-                // Şifre Bilgileri Kartı
-                Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                  margin: const EdgeInsets.only(bottom: 24),
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
+                        const SizedBox(height: 16),
                         _buildSectionTitle('Güvenlik Bilgileri'),
-                        const SizedBox(height: 14),
-                CustomTextField(
-                  controller: _passwordController,
-                          hintText: 'Şifre',
-                  obscureText: _obscurePassword,
-                  prefixIcon: Icons.lock,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
+                        const SizedBox(height: 12),
+                        TextFormField(
+                          controller: _passwordController,
+                          obscureText: false,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
                               return 'Şifre gereklidir';
-                    }
-                    if (value.length < 6) {
+                            }
+                            if (value.length < 6) {
                               return 'Şifre en az 6 karakter olmalıdır';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                CustomTextField(
-                  controller: _confirmPasswordController,
-                          hintText: 'Şifre Tekrar',
-                  obscureText: _obscureConfirmPassword,
-                  prefixIcon: Icons.lock,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureConfirmPassword = !_obscureConfirmPassword;
-                      });
-                    },
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                              return 'Şifre tekrarı gereklidir';
-                    }
-                    if (value != _passwordController.text) {
-                      return 'Şifreler eşleşmiyor';
-                    }
-                    return null;
-                  },
-                ),
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(
+                            color: Color(0xFF111111),
+                            fontSize: 16,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Şifre',
+                            hintStyle: TextStyle(
+                              color: const Color(0xFF888888),
+                              fontSize: 16,
+                            ),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Icon(Icons.lock, color: Color(AppConstants.primaryColorValue)),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: const Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: const Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color(AppConstants.primaryColorValue),
+                                width: 2,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color(AppConstants.errorColorValue),
+                              ),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color(AppConstants.errorColorValue),
+                                width: 2,
+                              ),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          controller: _confirmPasswordController,
+                          obscureText: false,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Şifre onayı gereklidir';
+                            }
+                            if (value != _passwordController.text) {
+                              return 'Şifreler eşleşmiyor';
+                            }
+                            return null;
+                          },
+                          style: const TextStyle(
+                            color: Color(0xFF111111),
+                            fontSize: 16,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Şifreyi Onayla',
+                            hintStyle: TextStyle(
+                              color: const Color(0xFF888888),
+                              fontSize: 16,
+                            ),
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Icon(Icons.lock, color: Color(AppConstants.primaryColorValue)),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: const Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: const Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color(AppConstants.primaryColorValue),
+                                width: 2,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color(AppConstants.errorColorValue),
+                              ),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Color(AppConstants.errorColorValue),
+                                width: 2,
+                              ),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Güvenlik ve Gizlilik Bilgi Kartı
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withOpacity(0.05),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.amber.withOpacity(0.2),
+                      width: 0.5,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.amber,
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'i',
+                            style: TextStyle(
+                              color: Colors.amber,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Güvenlik ve Gizlilik',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: Color(AppConstants.textColorValue),
+                              ),
+                            ),
+                            const SizedBox(height: 1),
+                            Text(
+                              'Bilgileriniz güvenle saklanır ve üçüncü taraflarla paylaşılmaz.',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Color(AppConstants.textSecondaryColorValue),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // KVKK ve Aydınlatma Checkbox'ları
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20, left: 8, right: 8),
+                  child: Column(
+                    children: [
+                      // KVKK Checkbox
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: Checkbox(
+                              value: _kvkkAccepted,
+                              onChanged: (value) {
+                                setState(() {
+                                  _kvkkAccepted = value!;
+                                });
+                              },
+                              activeColor: Color(AppConstants.primaryColorValue),
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color(AppConstants.textSecondaryColorValue),
+                                      height: 1.3,
+                                    ),
+                                    children: [
+                                      TextSpan(text: 'KVKK metni '),
+                                      WidgetSpan(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: Text('KVKK Aydınlatma Metni'),
+                                                content: SingleChildScrollView(
+                                                  child: Text(
+                                                    'Kişisel Verilerin Korunması Kanunu kapsamında, kişisel verileriniz işlenirken aşağıdaki haklara sahipsiniz:\n\n'
+                                                    '• Kişisel verilerinizin işlenip işlenmediğini öğrenme\n'
+                                                    '• Kişisel verileriniz işlenmişse buna ilişkin bilgi talep etme\n'
+                                                    '• Kişisel verilerinizin işlenme amacını ve bunların amacına uygun kullanılıp kullanılmadığını öğrenme\n'
+                                                    '• Yurt içinde veya yurt dışında kişisel verilerinizin aktarıldığı üçüncü kişileri bilme\n'
+                                                    '• Kişisel verilerinizin eksik veya yanlış işlenmiş olması hâlinde bunların düzeltilmesini isteme\n'
+                                                    '• Kişisel verilerinizin silinmesini veya yok edilmesini isteme\n'
+                                                    '• Kişisel verilerinizin aktarıldığı üçüncü kişilere yukarıda sayılan taleplerin bildirilmesini isteme\n'
+                                                    '• İşlenen verilerinizin münhasıran otomatik sistemler vasıtasıyla analiz edilmesi suretiyle kişiliğiniz aleyhine bir sonucun ortaya çıkmasına itiraz etme\n'
+                                                    '• Kişisel verilerinizin kanuna aykırı olarak işlenmesi sebebiyle zarara uğramanız hâlinde zararın giderilmesini talep etme',
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: Text('Kapat'),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            'okudum ve kabul ediyorum',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Color(AppConstants.primaryColorValue),
+                                              fontWeight: FontWeight.bold,
+                                              decoration: TextDecoration.underline,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      // Aydınlatma Checkbox
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: Checkbox(
+                              value: _aydinlatmaAccepted,
+                              onChanged: (value) {
+                                setState(() {
+                                  _aydinlatmaAccepted = value!;
+                                });
+                              },
+                              activeColor: Color(AppConstants.primaryColorValue),
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                RichText(
+                                  text: TextSpan(
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Color(AppConstants.textSecondaryColorValue),
+                                      height: 1.3,
+                                    ),
+                                    children: [
+                                      TextSpan(text: 'Aydınlatma metni '),
+                                      WidgetSpan(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => AlertDialog(
+                                                title: Text('Aydınlatma Metni'),
+                                                content: SingleChildScrollView(
+                                                  child: Text(
+                                                    'Bu aydınlatma metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, veri sorumlusu sıfatıyla Sürücü Bul uygulaması tarafından hazırlanmıştır.\n\n'
+                                                    'Kişisel verileriniz, aşağıda belirtilen amaçlar kapsamında, hukuka ve dürüstlük kurallarına uygun olarak işlenecektir:\n\n'
+                                                    '• Hizmet kalitesinin artırılması\n'
+                                                    '• Müşteri memnuniyetinin sağlanması\n'
+                                                    '• Yasal yükümlülüklerin yerine getirilmesi\n'
+                                                    '• Güvenliğin sağlanması\n'
+                                                    '• İletişim faaliyetlerinin yürütülmesi\n\n'
+                                                    'Kişisel verileriniz, yukarıda belirtilen amaçların gerçekleştirilmesi doğrultusunda, hizmet aldığımız tedarikçiler, iş ortaklarımız, grup şirketlerimiz ve yetkili kamu kurum ve kuruluşları ile paylaşılabilecektir.',
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: Text('Kapat'),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            'okudum ve kabul ediyorum',
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: Color(AppConstants.primaryColorValue),
+                                              fontWeight: FontWeight.bold,
+                                              decoration: TextDecoration.underline,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
                 // Kayıt Butonu
@@ -485,7 +782,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   builder: (context, authProvider, child) {
                     return CustomButton(
                       text: 'Hesap Oluştur',
-                      onPressed: (authProvider.isLoading || !_emailVerified || !_phoneVerified) ? null : _register,
+                      icon: Icons.person_add,
+                      onPressed: (authProvider.isLoading || !_emailVerified || !_phoneVerified || !_kvkkAccepted || !_aydinlatmaAccepted) ? null : _register,
                       isLoading: authProvider.isLoading,
                     );
                   },
@@ -518,45 +816,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   },
                 ),
                 const SizedBox(height: 24),
-                // Bilgilendirme
-                Card(
-                  elevation: 0,
-                  color: Color(AppConstants.primaryColorValue).withOpacity(0.08),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(14),
-                    child: Row(
-                      children: [
-                        Icon(Icons.info_outline, color: Color(AppConstants.primaryColorValue), size: 24),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Güvenlik ve Gizlilik',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(AppConstants.primaryColorValue),
-                                ),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                'Bilgileriniz güvenle saklanır ve üçüncü taraflarla paylaşılmaz.',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(AppConstants.primaryColorValue),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
                 // Girişe yönlendirme
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -586,23 +845,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _buildSectionTitle(String title) {
-    return Row(
-      children: [
-        Icon(
-          Icons.star,
-          size: 20,
-          color: Color(AppConstants.primaryColorValue),
-        ),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(AppConstants.textColorValue),
-          ),
-        ),
-      ],
+    return Text(
+      title,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Color(AppConstants.textColorValue),
+      ),
     );
   }
 } 
