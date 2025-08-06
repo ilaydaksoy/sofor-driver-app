@@ -181,39 +181,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       children: [
                         _buildSectionTitle('Kişisel Bilgiler'),
                         const SizedBox(height: 12),
-                        CustomTextField(
-                          controller: _nameController,
+                CustomTextField(
+                  controller: _nameController,
                           hintText: 'Ad Soyad',
-                          prefixIcon: Icons.person,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
+                  prefixIcon: Icons.person,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                               return 'Ad soyad gereklidir';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
                         // E-posta alanı
                         if (!_showEmailCode) ...[
                           Row(
                             children: [
                               Expanded(
                                 child: CustomTextField(
-                                  controller: _emailController,
+                  controller: _emailController,
                                   hintText: 'E-posta Adresi',
-                                  keyboardType: TextInputType.emailAddress,
-                                  prefixIcon: Icons.email,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
+                  keyboardType: TextInputType.emailAddress,
+                  prefixIcon: Icons.email,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                                       return 'E-posta gereklidir';
-                                    }
-                                    if (!Provider.of<AuthProvider>(context, listen: false)
-                                        .validateEmail(value)) {
+                    }
+                    if (!Provider.of<AuthProvider>(context, listen: false)
+                        .validateEmail(value)) {
                                       return 'Geçersiz e-posta adresi';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                    }
+                    return null;
+                  },
+                ),
                               ),
                               const SizedBox(width: 8),
                               ElevatedButton(
@@ -293,28 +293,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ],
-                        const SizedBox(height: 16),
+                const SizedBox(height: 16),
                         // Telefon alanı
                         if (!_showPhoneCode) ...[
                           Row(
                             children: [
                               Expanded(
                                 child: CustomTextField(
-                                  controller: _phoneController,
+                  controller: _phoneController,
                                   hintText: 'Telefon Numarası',
-                                  keyboardType: TextInputType.phone,
-                                  prefixIcon: Icons.phone,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
+                  keyboardType: TextInputType.phone,
+                  prefixIcon: Icons.phone,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                                       return 'Telefon numarası gereklidir';
-                                    }
-                                    if (!Provider.of<AuthProvider>(context, listen: false)
-                                        .validatePhone(value)) {
-                                      return 'Geçersiz telefon numarası';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                    }
+                    if (!Provider.of<AuthProvider>(context, listen: false)
+                        .validatePhone(value)) {
+                      return 'Geçersiz telefon numarası';
+                    }
+                    return null;
+                  },
+                ),
                               ),
                               const SizedBox(width: 8),
                               ElevatedButton(
@@ -353,7 +353,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                               const SizedBox(width: 8),
                               ElevatedButton(
-                                onPressed: () {
+                    onPressed: () {
                                   if (_phoneCodeController.text.isNotEmpty) {
                                     _verifyPhone();
                                   } else {
@@ -401,15 +401,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           controller: _passwordController,
                           obscureText: false,
                           keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                               return 'Şifre gereklidir';
-                            }
-                            if (value.length < 6) {
+                    }
+                    if (value.length < 6) {
                               return 'Şifre en az 6 karakter olmalıdır';
-                            }
-                            return null;
-                          },
+                    }
+                    return null;
+                  },
                           style: const TextStyle(
                             color: Color(0xFF111111),
                             fontSize: 16,
@@ -463,21 +463,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               vertical: 16,
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 16),
+                ),
+                const SizedBox(height: 16),
                         TextFormField(
-                          controller: _confirmPasswordController,
+                  controller: _confirmPasswordController,
                           obscureText: false,
                           keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                               return 'Şifre onayı gereklidir';
-                            }
-                            if (value != _passwordController.text) {
-                              return 'Şifreler eşleşmiyor';
-                            }
-                            return null;
-                          },
+                    }
+                    if (value != _passwordController.text) {
+                      return 'Şifreler eşleşmiyor';
+                    }
+                    return null;
+                  },
                           style: const TextStyle(
                             color: Color(0xFF111111),
                             fontSize: 16,

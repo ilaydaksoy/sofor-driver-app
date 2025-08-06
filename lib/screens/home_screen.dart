@@ -84,7 +84,167 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _HomeContent extends StatelessWidget {
+class _HomeContent extends StatefulWidget {
+  @override
+  State<_HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<_HomeContent> {
+  String searchQuery = '';
+  
+  void _showFilterDialog() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (context) => _buildFilterDialog(),
+    );
+  }
+
+  Widget _buildFilterDialog() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Filtreler',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                
+                // Şehir Seçimi
+                Text(
+                  'Şehir',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  value: 'İstanbul',
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  items: ['İstanbul', 'Ankara', 'İzmir', 'Antalya'].map((city) => DropdownMenuItem(
+                    value: city,
+                    child: Text(city),
+                  )).toList(),
+                  onChanged: (value) {},
+                ),
+                const SizedBox(height: 20),
+                
+                // Araç Tipi
+                Text(
+                  'Araç Tipi',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                DropdownButtonFormField<String>(
+                  value: 'Tümü',
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  items: ['Tümü', 'Sedan', 'SUV', 'Van', 'Lüks', 'Elektrikli'].map((type) => DropdownMenuItem(
+                    value: type,
+                    child: Text(type),
+                  )).toList(),
+                  onChanged: (value) {},
+                ),
+                const SizedBox(height: 20),
+                
+                // Minimum Puan
+                Text(
+                  'Minimum Puan: Tümü',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Slider(
+                  value: 0,
+                  min: 0,
+                  max: 10,
+                  divisions: 20,
+                  activeColor: Color(AppConstants.primaryColorValue),
+                  onChanged: (value) {},
+                ),
+                const SizedBox(height: 20),
+                
+                // Butonlar
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: Text('Sıfırla'),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(AppConstants.primaryColorValue),
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        ),
+                        child: Text('Uygula', style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,37 +253,65 @@ class _HomeContent extends StatelessWidget {
         slivers: [
           // App Bar
           SliverAppBar(
-            expandedHeight: 120,
+            expandedHeight: 160,
             floating: false,
             pinned: true,
             backgroundColor: Color(AppConstants.primaryColorValue),
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
-              title: const Text(
-                'Sürücü Bul',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              title: const Text(''),
               background: Container(
                 color: Color(AppConstants.primaryColorValue),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      'Sürücü Bul',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: 'Sürücü, araç, şehir veya hizmet ara...',
+                            prefixIcon: Icon(Icons.search, color: Color(AppConstants.primaryColorValue)),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.tune, color: Color(AppConstants.primaryColorValue)),
+                              onPressed: () => _showFilterDialog(),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                          ),
+                          onChanged: (val) => setState(() => searchQuery = val),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            actions: [
-              IconButton(
-                icon: Icon(Icons.notifications_outlined, color: Colors.white),
-                onPressed: () {
-                  // Bildirimler sayfası
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.location_on_outlined, color: Colors.white),
-                onPressed: () {
-                  // Konum seçimi
-                },
-              ),
-            ],
           ),
           // Content
           SliverToBoxAdapter(
@@ -131,9 +319,9 @@ class _HomeContent extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: _HomeContentBody(),
             ),
-                        ),
-                      ],
-                    ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -408,46 +596,8 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
   @override
   Widget build(BuildContext context) {
     return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-        // Arama Çubuğu
-                  Container(
-                    decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 10,
-                offset: Offset(0, 2),
-              ),
-            ],
-          ),
-          child: TextField(
-          decoration: InputDecoration(
-              hintText: 'Sürücü, araç, şehir veya hizmet ara...',
-              prefixIcon: Icon(Icons.search, color: Color(AppConstants.primaryColorValue)),
-              suffixIcon: IconButton(
-                icon: Icon(Icons.tune, color: Color(AppConstants.primaryColorValue)),
-                onPressed: () => _showFilterDialog(),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide.none,
-              ),
-            filled: true,
-            fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                        ),
-          onChanged: (val) => setState(() => searchQuery = val),
-          ),
-                  ),
-        const SizedBox(height: 20),
-
-        // Hızlı Filtreler
-        _buildQuickFilters(),
-        const SizedBox(height: 20),
-
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         // Kaydırmalı Reklamlar
         _buildBannerSection(),
         const SizedBox(height: 20),
@@ -456,16 +606,17 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         _buildDriversSection(),
         const SizedBox(height: 20),
 
-        // Hızlı Aksiyonlar
-        _buildQuickActions(),
-        const SizedBox(height: 20),
+        // TODO: Bu bölümler daha sonra kullanılacak
+        // // Hızlı Aksiyonlar
+        // _buildQuickActions(),
+        // const SizedBox(height: 20),
 
-        // Araç Reklamları
-        _buildVehicleAdsSection(),
-        const SizedBox(height: 20),
+        // // Araç Reklamları
+        // _buildVehicleAdsSection(),
+        // const SizedBox(height: 20),
 
-        // Kategoriler
-        _buildCategoriesSection(),
+        // // Kategoriler
+        // _buildCategoriesSection(),
       ],
     );
   }
@@ -483,7 +634,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
           ),
         ),
         const SizedBox(height: 12),
-        Container(
+                  Container(
           height: 120,
           child: Row(
             children: [
@@ -546,7 +697,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
+                    decoration: BoxDecoration(
             color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
@@ -626,16 +777,16 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: [
+                        BoxShadow(
               color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
+                          blurRadius: 10,
               offset: Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Column(
+                        ),
+                      ],
+                    ),
+                    child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -682,11 +833,11 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
 
   Widget _buildQuickFilters() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
           'Hızlı Filtreler',
-          style: TextStyle(
+                          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Color(AppConstants.textPrimaryColorValue),
@@ -806,7 +957,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                   children: [
                     Icon(
                       banner['icon'],
-                      color: Colors.white,
+                            color: Colors.white,
                       size: 32,
                     ),
                     const SizedBox(width: 16),
@@ -820,20 +971,20 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                                 style: TextStyle(
                                   color: Colors.white,
                               fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                          const SizedBox(height: 4),
-                              Text(
-                      banner['desc']!,
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.9),
-                              fontSize: 12,
-                            ),
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
-                                ),
-                              ),
+                        ),
+                          const SizedBox(height: 4),
+                        Text(
+                      banner['desc']!,
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.9),
+                              fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                             ],
                           ),
               );
@@ -848,7 +999,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
             margin: const EdgeInsets.symmetric(horizontal: 3),
             width: _currentBanner == i ? 18 : 7,
             height: 7,
-            decoration: BoxDecoration(
+                    decoration: BoxDecoration(
               color: _currentBanner == i ? Color(AppConstants.primaryColorValue) : Colors.grey[300],
               borderRadius: BorderRadius.circular(8),
                   ),
@@ -1731,6 +1882,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      barrierColor: Colors.black.withOpacity(0.5),
       builder: (context) => _buildFilterDialog(),
     );
   }
@@ -1741,6 +1893,13 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            offset: Offset(0, -2),
+          ),
+        ],
       ),
       child: Column(
         children: [

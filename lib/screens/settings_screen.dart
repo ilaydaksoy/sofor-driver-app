@@ -74,14 +74,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         centerTitle: true,
         iconTheme: const IconThemeData(color: Colors.white),
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit, color: Colors.white),
-            onPressed: () {
-              // Profil düzenleme sayfasına git
-            },
-          ),
-        ],
+        // TODO: Düzenle ikonu daha sonra kullanılacak
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.edit, color: Colors.white),
+        //     onPressed: () {
+        //       // Profil düzenleme sayfasına git
+        //     },
+        //   ),
+        // ],
       ),
       body: SingleChildScrollView(
         child: Column(

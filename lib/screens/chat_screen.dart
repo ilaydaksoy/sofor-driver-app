@@ -146,106 +146,135 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         backgroundColor: Color(AppConstants.primaryColorValue),
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search, color: Colors.white),
-            onPressed: () {
-              // TODO: Sohbet arama özelliği
-            },
-          ),
-        ],
+        // TODO: Arama ve telefon ikonları daha sonra kullanılacak
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.search, color: Colors.white),
+        //     onPressed: () {
+        //       // TODO: Sohbet arama özelliği
+        //     },
+        //   ),
+        // ],
       ),
       body: Column(
         children: [
-          // Tab Bar
+          // Tab Bar - Sadece Sohbetler aktif, Kişiler yorum satırında
           Container(
             margin: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: Color(AppConstants.primaryColorValue),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => setState(() => _currentTabIndex = 0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: _currentTabIndex == 0 
-                            ? Color(AppConstants.primaryColorValue)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            color: _currentTabIndex == 0 
-                                ? Colors.white
-                                : Color(AppConstants.textSecondaryColorValue),
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Sohbetler',
-                            style: TextStyle(
-                              color: _currentTabIndex == 0 
-                                  ? Colors.white
-                                  : Color(AppConstants.textSecondaryColorValue),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.chat_bubble_outline,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Sohbetler',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => setState(() => _currentTabIndex = 1),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: _currentTabIndex == 1 
-                            ? Color(AppConstants.primaryColorValue)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.people_outline,
-                            color: _currentTabIndex == 1 
-                                ? Colors.white
-                                : Color(AppConstants.textSecondaryColorValue),
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Kişiler',
-                            style: TextStyle(
-                              color: _currentTabIndex == 1 
-                                  ? Colors.white
-                                  : Color(AppConstants.textSecondaryColorValue),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-          // Content
+          
+          // TODO: Kişiler tabı daha sonra kullanılacak
+          // Container(
+          //   margin: const EdgeInsets.all(16),
+          //   decoration: BoxDecoration(
+          //     color: Colors.grey[100],
+          //     borderRadius: BorderRadius.circular(12),
+          //   ),
+          //   child: Row(
+          //     children: [
+          //       Expanded(
+          //         child: GestureDetector(
+          //           onTap: () => setState(() => _currentTabIndex = 0),
+          //           child: Container(
+          //             padding: const EdgeInsets.symmetric(vertical: 12),
+          //             decoration: BoxDecoration(
+          //               color: _currentTabIndex == 0 
+          //                   ? Color(AppConstants.primaryColorValue)
+          //                   : Colors.transparent,
+          //               borderRadius: BorderRadius.circular(12),
+          //             ),
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 Icon(
+          //                   Icons.chat_bubble_outline,
+          //                   color: _currentTabIndex == 0 
+          //                       ? Colors.white
+          //                       : Color(AppConstants.textSecondaryColorValue),
+          //                   size: 20,
+          //                 ),
+          //                 const SizedBox(width: 8),
+          //                 Text(
+          //                   'Sohbetler',
+          //                   style: TextStyle(
+          //                     color: _currentTabIndex == 0 
+          //                         ? Colors.white
+          //                         : Color(AppConstants.textSecondaryColorValue),
+          //                     fontWeight: FontWeight.w600,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       Expanded(
+          //         child: GestureDetector(
+          //           onTap: () => setState(() => _currentTabIndex = 1),
+          //           child: Container(
+          //             padding: const EdgeInsets.symmetric(vertical: 12),
+          //             decoration: BoxDecoration(
+          //               color: _currentTabIndex == 1 
+          //                   ? Color(AppConstants.primaryColorValue)
+          //                   : Colors.transparent,
+          //               borderRadius: BorderRadius.circular(12),
+          //             ),
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: [
+          //                 Icon(
+          //                   Icons.people_outline,
+          //                   color: _currentTabIndex == 1 
+          //                       ? Colors.white
+          //                       : Color(AppConstants.textSecondaryColorValue),
+          //                   size: 20,
+          //                 ),
+          //                 const SizedBox(width: 8),
+          //                 Text(
+          //                   'Kişiler',
+          //                   style: TextStyle(
+          //                     color: _currentTabIndex == 1 
+          //                         ? Colors.white
+          //                         : Color(AppConstants.textSecondaryColorValue),
+          //                     fontWeight: FontWeight.w600,
+          //                   ),
+          //                 ),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Content - Sadece Sohbetler
           Expanded(
-            child: _currentTabIndex == 0 
-                ? _buildChatsTab()
-                : _buildContactsTab(),
+            child: _buildChatsTab(),
           ),
         ],
       ),
@@ -726,20 +755,21 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         ),
         backgroundColor: Color(AppConstants.primaryColorValue),
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.phone, color: Colors.white),
-            onPressed: () {
-              // TODO: Arama özelliği
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.video_call, color: Colors.white),
-            onPressed: () {
-              // TODO: Video arama özelliği
-            },
-          ),
-        ],
+        // TODO: Telefon ve video ikonları daha sonra kullanılacak
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.phone, color: Colors.white),
+        //     onPressed: () {
+        //       // TODO: Arama özelliği
+        //     },
+        //   ),
+        //   IconButton(
+        //     icon: Icon(Icons.video_call, color: Colors.white),
+        //     onPressed: () {
+        //       // TODO: Video arama özelliği
+        //     },
+        //   ),
+        // ],
       ),
       body: Column(
         children: [
