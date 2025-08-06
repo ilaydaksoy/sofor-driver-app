@@ -26,7 +26,7 @@ class MapScreen extends StatelessWidget {
             Icon(
               Icons.map_outlined,
               size: 80,
-              color: const Color(0xFF111111).withOpacity(0.5),
+              color: const Color(0xFF111111).withValues(alpha: 0.5),
             ),
             const SizedBox(height: 16),
             Text(
@@ -34,7 +34,7 @@ class MapScreen extends StatelessWidget {
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF111111).withOpacity(0.7),
+                color: const Color(0xFF111111).withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 8),
@@ -42,7 +42,7 @@ class MapScreen extends StatelessWidget {
               'Bu özellik yakında eklenecek',
               style: TextStyle(
                 fontSize: 16,
-                color: const Color(0xFF111111).withOpacity(0.5),
+                color: const Color(0xFF111111).withValues(alpha: 0.5),
               ),
             ),
           ],

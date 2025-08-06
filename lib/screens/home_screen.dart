@@ -4,6 +4,7 @@ import 'chat_screen.dart';
 import 'favorites_screen.dart';
 import 'settings_screen.dart';
 import 'driver_profile_screen.dart';
+import 'dart:async'; // Added for Timer
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -253,7 +254,7 @@ class _HomeContentState extends State<_HomeContent> {
         slivers: [
           // App Bar
           SliverAppBar(
-            expandedHeight: 160,
+            expandedHeight: 200,
             floating: false,
             pinned: true,
             backgroundColor: Color(AppConstants.primaryColorValue),
@@ -263,8 +264,8 @@ class _HomeContentState extends State<_HomeContent> {
               background: Container(
                 color: Color(AppConstants.primaryColorValue),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 20),
                     Text(
                       'Sürücü Bul',
                       style: TextStyle(
@@ -273,7 +274,7 @@ class _HomeContentState extends State<_HomeContent> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 24),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Container(
@@ -2041,31 +2042,164 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
   }
 }
 
-class _DriverCard extends StatelessWidget {
+class _DriverCard extends StatefulWidget {
   final Map<String, dynamic> driver;
 
   const _DriverCard({required this.driver});
 
   @override
+  State<_DriverCard> createState() => _DriverCardState();
+}
+
+class _DriverCardState extends State<_DriverCard> {
+  late PageController _pageController;
+  int _currentPage = 0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _startAutoScroll();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _startAutoScroll() {
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (_pageController.hasClients) {
+        if (_currentPage < 2) {
+          _pageController.nextPage(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        } else {
+          _pageController.animateToPage(
+            0,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
+        }
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
+      height: 280, // Yüksekliği daha da artırdık
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Color(AppConstants.surfaceColorValue),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: Color(AppConstants.borderColorValue),
-          width: 1,
+          color: Color(AppConstants.primaryColorValue).withValues(alpha: 0.2),
+          width: 2,
         ),
         boxShadow: [
           BoxShadow(
-            color: Color(AppConstants.shadowLightColorValue).withOpacity(0.08),
-            blurRadius: 8,
-            offset: Offset(0, 2),
+            color: Color(AppConstants.primaryColorValue).withValues(alpha: 0.15),
+            blurRadius: 15,
+            offset: Offset(0, 4),
+            spreadRadius: 2,
+          ),
+          BoxShadow(
+            color: Color(AppConstants.shadowLightColorValue).withValues(alpha: 0.1),
+            blurRadius: 20,
+            offset: Offset(0, 8),
+            spreadRadius: 1,
           ),
         ],
       ),
       child: Column(
+        children: [
+          // Sayfa göstergeleri
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+            decoration: BoxDecoration(
+              color: Color(AppConstants.primaryColorValue).withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(3, (index) => AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                margin: EdgeInsets.symmetric(horizontal: 3),
+                width: _currentPage == index ? 24 : 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: _currentPage == index 
+                    ? Color(AppConstants.primaryColorValue) 
+                    : Colors.grey[400],
+                  borderRadius: BorderRadius.circular(4),
+                  boxShadow: _currentPage == index ? [
+                    BoxShadow(
+                      color: Color(AppConstants.primaryColorValue).withValues(alpha: 0.3),
+                      blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+                  ] : null,
+                ),
+              )),
+            ),
+          ),
+          SizedBox(height: 8),
+          
+          // Kaydırmalı içerik
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentPage = index;
+                });
+              },
+              children: [
+                _buildProfilePage(),
+                _buildDetailsPage(),
+                _buildReviewsPage(),
+              ],
+            ),
+          ),
+          
+          // Alt butonlar
+          SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/chat');
+                  },
+                  icon: Icon(Icons.message, size: 16),
+                  label: Text('Mesaj'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: Color(AppConstants.primaryColorValue),
+                    side: BorderSide(color: Color(AppConstants.primaryColorValue)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfilePage() {
+    return Container(
+      height: 200,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
         children: [
@@ -2076,18 +2210,18 @@ class _DriverCard extends StatelessWidget {
                   width: 60,
                   height: 60,
                   child: Image.network(
-                        driver['image'],
+                        widget.driver['image'],
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
                         width: 60,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
+                              color: Color(AppConstants.primaryColorValue).withValues(alpha: 0.1),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          Icons.person,
+                          Icons.directions_car,
                           size: 30,
                           color: Color(AppConstants.primaryColorValue),
                         ),
@@ -2103,7 +2237,7 @@ class _DriverCard extends StatelessWidget {
                   width: 16,
                   height: 16,
                   decoration: BoxDecoration(
-                        color: driver['isOnline'] 
+                        color: widget.driver['isOnline'] 
                         ? Color(AppConstants.onlineColorValue)
                         : Color(AppConstants.offlineColorValue),
                     shape: BoxShape.circle,
@@ -2114,7 +2248,7 @@ class _DriverCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (driver['isVerified'])
+                  if (widget.driver['isVerified'])
                     Positioned(
                       top: 0,
                       right: 0,
@@ -2137,30 +2271,17 @@ class _DriverCard extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            driver['name'],
-                  style: TextStyle(
-                    color: Color(AppConstants.textPrimaryColorValue),
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                          ),
-                        ),
-                        Text(
-                          driver['price'],
-                          style: TextStyle(
-                            color: Color(AppConstants.primaryColorValue),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                ),
-                SizedBox(height: 4),
+                    Text(
+                      widget.driver['name'],
+                      style: TextStyle(
+                        color: Color(AppConstants.textPrimaryColorValue),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                SizedBox(height: 8),
                 Row(
                   children: [
                     Icon(
@@ -2170,7 +2291,7 @@ class _DriverCard extends StatelessWidget {
                     ),
                     SizedBox(width: 4),
                     Text(
-                          '${driver['rating']}/10',
+                          '${widget.driver['rating']}/10',
                       style: TextStyle(
                         color: Color(AppConstants.textSecondaryColorValue),
                         fontSize: 14,
@@ -2178,7 +2299,7 @@ class _DriverCard extends StatelessWidget {
                     ),
                     SizedBox(width: 8),
                     Text(
-                          '• ${driver['totalRides']} seyahat',
+                          '• ${widget.driver['totalRides']} seyahat',
                       style: TextStyle(
                         color: Color(AppConstants.textSecondaryColorValue),
                         fontSize: 14,
@@ -2196,7 +2317,7 @@ class _DriverCard extends StatelessWidget {
                         ),
                         SizedBox(width: 4),
                 Text(
-                          driver['car'],
+                          widget.driver['car'],
                   style: TextStyle(
                     color: Color(AppConstants.textTertiaryColorValue),
                     fontSize: 12,
@@ -2210,60 +2331,179 @@ class _DriverCard extends StatelessWidget {
             ),
                         SizedBox(width: 4),
                         Text(
-                          driver['responseTime'],
+                          widget.driver['responseTime'],
               style: TextStyle(
                             color: Color(AppConstants.textTertiaryColorValue),
                 fontSize: 12,
               ),
             ),
                       ],
+                ),
+                SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.attach_money,
+                      color: Color(AppConstants.primaryColorValue),
+                      size: 16,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      widget.driver['price'],
+                      style: TextStyle(
+                        color: Color(AppConstants.primaryColorValue),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
           ),
         ],
       ),
           ),
         ],
       ),
-          SizedBox(height: 12),
-          Row(
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailsPage() {
+    return Container(
+      height: 200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/chat');
-                  },
-                  icon: Icon(Icons.message, size: 16),
-                  label: Text('Mesaj'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Color(AppConstants.primaryColorValue),
-                    side: BorderSide(color: Color(AppConstants.primaryColorValue)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+          _buildDetailRow(Icons.work, 'Deneyim', widget.driver['experience']),
+          _buildDetailRow(Icons.location_city, 'Şehir', widget.driver['city']),
+          _buildDetailRow(Icons.category, 'Kategori', widget.driver['category']),
+          _buildDetailRow(Icons.language, 'Diller', widget.driver['languages'].join(', ')),
+          SizedBox(height: 8),
+          Text(
+            'Uzmanlık Alanları:',
+            style: TextStyle(
+              color: Color(AppConstants.textSecondaryColorValue),
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
             ),
+          ),
+          SizedBox(height: 4),
+          Wrap(
+            spacing: 4,
+            runSpacing: 4,
+            children: widget.driver['specialties'].map<Widget>((specialty) => 
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Color(AppConstants.primaryColorValue).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  specialty,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Color(AppConstants.primaryColorValue),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-              SizedBox(width: 8),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => DriverProfileScreen(driver: driver),
-            ),
-                    );
-                  },
-                  icon: Icon(Icons.person, size: 16),
-                  label: Text('Profil'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(AppConstants.primaryColorValue),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-            ),
-                  ),
+              )
+            ).toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReviewsPage() {
+    // Örnek yorumlar
+    final List<Map<String, dynamic>> reviews = [
+      {'name': 'Ayşe K.', 'rating': 5, 'comment': 'Çok güvenli ve temiz bir sürüş deneyimi yaşadım.'},
+      {'name': 'Mehmet A.', 'rating': 5, 'comment': 'Zamanında geldi, çok nazik bir sürücü.'},
+      {'name': 'Fatma S.', 'rating': 4, 'comment': 'İyi bir deneyimdi, tavsiye ederim.'},
+    ];
+
+    return Container(
+      height: 200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ...reviews.map((review) => Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      review['name'] as String,
+                      style: TextStyle(
+                        color: Color(AppConstants.textPrimaryColorValue),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(width: 8),
+                    Row(
+                      children: List.generate(5, (i) => Icon(
+                        Icons.star,
+                        size: 12,
+                        color: i < (review['rating'] as int)
+                          ? Color(AppConstants.warningColorValue)
+                          : Colors.grey[300],
+                      )),
+                    ),
+                  ],
                 ),
+                SizedBox(height: 2),
+                Text(
+                  review['comment'] as String,
+                  style: TextStyle(
+                    color: Color(AppConstants.textSecondaryColorValue),
+                    fontSize: 11,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
               ),
             ],
+          ),
+          )).toList(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(IconData icon, String label, String value) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: Color(AppConstants.primaryColorValue),
+            size: 14,
+          ),
+          SizedBox(width: 6),
+          Text(
+            '$label: ',
+            style: TextStyle(
+              color: Color(AppConstants.textSecondaryColorValue),
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: Color(AppConstants.textPrimaryColorValue),
+                fontSize: 12,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ],
       ),
