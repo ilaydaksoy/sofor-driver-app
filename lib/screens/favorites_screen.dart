@@ -17,6 +17,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       'vehicle': 'Mercedes Vito',
       'vehicleYear': '2022',
       'plate': '34 ABC 123',
+      'price': '₺150',
       'image': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
       'isOnline': true,
       'lastSeen': '2 dakika önce',
@@ -35,7 +36,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       'experience': '5 yıl',
       'vehicle': 'Volkswagen Caravelle',
       'vehicleYear': '2023',
-      'plate': '07 XYZ 789',
+      'plate': '07 XYZ 456',
+      'price': '₺180',
       'image': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
       'isOnline': false,
       'lastSeen': '1 saat önce',
@@ -54,7 +56,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       'experience': '3 yıl',
       'vehicle': 'BMW 520d',
       'vehicleYear': '2021',
-      'plate': '35 DEF 456',
+      'plate': '35 DEF 789',
+      'price': '₺120',
       'image': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
       'isOnline': true,
       'lastSeen': 'Şimdi',
@@ -87,12 +90,22 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   void _showDriverDetails(Map<String, dynamic> driver) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => _buildDriverDetailSheet(driver),
-    );
+    try {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => _buildDriverDetailSheet(driver),
+      );
+    } catch (e) {
+      print('Driver details error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Sürücü detayları açılırken bir hata oluştu'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -282,9 +295,19 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             ),
                             IconButton(
                               icon: Icon(
+                                Icons.message,
+                                color: Color(AppConstants.primaryColorValue),
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, '/chat');
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(
                                 Icons.favorite,
-                                color: Colors.red[400],
-                                size: 24,
+                                color: Color(AppConstants.primaryColorValue),
+                                size: 20,
                               ),
                               onPressed: () => _removeFromFavorites(index),
                             ),
@@ -366,62 +389,31 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
                         color: Color(AppConstants.primaryColorValue),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(AppConstants.primaryColorValue).withOpacity(0.3),
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      child: Text(
-                        driver['plate'],
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                                              child: Text(
+                          driver['price'],
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 12),
-              // Aksiyon Butonları
-                              Row(
-                                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/chat');
-                      },
-                      icon: Icon(Icons.message, size: 16),
-                      label: Text('Mesaj'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Color(AppConstants.primaryColorValue),
-                        side: BorderSide(color: Color(AppConstants.primaryColorValue)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // Sürücüyü seç
-                      },
-                      icon: Icon(Icons.directions_car, size: 16),
-                      label: Text('Seç'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(AppConstants.primaryColorValue),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+
             ],
           ),
         ),
@@ -540,10 +532,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   _buildDetailSection(
                     'Araç Bilgileri',
                     [
-                      _buildDetailRow('Araç Modeli', driver['vehicle']),
-                      _buildDetailRow('Model Yılı', driver['vehicleYear']),
-                      _buildDetailRow('Plaka', driver['plate']),
-                      _buildDetailRow('Deneyim', driver['experience']),
+                      _buildDetailRow('Araç Modeli', driver['vehicle'] ?? ''),
+                      _buildDetailRow('Model Yılı', driver['vehicleYear'] ?? ''),
+                      _buildDetailRow('Plaka', driver['plate'] ?? ''),
+                      _buildDetailRow('Deneyim', driver['experience'] ?? ''),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -552,7 +544,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   _buildDetailSection(
                     'Konuştuğu Diller',
                     [
-                      _buildDetailRow('Diller', driver['languages'].join(', ')),
+                      _buildDetailRow('Diller', (driver['languages'] as List<dynamic>?)?.join(', ') ?? ''),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -561,7 +553,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   _buildDetailSection(
                     'Uzmanlık Alanları',
                     [
-                      _buildDetailRow('Özel Hizmetler', driver['specialties'].join(', ')),
+                      _buildDetailRow('Özel Hizmetler', (driver['specialties'] as List<dynamic>?)?.join(', ') ?? ''),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -569,9 +561,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   // Son Yorumlar
                   _buildDetailSection(
                     'Son Yorumlar',
-                    driver['reviews'].map<Widget>((review) => 
-                      _buildReviewItem(review)
-                    ).toList(),
+                    (driver['reviews'] as List<dynamic>?)?.map<Widget>((review) => 
+                      _buildReviewItem(review as Map<String, dynamic>)
+                    ).toList() ?? [],
                   ),
                   const SizedBox(height: 24),
                   
@@ -673,9 +665,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           ),
           Expanded(
             child: Text(
-              value,
+              value.isNotEmpty ? value : 'Bilgi yok',
               style: TextStyle(
-                color: Color(0xFF111111),
+                color: value.isNotEmpty ? Color(0xFF111111) : Color(0xFF999999),
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),

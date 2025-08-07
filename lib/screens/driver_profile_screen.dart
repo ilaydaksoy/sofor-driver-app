@@ -50,7 +50,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Profil üst kısmı
+            // Profil üst kısmı - sadece fotoğraf ve isim
             Container(
               padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
               decoration: BoxDecoration(
@@ -113,94 +113,172 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.location_on, color: Colors.white, size: 18),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.driver['city'] ?? '',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                      const SizedBox(width: 16),
-                      Icon(Icons.circle, color: (widget.driver['isOnline'] ?? false) ? Colors.white : Colors.white70, size: 12),
-                      const SizedBox(width: 4),
-                      Text(
-                        (widget.driver['isOnline'] ?? false) ? 'Çevrimiçi' : 'Çevrimdışı',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.star, color: Colors.white, size: 20),
-                      const SizedBox(width: 4),
-                      Text(
-                        '${widget.driver['rating'] ?? 0}/10',
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      const SizedBox(width: 16),
-                      Icon(Icons.directions_car, color: Colors.white70, size: 20),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.driver['car'] ?? '',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                      const SizedBox(width: 16),
-                      Icon(Icons.timer, color: Colors.white70, size: 20),
-                      const SizedBox(width: 4),
-                      Text(
-                        widget.driver['experience'] ?? '',
-                        style: TextStyle(color: Colors.white, fontSize: 15),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
             const SizedBox(height: 24),
             
+            // Sürücü Yetenekleri
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Sürücü Yetenekleri',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Color(0xFF111111)
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey[200]!),
+                    ),
+                    child: Column(
+                      children: [
+                        _buildSkillRow('Şehir', widget.driver['city'] ?? '', Icons.location_on),
+                        _buildSkillRow('Araç', widget.driver['car'] ?? '', Icons.directions_car),
+                        _buildSkillRow('Tecrübe', widget.driver['experience'] ?? '', Icons.timer),
+                        _buildSkillRow('Diller', (widget.driver['languages'] as List<dynamic>?)?.join(', ') ?? '', Icons.language),
+                        _buildSkillRow('Uzmanlık', (widget.driver['specialties'] as List<dynamic>?)?.join(', ') ?? '', Icons.star),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Icon(Icons.star, size: 16, color: Colors.amber),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Puanlama',
+                                    style: TextStyle(
+                                      color: Color(0xFF666666),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  '${widget.driver['rating'] ?? 0}/10',
+                                  style: TextStyle(
+                                    color: Color(0xFF111111),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: Color(AppConstants.primaryColorValue),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(
+                                    widget.driver['price'] ?? '',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            
+            // Sürücü Hakkında
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Sürücü Hakkında',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Color(0xFF111111)
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey[200]!),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Profesyonel sürücülük deneyimim ile güvenli ve konforlu yolculuklar sunuyorum. Müşteri memnuniyeti benim için en önemli önceliktir. Temiz araç, dakiklik ve güler yüzlü hizmet garantisi veriyorum. Yılların deneyimi ile İstanbul\'un tüm noktalarına güvenli ulaşım sağlıyorum.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF444444),
+                            height: 1.5,
+                          ),
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 8),
+                        GestureDetector(
+                          onTap: () {
+                            // Devamını gör fonksiyonu
+                          },
+                          child: Text(
+                            'Devamını gör',
+                            style: TextStyle(
+                              color: Color(AppConstants.primaryColorValue),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            
             // Araç görselleri galerisi
             _buildVehicleGallery(carImages),
             const SizedBox(height: 24),
             
-            // İletişim ve aksiyon butonları
+            // Mesaj butonu
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: Icon(Icons.phone),
-                    label: Text('Ara'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(AppConstants.primaryColorValue),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/chat');
-                    },
-                    icon: Icon(Icons.message),
-                    label: Text('Mesaj'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF111111),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.favorite, color: Colors.white, size: 32),
-                    tooltip: 'Favorilere ekle/çıkar',
-                    onPressed: () {},
-                  ),
-                ],
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/chat');
+                },
+                icon: Icon(Icons.message),
+                label: Text('Mesaj Gönder'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(AppConstants.primaryColorValue),
+                  foregroundColor: Colors.white,
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
               ),
             ),
             const SizedBox(height: 24),
@@ -211,20 +289,41 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Yorumlar', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFF111111))),
+                  Text(
+                    'Yorumlar',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Color(0xFF111111)
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   ...reviews.map((review) => Card(
                     margin: const EdgeInsets.only(bottom: 8),
                     color: Color(0xFFF5F5F5),
                     child: ListTile(
-                      leading: CircleAvatar(child: Text(review['user'][0], style: TextStyle(color: Color(0xFF111111)))),
-                      title: Text(review['user'], style: TextStyle(color: Color(0xFF111111))),
-                      subtitle: Text(review['comment'], style: TextStyle(color: Color(0xFF444444))),
+                      leading: CircleAvatar(
+                        child: Text(
+                          review['user'][0],
+                          style: TextStyle(color: Color(0xFF111111))
+                        ),
+                      ),
+                      title: Text(
+                        review['user'],
+                        style: TextStyle(color: Color(0xFF111111))
+                      ),
+                      subtitle: Text(
+                        review['comment'],
+                        style: TextStyle(color: Color(0xFF444444))
+                      ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(Icons.star, color: Color(AppConstants.primaryColorValue), size: 18),
-                          Text(review['rating'].toString(), style: TextStyle(color: Color(0xFF111111))),
+                          Text(
+                            review['rating'].toString(),
+                            style: TextStyle(color: Color(0xFF111111))
+                          ),
                         ],
                       ),
                     ),
@@ -232,34 +331,42 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-            
-            // Ekstra bilgiler
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Sürücü Hakkında', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xFF111111))),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Kısa biyografi veya açıklama buraya eklenebilir. Sürücünün deneyimi, ilgi alanları veya yolculara mesajı gibi bilgiler burada yer alabilir.',
-                    style: TextStyle(fontSize: 15, color: Color(0xFF444444)),
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Icon(Icons.verified, color: Color(AppConstants.primaryColorValue), size: 20),
-                      const SizedBox(width: 6),
-                      Text('Onaylı Sürücü', style: TextStyle(color: Color(AppConstants.primaryColorValue), fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(height: 32),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSkillRow(String label, String value, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: Color(AppConstants.primaryColorValue)),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 80,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Color(0xFF666666),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value.isNotEmpty ? value : 'Bilgi yok',
+              style: TextStyle(
+                color: value.isNotEmpty ? Color(0xFF111111) : Color(0xFF999999),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
