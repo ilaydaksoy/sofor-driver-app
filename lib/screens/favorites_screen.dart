@@ -593,10 +593,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         child: ElevatedButton.icon(
                           onPressed: () {
                             Navigator.pop(context);
-                            // Sürücüyü seç
+                            Navigator.pushNamed(context, '/driver-profile', arguments: driver);
                           },
-                          icon: Icon(Icons.directions_car, size: 20),
-                          label: Text('Sürücüyü Seç', style: TextStyle(fontSize: 16)),
+                          icon: Icon(Icons.person, size: 20),
+                          label: Text('Profile Git', style: TextStyle(fontSize: 16)),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color(AppConstants.primaryColorValue),
                             foregroundColor: Colors.white,
