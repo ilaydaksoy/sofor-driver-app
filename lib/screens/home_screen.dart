@@ -92,6 +92,9 @@ class _HomeContent extends StatefulWidget {
 
 class _HomeContentState extends State<_HomeContent> {
   String searchQuery = '';
+  double selectedRating = 0.0;
+  RangeValues priceRange = RangeValues(0, 500);
+  String selectedLanguage = 'Tümü';
   
   void _showFilterDialog() {
     showModalBottomSheet(
@@ -105,7 +108,7 @@ class _HomeContentState extends State<_HomeContent> {
 
   Widget _buildFilterDialog() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: MediaQuery.of(context).size.height * 0.9,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -193,7 +196,7 @@ class _HomeContentState extends State<_HomeContent> {
                 
                 // Minimum Puan
                 Text(
-                  'Minimum Puan: Tümü',
+                  'Minimum Puan: ${selectedRating > 0 ? selectedRating.toStringAsFixed(1) : "Tümü"}',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -202,14 +205,58 @@ class _HomeContentState extends State<_HomeContent> {
                 ),
                 const SizedBox(height: 8),
                 Slider(
-                  value: 0,
+                  value: selectedRating,
                   min: 0,
                   max: 10,
                   divisions: 20,
                   activeColor: Color(AppConstants.primaryColorValue),
-                  onChanged: (value) {},
+                  onChanged: (value) => setState(() => selectedRating = value),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
+                
+                // Dil Seçimi
+                Text(
+                  'Dil',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                DropdownButtonFormField<String>(
+                  value: selectedLanguage,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  items: ['Tümü', 'Türkçe', 'İngilizce', 'Almanca', 'Fransızca', 'İspanyolca', 'Rusça'].map((language) => DropdownMenuItem(
+                    value: language,
+                    child: Text(language),
+                  )).toList(),
+                  onChanged: (value) => setState(() => selectedLanguage = value!),
+                ),
+                const SizedBox(height: 15),
+                
+                // Fiyat Aralığı
+                Text(
+                  'Fiyat Aralığı: ${priceRange.start.toInt()} - ${priceRange.end.toInt()} TL',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                RangeSlider(
+                  values: priceRange,
+                  min: 0,
+                  max: 500,
+                  divisions: 50,
+                  activeColor: Color(AppConstants.primaryColorValue),
+                  onChanged: (values) => setState(() => priceRange = values),
+                ),
+                const SizedBox(height: 15),
                 
                 // Butonlar
                 Row(
@@ -353,6 +400,9 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
   bool showOnlineOnly = false;
   bool showVerifiedOnly = false;
   String selectedPaymentMethod = 'Nakit';
+  String selectedLanguage = 'Tümü';
+  double minPrice = 0.0;
+  double maxPrice = 500.0;
   
   final List<String> categories = [
     'Tümü',
@@ -381,6 +431,16 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
     'Van',
     'Lüks',
     'Elektrikli',
+  ];
+
+  final List<String> languages = [
+    'Tümü',
+    'Türkçe',
+    'İngilizce',
+    'Almanca',
+    'Fransızca',
+    'İspanyolca',
+    'Rusça',
   ];
 
   final List<Map<String, dynamic>> drivers = [
@@ -1986,7 +2046,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                   )).toList(),
                   onChanged: (value) => setState(() => selectedVehicleType = value!),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 
                 // Minimum Puan
                 Text(
@@ -1997,7 +2057,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                     color: Color(AppConstants.textPrimaryColorValue),
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 3),
                 Slider(
                   value: selectedRating,
                   min: 0,
@@ -2006,7 +2066,54 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                   activeColor: Color(AppConstants.primaryColorValue),
                   onChanged: (value) => setState(() => selectedRating = value),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                
+                // Dil Seçimi
+                Text(
+                  'Dil',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                const SizedBox(height: 3),
+                DropdownButtonFormField<String>(
+                  value: selectedLanguage,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  ),
+                  items: languages.map((language) => DropdownMenuItem(
+                    value: language,
+                    child: Text(language),
+                  )).toList(),
+                  onChanged: (value) => setState(() => selectedLanguage = value!),
+                ),
+                const SizedBox(height: 12),
+                
+                // Fiyat Aralığı
+                Text(
+                  'Fiyat Aralığı: ${minPrice.toInt()} - ${maxPrice.toInt()} TL',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                RangeSlider(
+                  values: RangeValues(minPrice, maxPrice),
+                  min: 0,
+                  max: 500,
+                  divisions: 50,
+                  activeColor: Color(AppConstants.primaryColorValue),
+                  onChanged: (values) => setState(() {
+                    minPrice = values.start;
+                    maxPrice = values.end;
+                  }),
+                ),
+                const SizedBox(height: 15),
                 
                 // Butonlar
                 Row(
@@ -2021,6 +2128,9 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                             selectedRating = 0.0;
                             showOnlineOnly = false;
                             showVerifiedOnly = false;
+                            selectedLanguage = 'Tümü';
+                            minPrice = 0.0;
+                            maxPrice = 500.0;
                           });
                           Navigator.pop(context);
                         },
@@ -2340,19 +2450,19 @@ class _DriverCardState extends State<_DriverCard> {
                         Expanded(
                           child: Text(
                             widget.driver['languages'].join(', '),
-                            style: TextStyle(
+              style: TextStyle(
                               color: Color(AppConstants.textPrimaryColorValue),
                               fontSize: 13,
                               fontWeight: FontWeight.w500,
                             ),
                             overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
+              ),
+            ),
                       ],
-                    ),
+          ),
                     
-                  ],
-                ),
+        ],
+      ),
           ),
         ],
       ),
