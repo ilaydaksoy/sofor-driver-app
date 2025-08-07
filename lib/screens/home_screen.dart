@@ -266,13 +266,24 @@ class _HomeContentState extends State<_HomeContent> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.directions_car,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                        SizedBox(width: 8),
                     Text(
-                      'Sürücü Bul',
+                          'Turist Driver',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                            fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
+                    ),
+                      ],
                     ),
                     const SizedBox(height: 24),
                     Padding(
@@ -600,8 +611,8 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Kaydırmalı Reklamlar
-        _buildBannerSection(),
-        const SizedBox(height: 20),
+        // _buildBannerSection(),
+        // const SizedBox(height: 20),
 
         // Önerilen Sürücüler
         _buildDriversSection(),
@@ -919,96 +930,97 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
     );
   }
 
-  Widget _buildBannerSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Kampanyalar',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(AppConstants.textPrimaryColorValue),
-          ),
-        ),
-        const SizedBox(height: 12),
-        SizedBox(
-                    height: 120,
-          child: PageView.builder(
-            itemCount: banners.length,
-            controller: PageController(viewportFraction: 0.88),
-            onPageChanged: (i) => setState(() => _currentBanner = i),
-            itemBuilder: (context, i) {
-              final banner = banners[i];
-              return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 6),
-                padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                  color: Color(int.parse(banner['color']!)),
-                  borderRadius: BorderRadius.circular(18),
-                      boxShadow: [
-                        BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 8,
-                      offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                child: Row(
-                  children: [
-                    Icon(
-                      banner['icon'],
-                            color: Colors.white,
-                      size: 32,
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                      banner['title']!,
-                                style: TextStyle(
-                                  color: Colors.white,
-                              fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                          const SizedBox(height: 4),
-                        Text(
-                      banner['desc']!,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                              fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                            ],
-                          ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(banners.length, (i) => AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            margin: const EdgeInsets.symmetric(horizontal: 3),
-            width: _currentBanner == i ? 18 : 7,
-            height: 7,
-                    decoration: BoxDecoration(
-              color: _currentBanner == i ? Color(AppConstants.primaryColorValue) : Colors.grey[300],
-              borderRadius: BorderRadius.circular(8),
-                  ),
-          )),
-        ),
-      ],
-    );
-  }
+  // Widget _buildBannerSection() {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         'Kampanyalar',
+  //         style: TextStyle(
+  //           fontSize: 18,
+  //           fontWeight: FontWeight.bold,
+  //           color: Color(AppConstants.textPrimaryColorValue),
+  //         ),
+  //       ),
+  //       const SizedBox(height: 12),
+  //       SizedBox(
+  //                   height: 120,
+  //         child: PageView.builder(
+  //           itemCount: banners.length,
+  //           controller: PageController(viewportFraction: 0.88),
+  //           onPageChanged: (i) => setState(() => _currentBanner = i),
+  //           itemBuilder: (context, i) {
+  //             final banner = banners[i];
+  //             return Container(
+  //               margin: const EdgeInsets.symmetric(horizontal: 6),
+  //               padding: const EdgeInsets.all(20),
+  //                   decoration: BoxDecoration(
+  //                 color: Color(int.parse(banner['color']!)),
+  //                 borderRadius: BorderRadius.circular(18),
+  //                     boxShadow: [
+  //                       BoxShadow(
+  //                 color: Colors.black.withOpacity(0.1),
+  //                 blurRadius: 8,
+  //                 offset: Offset(0, 4),
+  //                       ),
+  //                     ],
+  //                   ),
+  //               child: Row(
+  //                 children: [
+  //                   Icon(
+  //                     banner['icon'],
+  //                           color: Colors.white,
+  //                     size: 32,
+  //                   ),
+  //                   const SizedBox(width: 16),
+  //                   Expanded(
+  //                         child: Column(
+  //                           crossAxisAlignment: CrossAxisAlignment.start,
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                           children: [
+  //                             Text(
+  //                 banner['title']!,
+  //                               style: TextStyle(
+  //                                 color: Colors.white,
+  //                 fontSize: 16,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //             const SizedBox(height: 4),
+  //           Text(
+  //                 banner['desc']!,
+  //             style: TextStyle(
+  //               color: Colors.white.withOpacity(0.9),
+  //                 fontSize: 12,
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ],
+  //   ),
+  //               ],
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //     const SizedBox(height: 8),
+  //     Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: List.generate(banners.length, (i) => AnimatedContainer(
+  //         duration: Duration(milliseconds: 300),
+  //         margin: const EdgeInsets.symmetric(horizontal: 3),
+  //         width: _currentBanner == i ? 18 : 7,
+  //         height: 7,
+  //                   decoration: BoxDecoration(
+  //         color: _currentBanner == i ? Color(AppConstants.primaryColorValue) : Colors.grey[300],
+  //         borderRadius: BorderRadius.circular(8),
+  //             ),
+  //       )),
+  //     ),
+  //   ],
+  // );
+  // }
 
   Widget _buildVehicleAdsSection() {
     return Column(
@@ -2092,7 +2104,7 @@ class _DriverCardState extends State<_DriverCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 280, // Yüksekliği daha da artırdık
+      height: 240, // Mesaj butonu kaldırıldığı için yüksekliği azalttık
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Color(AppConstants.surfaceColorValue),
@@ -2167,29 +2179,7 @@ class _DriverCardState extends State<_DriverCard> {
             ),
           ),
           
-          // Alt butonlar
-          SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/chat');
-                  },
-                  icon: Icon(Icons.message, size: 16),
-                  label: Text('Mesaj'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Color(AppConstants.primaryColorValue),
-                    side: BorderSide(color: Color(AppConstants.primaryColorValue)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ),
-              ),
 
-            ],
-          ),
         ],
       ),
     );
@@ -2221,7 +2211,7 @@ class _DriverCardState extends State<_DriverCard> {
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          Icons.directions_car,
+                              Icons.directions_car,
                           size: 30,
                           color: Color(AppConstants.primaryColorValue),
                         ),
@@ -2275,93 +2265,94 @@ class _DriverCardState extends State<_DriverCard> {
               children: [
                     Text(
                       widget.driver['name'],
-                      style: TextStyle(
-                        color: Color(AppConstants.textPrimaryColorValue),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                SizedBox(height: 8),
+                  style: TextStyle(
+                    color: Color(AppConstants.textPrimaryColorValue),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                          ),
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          color: Color(AppConstants.warningColorValue),
+                          size: 16,
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          '${widget.driver['rating']}/10',
+                          style: TextStyle(
+                            color: Color(AppConstants.textPrimaryColorValue),
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                ),
+                    SizedBox(height: 8),
                 Row(
                   children: [
                     Icon(
-                      Icons.star,
-                      color: Color(AppConstants.warningColorValue),
-                      size: 16,
+                          Icons.directions_car,
+                          color: Color(AppConstants.primaryColorValue),
+                          size: 14,
                     ),
                     SizedBox(width: 4),
                     Text(
-                          '${widget.driver['rating']}/10',
+                          widget.driver['car'],
                       style: TextStyle(
-                        color: Color(AppConstants.textSecondaryColorValue),
-                        fontSize: 14,
-                      ),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                          '• ${widget.driver['totalRides']} seyahat',
-                      style: TextStyle(
-                        color: Color(AppConstants.textSecondaryColorValue),
-                        fontSize: 14,
+                            color: Color(AppConstants.textPrimaryColorValue),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
                 ),
-                SizedBox(height: 4),
+                    SizedBox(height: 6),
                     Row(
                       children: [
                         Icon(
-                          Icons.directions_car,
+                          Icons.location_city,
                           color: Color(AppConstants.primaryColorValue),
                           size: 14,
                         ),
                         SizedBox(width: 4),
                 Text(
-                          widget.driver['car'],
+                          widget.driver['city'],
                   style: TextStyle(
-                    color: Color(AppConstants.textTertiaryColorValue),
-                    fontSize: 12,
-                  ),
-                ),
-                        SizedBox(width: 8),
+                            color: Color(AppConstants.textPrimaryColorValue),
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 6),
+                    Row(
+                      children: [
                         Icon(
-                          Icons.access_time,
+                          Icons.language,
               color: Color(AppConstants.primaryColorValue),
                           size: 14,
             ),
                         SizedBox(width: 4),
-                        Text(
-                          widget.driver['responseTime'],
-              style: TextStyle(
-                            color: Color(AppConstants.textTertiaryColorValue),
-                fontSize: 12,
-              ),
-            ),
+                        Expanded(
+                          child: Text(
+                            widget.driver['languages'].join(', '),
+                            style: TextStyle(
+                              color: Color(AppConstants.textPrimaryColorValue),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ],
-                ),
-                SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.attach_money,
-                      color: Color(AppConstants.primaryColorValue),
-                      size: 16,
                     ),
-                    SizedBox(width: 4),
-                    Text(
-                      widget.driver['price'],
-                      style: TextStyle(
-                        color: Color(AppConstants.primaryColorValue),
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    
                   ],
                 ),
-          ),
-        ],
-      ),
           ),
         ],
       ),
@@ -2378,40 +2369,11 @@ class _DriverCardState extends State<_DriverCard> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildDetailRow(Icons.work, 'Deneyim', widget.driver['experience']),
-          _buildDetailRow(Icons.location_city, 'Şehir', widget.driver['city']),
           _buildDetailRow(Icons.category, 'Kategori', widget.driver['category']),
-          _buildDetailRow(Icons.language, 'Diller', widget.driver['languages'].join(', ')),
-          SizedBox(height: 8),
-          Text(
-            'Uzmanlık Alanları:',
-            style: TextStyle(
-              color: Color(AppConstants.textSecondaryColorValue),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          SizedBox(height: 4),
-          Wrap(
-            spacing: 4,
-            runSpacing: 4,
-            children: widget.driver['specialties'].map<Widget>((specialty) => 
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Color(AppConstants.primaryColorValue).withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  specialty,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Color(AppConstants.primaryColorValue),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )
-            ).toList(),
-          ),
+          _buildDetailRow(Icons.attach_money, 'Fiyat', widget.driver['price']),
+          _buildDetailRow(Icons.access_time, 'Yanıt Süresi', widget.driver['responseTime']),
+          _buildDetailRow(Icons.directions_car_filled, 'Toplam Seyahat', '${widget.driver['totalRides']}'),
+
         ],
       ),
     );
@@ -2436,21 +2398,21 @@ class _DriverCardState extends State<_DriverCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
+          Row(
+        children: [
                     Text(
                       review['name'] as String,
                       style: TextStyle(
                         color: Color(AppConstants.textPrimaryColorValue),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(width: 8),
                     Row(
                       children: List.generate(5, (i) => Icon(
                         Icons.star,
-                        size: 12,
+                        size: 14,
                         color: i < (review['rating'] as int)
                           ? Color(AppConstants.warningColorValue)
                           : Colors.grey[300],
@@ -2462,8 +2424,9 @@ class _DriverCardState extends State<_DriverCard> {
                 Text(
                   review['comment'] as String,
                   style: TextStyle(
-                    color: Color(AppConstants.textSecondaryColorValue),
-                    fontSize: 11,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -2478,21 +2441,21 @@ class _DriverCardState extends State<_DriverCard> {
 
   Widget _buildDetailRow(IconData icon, String label, String value) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 6),
+      padding: EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
           Icon(
             icon,
             color: Color(AppConstants.primaryColorValue),
-            size: 14,
+            size: 16,
           ),
-          SizedBox(width: 6),
+          SizedBox(width: 8),
           Text(
             '$label: ',
             style: TextStyle(
-              color: Color(AppConstants.textSecondaryColorValue),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+              color: Color(AppConstants.textPrimaryColorValue),
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
             ),
           ),
           Expanded(
@@ -2500,7 +2463,8 @@ class _DriverCardState extends State<_DriverCard> {
               value,
               style: TextStyle(
                 color: Color(AppConstants.textPrimaryColorValue),
-                fontSize: 12,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
               ),
               overflow: TextOverflow.ellipsis,
             ),
