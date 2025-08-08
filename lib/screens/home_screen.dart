@@ -314,22 +314,15 @@ class _HomeContentState extends State<_HomeContent> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          Icons.directions_car,
-                          color: Colors.white,
-                          size: 24,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: Image.asset(
+                            'assets/icons/icon.png',
+                            height: 100,
+                            color: Colors.white,
+                          ),
                         ),
-                        SizedBox(width: 8),
-                    Text(
-                          'Turist Driver',
-                      style: TextStyle(
-                        color: Colors.white,
-                            fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                       ],
                     ),
                     const SizedBox(height: 24),
@@ -2381,7 +2374,7 @@ class _DriverCardState extends State<_DriverCard> {
                     fontWeight: FontWeight.bold,
                   ),
                           ),
-                    SizedBox(height: 8),
+                    SizedBox(height: 4),
                     Row(
                       children: [
                         Icon(
@@ -2399,8 +2392,17 @@ class _DriverCardState extends State<_DriverCard> {
                           ),
                         ),
                       ],
-                ),
-                    SizedBox(height: 8),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      widget.driver['price'],
+                      style: TextStyle(
+                        color: Color(AppConstants.primaryColorValue),
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 4),
                 Row(
                   children: [
                     Icon(
@@ -2419,7 +2421,7 @@ class _DriverCardState extends State<_DriverCard> {
                     ),
                   ],
                 ),
-                    SizedBox(height: 6),
+                    SizedBox(height: 4),
                     Row(
                       children: [
                         Icon(
@@ -2438,7 +2440,7 @@ class _DriverCardState extends State<_DriverCard> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 6),
+                    SizedBox(height: 4),
                     Row(
                       children: [
                         Icon(

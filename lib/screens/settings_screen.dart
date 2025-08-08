@@ -66,6 +66,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: 'Yorum Yap',
               onTap: () {},
             ),
+            const SizedBox(height: 16),
+            
+            // KVKK
+            _buildMenuButton(
+              icon: Icons.security,
+              title: 'KVKK',
+              onTap: () => _showKVKKDialog(context),
+            ),
+            const SizedBox(height: 16),
+            
+            // Aydınlatma Metni
+            _buildMenuButton(
+              icon: Icons.info_outline,
+              title: 'Aydınlatma Metni',
+              onTap: () => _showAydinlatmaDialog(context),
+            ),
             const SizedBox(height: 24),
             
             // Hesap Ayarları Başlığı
@@ -76,7 +92,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Text(
                   'Hesap Ayarları',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
@@ -164,7 +180,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(
               'Demo Turist',
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -174,7 +190,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(
               'demo@turist.com',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 12,
                 color: Colors.white.withOpacity(0.9),
               ),
             ),
@@ -183,7 +199,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Text(
               '+90 555 123 4567',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 12,
                 color: Colors.white.withOpacity(0.9),
               ),
             ),
@@ -216,7 +232,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         title: Text(
           title,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             fontWeight: FontWeight.w600,
             color: titleColor ?? Colors.black87,
           ),
@@ -268,7 +284,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           title: Text(
             'Dil',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
@@ -280,7 +296,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _selectedLanguage,
                 style: TextStyle(
                   color: Colors.grey[600],
-                  fontSize: 14,
+                  fontSize: 13,
                 ),
               ),
               Icon(
@@ -294,7 +310,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: Text(
                 language,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                   color: Colors.black87,
                 ),
@@ -489,6 +505,202 @@ class _SettingsScreenState extends State<SettingsScreen> {
               backgroundColor: Color(AppConstants.primaryColorValue),
             ),
             child: Text('Değiştir', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showKVKKDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'KVKK',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.primaryColorValue),
+          ),
+        ),
+        content: Container(
+          width: double.maxFinite,
+          height: 350,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'KİŞİSEL VERİLERİN KORUNMASI KANUNU',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  '6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında kişisel verilerinizin güvenliği bizim için önemlidir.',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                SizedBox(height: 14),
+                Text(
+                  'TOPLANAN VERİLER',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  '• Ad ve Soyad\n• E-posta Adresi\n• Telefon Numarası\n• Konum Bilgileri\n• Profil Fotoğrafı',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                SizedBox(height: 14),
+                Text(
+                  'KULLANIM AMAÇLARI',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  '• Hizmet sunumu\n• İletişim kurulması\n• Güvenlik sağlanması\n• Yasal yükümlülükler',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                SizedBox(height: 14),
+                Text(
+                  'HAKLARINIZ',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  '• Bilgi alma hakkı\n• Düzeltme hakkı\n• Silme hakkı\n• İtiraz hakkı\n• Tazminat hakkı',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Kapat',
+              style: TextStyle(color: Color(AppConstants.primaryColorValue)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAydinlatmaDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'Aydınlatma Metni',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.primaryColorValue),
+          ),
+        ),
+        content: Container(
+          width: double.maxFinite,
+          height: 350,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'VERİ SORUMLUSU',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'Turist Driver Uygulaması\nAdres: İstanbul, Türkiye\nE-posta: info@turistdriver.com',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                SizedBox(height: 14),
+                Text(
+                  'VERİ İŞLEME AMAÇLARI',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  '• Uygulama hizmetlerinin sunulması\n• Kullanıcı deneyiminin geliştirilmesi\n• İletişim ve bilgilendirme\n• Güvenlik önlemlerinin alınması\n• Yasal yükümlülüklerin yerine getirilmesi',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                SizedBox(height: 14),
+                Text(
+                  'VERİ AKTARIMI',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'Kişisel verileriniz, yasal zorunluluklar dışında üçüncü taraflarla paylaşılmaz.',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                SizedBox(height: 14),
+                Text(
+                  'SAKLAMA SÜRESİ',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'Verileriniz, işleme amacının gerektirdiği süre kadar saklanır.',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+                SizedBox(height: 14),
+                Text(
+                  'İLETİŞİM',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+                SizedBox(height: 6),
+                Text(
+                  'E-posta: kvkk@turistdriver.com\nTelefon: +90 555 123 4567',
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(
+              'Kapat',
+              style: TextStyle(color: Color(AppConstants.primaryColorValue)),
+            ),
           ),
         ],
       ),

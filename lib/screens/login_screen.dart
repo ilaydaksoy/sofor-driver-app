@@ -185,29 +185,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     ),
                                   ],
                                 ),
-                                child: Icon(
-                                  Icons.directions_car,
-                                  size: 56,
+                                child: Image.asset(
+                                  'assets/icons/icon.png',
+                                  width: 120,
+                                  height: 120,
                                   color: Colors.white,
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              Text(
-                                'Sürücü Bul',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                  fontWeight: FontWeight.bold,
-                                  shadows: [
-                                    Shadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      offset: Offset(0, 2),
-                                      blurRadius: 4,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 8),
                               Text(
                                 'Güvenli ve konforlu yolculuklar',
                                 style: TextStyle(

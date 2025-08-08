@@ -1,0 +1,32 @@
+LOGO YÜKLEMESİ İÇİN HAZIR KLASÖR
+
+Bu klasöre aşağıdaki dosyaları yükleyebilirsiniz:
+
+1. app_logo.png - Ana uygulama logosu
+2. company_logo.png - Şirket logosu
+3. brand_logo.png - Marka logosu
+
+ÖNERİLEN DOSYA BOYUTLARI:
+- 256x256 piksel (minimum)
+- 512x512 piksel (önerilen)
+- 1024x1024 piksel (yüksek kalite)
+
+DESTEKLENEN FORMATLAR:
+- PNG (önerilen - şeffaf arka plan)
+- JPG/JPEG
+- SVG (vektörel)
+
+KULLANIM ÖRNEĞİ:
+Logo dosyasını yükledikten sonra kodda şu şekilde kullanabilirsiniz:
+
+Image.asset('assets/icons/app_logo.png')
+
+veya
+
+Container(
+  child: Image.asset(
+    'assets/icons/app_logo.png',
+    width: 100,
+    height: 100,
+  ),
+)
