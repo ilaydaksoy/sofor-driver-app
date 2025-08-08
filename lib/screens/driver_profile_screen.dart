@@ -147,54 +147,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                         _buildSkillRow('Tecrübe', widget.driver['experience'] ?? '', Icons.timer),
                         _buildSkillRow('Diller', (widget.driver['languages'] as List<dynamic>?)?.join(', ') ?? '', Icons.language),
                         _buildSkillRow('Uzmanlık', (widget.driver['specialties'] as List<dynamic>?)?.join(', ') ?? '', Icons.star),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.star, size: 16, color: Colors.amber),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'Puanlama',
-                                    style: TextStyle(
-                                      color: Color(0xFF666666),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  '${widget.driver['rating'] ?? 0}/10',
-                                  style: TextStyle(
-                                    color: Color(0xFF111111),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                  decoration: BoxDecoration(
-                                    color: Color(AppConstants.primaryColorValue),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    widget.driver['price'] ?? '',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                        _buildSkillRowWithPrice('Puanlama', '${widget.driver['rating'] ?? 0}/10', Icons.star, widget.driver['price'] ?? ''),
                       ],
                     ),
                   ),
@@ -363,6 +316,54 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
                 color: value.isNotEmpty ? Color(0xFF111111) : Color(0xFF999999),
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSkillRowWithPrice(String label, String value, IconData icon, String price) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(Icons.star, size: 16, color: Colors.amber),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 80,
+            child: Text(
+              label,
+              style: TextStyle(
+                color: Color(0xFF666666),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value.isNotEmpty ? value : 'Bilgi yok',
+              style: TextStyle(
+                color: value.isNotEmpty ? Color(0xFF111111) : Color(0xFF999999),
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: Color(AppConstants.primaryColorValue),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              price,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

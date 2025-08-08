@@ -325,7 +325,7 @@ class _HomeContentState extends State<_HomeContent> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Container(
@@ -2393,16 +2393,16 @@ class _DriverCardState extends State<_DriverCard> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 2),
                     Text(
                       widget.driver['price'],
                       style: TextStyle(
                         color: Color(AppConstants.primaryColorValue),
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 2),
                 Row(
                   children: [
                     Icon(
