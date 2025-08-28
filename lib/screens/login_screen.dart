@@ -185,11 +185,10 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     ),
                                   ],
                                 ),
-                                child: Image.asset(
-                                  'assets/icons/icon.png',
-                                  width: 120,
-                                  height: 120,
-                                  color: Colors.white,
+                                child: Icon(
+                                  Icons.local_taxi,
+                                  size: 80,
+                                  color: Color(AppConstants.primaryColorValue),
                                 ),
                               ),
                               const SizedBox(height: 20),

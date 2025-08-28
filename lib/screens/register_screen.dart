@@ -149,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Column(
                   children: [
                     Icon(
-                      Icons.person_add,
+                      Icons.local_taxi,
                       size: 45,
                       color: Color(AppConstants.primaryColorValue),
                     ),
@@ -879,7 +879,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   builder: (context, authProvider, child) {
                     return CustomButton(
                       text: 'Şöför Hesabı Oluştur',
-                      icon: Icons.person_add,
+                      icon: Icons.local_taxi,
                       onPressed: (authProvider.isLoading || !_emailVerified || !_phoneVerified || !_kvkkAccepted || !_aydinlatmaAccepted) ? null : _register,
                       isLoading: authProvider.isLoading,
                     );
