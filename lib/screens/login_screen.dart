@@ -113,9 +113,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF1a1a1a),
-              Color(0xFF2d2d2d),
-              Color(0xFF1a1a1a),
+              Color(AppConstants.primaryColorValue),
+              Color(AppConstants.secondaryColorValue),
+              Color(AppConstants.primaryColorValue),
             ],
           ),
         ),
@@ -142,15 +142,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                Color(0xFFE53E3E),
-                                Color(0xFFC53030),
-                                Color(0xFFE53E3E),
+                                Color(AppConstants.accentColorValue),
+                                Colors.white,
+                                Color(AppConstants.accentColorValue),
                               ],
                             ),
                             borderRadius: BorderRadius.circular(24),
                             boxShadow: [
                               BoxShadow(
-                                color: Color(0xFFE53E3E).withOpacity(0.4),
+                                color: Color(AppConstants.accentColorValue).withOpacity(0.4),
                                 blurRadius: 20,
                                 offset: Offset(0, 10),
                                 spreadRadius: 2,
@@ -194,7 +194,16 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                               ),
                               const SizedBox(height: 20),
                               Text(
-                                'Güvenli ve konforlu yolculuklar',
+                                'Şöför Uygulaması',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Profesyonel şöförler için tasarlandı',
                                 style: TextStyle(
                                   color: Colors.white.withOpacity(0.9),
                                   fontSize: 16,

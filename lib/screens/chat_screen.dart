@@ -12,59 +12,68 @@ class _ChatScreenState extends State<ChatScreen> {
   final List<Map<String, dynamic>> chats = [
     {
       'id': '1',
-      'driverName': 'Ahmet Yılmaz',
-      'driverImage': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
-      'lastMessage': 'Merhaba, ne zaman geleceksiniz?',
+      'customerName': 'Ahmet Yılmaz',
+      'customerImage': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
+      'lastMessage': 'Havalimanından alacak mısınız?',
       'lastMessageTime': '14:30',
       'unreadCount': 2,
       'isOnline': true,
-      'rating': 9.2,
+      'tripStatus': 'pending', // pending, active, completed
+      'destination': 'İstanbul Havalimanı → Taksim',
+      'requestTime': '15:00',
       'messages': [
-        {'text': 'Merhaba, ne zaman geleceksiniz?', 'isMe': false, 'time': '14:30'},
-        {'text': '5 dakika içinde orada olacağım', 'isMe': true, 'time': '14:25'},
-        {'text': 'Tamam, bekliyorum', 'isMe': false, 'time': '14:20'},
+        {'text': 'Havalimanından alacak mısınız?', 'isMe': false, 'time': '14:30'},
+        {'text': 'Tabii, hangi terminal?', 'isMe': true, 'time': '14:25'},
+        {'text': 'Dış hatlar terminali', 'isMe': false, 'time': '14:20'},
       ]
     },
     {
       'id': '2',
-      'driverName': 'Mehmet Kaya',
-      'driverImage': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
-      'lastMessage': 'Sefer tamamlandı, teşekkürler!',
+      'customerName': 'Fatma Özkan',
+      'customerImage': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+      'lastMessage': 'Çok teşekkür ederim, güvenli bir yolculuktu!',
       'lastMessageTime': '12:15',
       'unreadCount': 0,
       'isOnline': false,
-      'rating': 9.8,
+      'tripStatus': 'completed',
+      'destination': 'Kadıköy → Bostancı',
+      'requestTime': '11:00',
       'messages': [
-        {'text': 'Sefer tamamlandı, teşekkürler!', 'isMe': false, 'time': '12:15'},
-        {'text': 'Rica ederim, iyi yolculuklar', 'isMe': true, 'time': '12:10'},
+        {'text': 'Çok teşekkür ederim, güvenli bir yolculuktu!', 'isMe': false, 'time': '12:15'},
+        {'text': 'Rica ederim, iyi günler', 'isMe': true, 'time': '12:10'},
       ]
     },
     {
       'id': '3',
-      'driverName': 'Ali Demir',
-      'driverImage': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-      'lastMessage': 'Sesli mesaj gönderdi',
+      'customerName': 'Mehmet Kaya',
+      'customerImage': 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
+      'lastMessage': 'Platform Bildirimi: Yeni seyahat talebi',
       'lastMessageTime': '09:45',
       'unreadCount': 1,
       'isOnline': true,
-      'rating': 8.9,
+      'tripStatus': 'pending',
+      'destination': 'Şişli → Levent',
+      'requestTime': '10:30',
+      'isPlatformMessage': true,
       'messages': [
-        {'text': 'Sesli mesaj', 'isMe': false, 'time': '09:45', 'isVoice': true, 'duration': '0:15'},
-        {'text': 'Anladım, teşekkürler', 'isMe': true, 'time': '09:40'},
+        {'text': 'Platform Bildirimi: Yeni seyahat talebi alındı', 'isMe': false, 'time': '09:45', 'isPlatformMessage': true},
+        {'text': 'Kabul ediyorum', 'isMe': true, 'time': '09:46'},
       ]
     },
     {
       'id': '4',
-      'driverName': 'Fatma Özkan',
-      'driverImage': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
-      'lastMessage': 'Konumunuzu paylaşabilir misiniz?',
+      'customerName': 'Ali Demir',
+      'customerImage': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+      'lastMessage': 'Sesli mesaj gönderdi',
       'lastMessageTime': 'Dün',
       'unreadCount': 0,
       'isOnline': false,
-      'rating': 9.5,
+      'tripStatus': 'active',
+      'destination': 'Beşiktaş → Ortaköy',
+      'requestTime': 'Dün',
       'messages': [
-        {'text': 'Konumunuzu paylaşabilir misiniz?', 'isMe': false, 'time': 'Dün'},
-        {'text': 'Tabii, hemen gönderiyorum', 'isMe': true, 'time': 'Dün'},
+        {'text': 'Sesli mesaj', 'isMe': false, 'time': 'Dün', 'isVoice': true, 'duration': '0:23'},
+        {'text': 'Anladım, geliyorum', 'isMe': true, 'time': 'Dün'},
       ]
     },
   ];
@@ -138,7 +147,7 @@ class _ChatScreenState extends State<ChatScreen> {
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: AppBar(
         title: const Text(
-          'Sohbetler',
+          'Müşteri Mesajları',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -177,7 +186,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'Sohbetler',
+                    'Müşteri Mesajları',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -294,7 +303,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Henüz sohbetiniz yok',
+              'Henüz müşteri mesajınız yok',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -303,7 +312,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Sürücülerle sohbet etmeye başlayın',
+              'Müşterilerden gelen mesajlar burada görünecek',
               style: TextStyle(
                 fontSize: 16,
                 color: const Color(0xFF111111).withOpacity(0.5),
@@ -597,7 +606,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: Text(
-                chat['driverName'],
+                chat['customerName'],
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -605,6 +614,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
             ),
+            _buildTripStatusChip(chat['tripStatus']),
+            SizedBox(width: 8),
             Text(
               chat['lastMessageTime'],
               style: TextStyle(
@@ -614,35 +625,69 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
-        subtitle: Row(
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Text(
-                chat['lastMessage'],
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF444444),
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (chat['unreadCount'] > 0)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
+            SizedBox(height: 4),
+            Row(
+              children: [
+                Icon(
+                  Icons.location_on,
+                  size: 14,
                   color: Color(AppConstants.primaryColorValue),
-                  borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  chat['unreadCount'].toString(),
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+                SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    chat['destination'],
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(AppConstants.textSecondaryColorValue),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              ),
+              ],
+            ),
+            SizedBox(height: 6),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    chat['lastMessage'],
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: chat['isPlatformMessage'] == true 
+                        ? Color(AppConstants.primaryColorValue)
+                        : Color(0xFF444444),
+                      fontWeight: chat['isPlatformMessage'] == true 
+                        ? FontWeight.w600 
+                        : FontWeight.normal,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (chat['unreadCount'] > 0)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Color(AppConstants.primaryColorValue),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      chat['unreadCount'].toString(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ],
         ),
         onTap: () {
@@ -652,6 +697,46 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _buildTripStatusChip(String status) {
+    Color chipColor;
+    String chipText;
+    
+    switch (status) {
+      case 'pending':
+        chipColor = Colors.orange;
+        chipText = 'Bekliyor';
+        break;
+      case 'active':
+        chipColor = Colors.green;
+        chipText = 'Aktif';
+        break;
+      case 'completed':
+        chipColor = Colors.blue;
+        chipText = 'Tamamlandı';
+        break;
+      default:
+        chipColor = Colors.grey;
+        chipText = 'Bilinmiyor';
+    }
+    
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: chipColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: chipColor.withOpacity(0.3)),
+      ),
+      child: Text(
+        chipText,
+        style: TextStyle(
+          fontSize: 10,
+          color: chipColor,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
@@ -690,7 +775,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 width: 40,
                 height: 40,
                 child: Image.network(
-                  widget.chat['driverImage'],
+                  widget.chat['customerImage'],
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
@@ -733,7 +818,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.chat['driverName'],
+                    widget.chat['customerName'],
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -741,7 +826,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     ),
                   ),
                   Text(
-                    widget.chat['isOnline'] ? 'Çevrimiçi' : 'Çevrimdışı',
+                    widget.chat['destination'],
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.8),
                       fontSize: 12,
@@ -867,7 +952,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 width: 32,
                 height: 32,
                 child: Image.network(
-                  widget.chat['driverImage'],
+                  widget.chat['customerImage'],
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(

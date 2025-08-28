@@ -21,8 +21,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordController = TextEditingController();
   final _emailCodeController = TextEditingController();
   final _phoneCodeController = TextEditingController();
+  final _companyNameController = TextEditingController();
+  final _taxNumberController = TextEditingController();
+  final _licenseNumberController = TextEditingController();
 
   bool _showEmailCode = false;
+  String _driverType = 'Bireysel'; // Bireysel veya Kurumsal
   bool _showPhoneCode = false;
   bool _emailVerified = false;
   bool _phoneVerified = false;
@@ -38,6 +42,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _confirmPasswordController.dispose();
     _emailCodeController.dispose();
     _phoneCodeController.dispose();
+    _companyNameController.dispose();
+    _taxNumberController.dispose();
+    _licenseNumberController.dispose();
     super.dispose();
   }
 
@@ -148,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Hesap Oluştur',
+                      'Şöför Hesabı Oluştur',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -157,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Güvenli şoför bulma hizmeti için hesabınızı oluşturun',
+                      'Profesyonel şöför olarak platformumuza katılın',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 14,
@@ -167,6 +174,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
+                // Şöför Tipi Seçimi
+                Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _buildSectionTitle('Şöför Tipi'),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: Text('Bireysel'),
+                                value: 'Bireysel',
+                                groupValue: _driverType,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _driverType = value!;
+                                  });
+                                },
+                                activeColor: Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: Text('Kurumsal'),
+                                value: 'Kurumsal',
+                                groupValue: _driverType,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _driverType = value!;
+                                  });
+                                },
+                                activeColor: Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 // Kişisel Bilgiler Kartı
                 Card(
                   elevation: 2,
@@ -188,6 +243,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                               return 'Ad soyad gereklidir';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                // Ehliyet Numarası
+                CustomTextField(
+                  controller: _licenseNumberController,
+                  hintText: 'Ehliyet Numarası',
+                  prefixIcon: Icons.credit_card,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Ehliyet numarası gereklidir';
                     }
                     return null;
                   },
@@ -395,6 +463,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ],
                         const SizedBox(height: 16),
+                        // Kurumsal bilgiler (sadece kurumsal seçilirse göster)
+                        if (_driverType == 'Kurumsal') ...[
+                          _buildSectionTitle('Kurumsal Bilgiler'),
+                          const SizedBox(height: 12),
+                          CustomTextField(
+                            controller: _companyNameController,
+                            hintText: 'Firma Adı',
+                            prefixIcon: Icons.business,
+                            validator: (value) {
+                              if (_driverType == 'Kurumsal' && (value == null || value.isEmpty)) {
+                                return 'Firma adı gereklidir';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          CustomTextField(
+                            controller: _taxNumberController,
+                            hintText: 'Vergi Numarası',
+                            prefixIcon: Icons.receipt_long,
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (_driverType == 'Kurumsal' && (value == null || value.isEmpty)) {
+                                return 'Vergi numarası gereklidir';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                        ],
                         _buildSectionTitle('Güvenlik Bilgileri'),
                         const SizedBox(height: 12),
                         TextFormField(
@@ -732,14 +830,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 title: Text('Aydınlatma Metni'),
                                                 content: SingleChildScrollView(
                                                   child: Text(
-                                                    'Bu aydınlatma metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, veri sorumlusu sıfatıyla Sürücü Bul uygulaması tarafından hazırlanmıştır.\n\n'
-                                                    'Kişisel verileriniz, aşağıda belirtilen amaçlar kapsamında, hukuka ve dürüstlük kurallarına uygun olarak işlenecektir:\n\n'
-                                                    '• Hizmet kalitesinin artırılması\n'
-                                                    '• Müşteri memnuniyetinin sağlanması\n'
+                                                    'Bu aydınlatma metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") uyarınca, veri sorumlusu sıfatıyla Şöför Uygulaması tarafından hazırlanmıştır.\n\n'
+                                                    'Şöför olarak kişisel verileriniz, aşağıda belirtilen amaçlar kapsamında, hukuka ve dürüstlük kurallarına uygun olarak işlenecektir:\n\n'
+                                                    '• Şöför hizmetinin sunulması\n'
+                                                    '• Güvenli ulaşım hizmetinin sağlanması\n'
                                                     '• Yasal yükümlülüklerin yerine getirilmesi\n'
-                                                    '• Güvenliğin sağlanması\n'
-                                                    '• İletişim faaliyetlerinin yürütülmesi\n\n'
-                                                    'Kişisel verileriniz, yukarıda belirtilen amaçların gerçekleştirilmesi doğrultusunda, hizmet aldığımız tedarikçiler, iş ortaklarımız, grup şirketlerimiz ve yetkili kamu kurum ve kuruluşları ile paylaşılabilecektir.',
+                                                    '• Platform güvenliğinin sağlanması\n'
+                                                    '• Müşteri-şöför eşleştirmesi\n'
+                                                    '• Ödeme ve fatura işlemlerinin yürütülmesi\n\n'
+                                                    'Kişisel verileriniz, yukarıda belirtilen amaçların gerçekleştirilmesi doğrultusunda, müşteriler, ödeme kuruluşları, iş ortaklarımız ve yetkili kamu kurum ve kuruluşları ile paylaşılabilecektir.',
                                                   ),
                                                 ),
                                                 actions: [
@@ -779,7 +878,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
                     return CustomButton(
-                      text: 'Hesap Oluştur',
+                      text: 'Şöför Hesabı Oluştur',
                       icon: Icons.person_add,
                       onPressed: (authProvider.isLoading || !_emailVerified || !_phoneVerified || !_kvkkAccepted || !_aydinlatmaAccepted) ? null : _register,
                       isLoading: authProvider.isLoading,

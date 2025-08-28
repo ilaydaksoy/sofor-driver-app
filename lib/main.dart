@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: MaterialApp(
-        title: 'Sürücü Bul',
+        title: 'Şöför Uygulaması',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.yellow,
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
-            ),
+            ), 
           ),
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
@@ -174,11 +174,11 @@ class MyApp extends StatelessWidget {
           colorScheme: const ColorScheme(
             brightness: Brightness.light,
             primary: Color(AppConstants.primaryColorValue),
-            onPrimary: Colors.black,
+            onPrimary: Colors.white,
             secondary: Color(AppConstants.secondaryColorValue),
             onSecondary: Colors.white,
             tertiary: Color(AppConstants.accentColorValue),
-            onTertiary: Colors.black,
+            onTertiary: Colors.white,
             error: Color(AppConstants.errorColorValue),
             onError: Colors.white,
             background: Color(AppConstants.backgroundColorValue),

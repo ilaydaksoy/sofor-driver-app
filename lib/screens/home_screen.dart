@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../constants/app_constants.dart';
 import 'chat_screen.dart';
-import 'favorites_screen.dart';
-import 'settings_screen.dart';
+import 'notifications_screen.dart';
+import 'profile_screen.dart';
 import 'driver_profile_screen.dart';
 import 'dart:async'; // Added for Timer
 
@@ -17,8 +17,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     _HomeContent(),
     ChatScreen(),
-    FavoritesScreen(),
-    SettingsScreen(),
+    NotificationsScreen(),
+    ProfileScreen(),
   ];
 
   @override
@@ -69,14 +69,14 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Chat',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_outline),
-              activeIcon: Icon(Icons.favorite),
-              label: 'Favoriler',
+              icon: Icon(Icons.notifications_outlined),
+              activeIcon: Icon(Icons.notifications),
+              label: 'Bildirimler',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),
               activeIcon: Icon(Icons.person),
-              label: 'Hesabım',
+              label: 'Profil',
             ),
           ],
         ),
@@ -91,9 +91,15 @@ class _HomeContent extends StatefulWidget {
 }
 
 class _HomeContentState extends State<_HomeContent> {
-  String searchQuery = '';
+  bool isAvailable = true;
+  String workingStatus = 'Müsait';
+  int todayTrips = 3;
+  double todayEarnings = 450.0;
+  double weeklyEarnings = 2450.0;
+  double rating = 4.8;
+  int totalTrips = 127;
+  RangeValues priceRange = RangeValues(50, 300);
   double selectedRating = 0.0;
-  RangeValues priceRange = RangeValues(0, 500);
   String selectedLanguage = 'Tümü';
   
   void _showFilterDialog() {
@@ -299,9 +305,9 @@ class _HomeContentState extends State<_HomeContent> {
       backgroundColor: Color(AppConstants.backgroundColorValue),
       body: CustomScrollView(
         slivers: [
-          // App Bar
+          // App Bar with status toggle
           SliverAppBar(
-            expandedHeight: 200,
+            expandedHeight: 180,
             floating: false,
             pinned: true,
             backgroundColor: Color(AppConstants.primaryColorValue),
@@ -313,51 +319,62 @@ class _HomeContentState extends State<_HomeContent> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Image.asset(
-                            'assets/icons/icon.png',
-                            height: 100,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
+                    SizedBox(height: 40),
+                    Text(
+                      'Şöför Dashboard',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    const SizedBox(height: 8),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
-                              blurRadius: 10,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Sürücü, araç, şehir veya hizmet ara...',
-                            prefixIcon: Icon(Icons.search, color: Color(AppConstants.primaryColorValue)),
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.tune, color: Color(AppConstants.primaryColorValue)),
-                              onPressed: () => _showFilterDialog(),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(16),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                    SizedBox(height: 20),
+                    // Müsaitlik durumu toggle
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.white.withOpacity(0.3)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Durum',
+                                style: TextStyle(
+                                  color: Colors.white.withOpacity(0.8),
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                workingStatus,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                          onChanged: (val) => setState(() => searchQuery = val),
-                        ),
+                          Switch(
+                            value: isAvailable,
+                            onChanged: (value) {
+                              setState(() {
+                                isAvailable = value;
+                                workingStatus = value ? 'Müsait' : 'Meşgul';
+                              });
+                            },
+                            activeColor: Colors.white,
+                            activeTrackColor: Colors.white.withOpacity(0.3),
+                            inactiveThumbColor: Colors.white.withOpacity(0.7),
+                            inactiveTrackColor: Colors.white.withOpacity(0.2),
+                          ),
+                        ],
                       ),
                     ),
                   ],
@@ -369,11 +386,429 @@ class _HomeContentState extends State<_HomeContent> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: _HomeContentBody(),
+              child: _buildDriverDashboard(),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildDriverDashboard() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // İstatistik kartları
+        _buildStatsCards(),
+        SizedBox(height: 20),
+        
+        // Bugünkü özet
+        _buildTodaySummary(),
+        SizedBox(height: 20),
+        
+        // Hızlı aksiyonlar
+        _buildQuickActions(),
+        SizedBox(height: 20),
+        
+        // Son seyahatler
+        _buildRecentTrips(),
+      ],
+    );
+  }
+
+  Widget _buildStatsCards() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Genel İstatistikler',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.textPrimaryColorValue),
+          ),
+        ),
+        SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildStatCard(
+                'Puanım',
+                '$rating/5.0',
+                Icons.star,
+                Color(AppConstants.warningColorValue),
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: _buildStatCard(
+                'Toplam Seyahat',
+                '$totalTrips',
+                Icons.directions_car,
+                Colors.blue,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildStatCard(
+                'Haftalık Kazanç',
+                '${weeklyEarnings.toStringAsFixed(0)} TL',
+                Icons.account_balance_wallet,
+                Colors.green,
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: _buildStatCard(
+                'Bugünkü Kazanç',
+                '${todayEarnings.toStringAsFixed(0)} TL',
+                Icons.today,
+                Color(AppConstants.primaryColorValue),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: color, size: 24),
+          ),
+          SizedBox(height: 12),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(AppConstants.textPrimaryColorValue),
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              color: Color(AppConstants.textSecondaryColorValue),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTodaySummary() {
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Bugünkü Özet',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(AppConstants.textPrimaryColorValue),
+            ),
+          ),
+          SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildSummaryItem('Seyahat', '$todayTrips', Icons.route),
+              _buildSummaryItem('Kazanç', '${todayEarnings.toInt()} TL', Icons.monetization_on),
+              _buildSummaryItem('Süre', '6 saat', Icons.access_time),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSummaryItem(String label, String value, IconData icon) {
+    return Column(
+      children: [
+        Icon(
+          icon,
+          color: Color(AppConstants.primaryColorValue),
+          size: 28,
+        ),
+        SizedBox(height: 8),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.textPrimaryColorValue),
+          ),
+        ),
+        SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: Color(AppConstants.textSecondaryColorValue),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuickActions() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Hızlı Aksiyonlar',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.textPrimaryColorValue),
+          ),
+        ),
+        SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: _buildActionCard(
+                'Mesajlar',
+                '3 yeni',
+                Icons.message,
+                Colors.blue,
+                () => Navigator.of(context).pushNamed('/chat'),
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: _buildActionCard(
+                'Bildirimler',
+                '2 yeni',
+                Icons.notifications,
+                Colors.orange,
+                () {},
+              ),
+            ),
+            SizedBox(width: 12),
+            Expanded(
+              child: _buildActionCard(
+                'Profil',
+                'Düzenle',
+                Icons.person,
+                Colors.purple,
+                () {},
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionCard(String title, String subtitle, IconData icon, Color color, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: color, size: 24),
+            ),
+            SizedBox(height: 12),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color(AppConstants.textPrimaryColorValue),
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 4),
+            Text(
+              subtitle,
+              style: TextStyle(
+                fontSize: 11,
+                color: Color(AppConstants.textSecondaryColorValue),
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecentTrips() {
+    final recentTrips = [
+      {
+        'customer': 'Ahmet Yılmaz',
+        'from': 'Taksim',
+        'to': 'İstanbul Havalimanı',
+        'time': '14:30',
+        'amount': '150 TL',
+        'status': 'Tamamlandı',
+      },
+      {
+        'customer': 'Fatma Özkan',
+        'from': 'Kadıköy',
+        'to': 'Bostancı',
+        'time': '12:15',
+        'amount': '85 TL',
+        'status': 'Tamamlandı',
+      },
+      {
+        'customer': 'Mehmet Kaya',
+        'from': 'Şişli',
+        'to': 'Levent',
+        'time': '09:45',
+        'amount': '65 TL',
+        'status': 'Tamamlandı',
+      },
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Son Seyahatler',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.textPrimaryColorValue),
+          ),
+        ),
+        SizedBox(height: 12),
+        ...recentTrips.map((trip) => Container(
+          margin: EdgeInsets.only(bottom: 12),
+          padding: EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 20,
+                ),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      trip['customer']!,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Color(AppConstants.textPrimaryColorValue),
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      '${trip['from']} → ${trip['to']}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(AppConstants.textSecondaryColorValue),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    trip['amount']!,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Color(AppConstants.primaryColorValue),
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    trip['time']!,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(AppConstants.textSecondaryColorValue),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )).toList(),
+      ],
     );
   }
 }

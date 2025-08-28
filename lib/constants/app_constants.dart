@@ -13,23 +13,23 @@ class AppConstants {
   static const String demoEmail = 'demo@turist.com';
   static const String demoPassword = 'demo123';
 
-  // Colors - Kırmızı ve Siyah Paleti
-  static const int primaryColorValue = 0xFFD32F2F; // Kırmızı
-  static const int secondaryColorValue = 0xFF111111; // Siyah
-  static const int accentColorValue = 0xFFFF5252; // Açık Kırmızı
+  // Colors - Mavi ve Beyaz Paleti
+  static const int primaryColorValue = 0xFF1976D2; // Mavi
+  static const int secondaryColorValue = 0xFF0D47A1; // Koyu Mavi
+  static const int accentColorValue = 0xFF42A5F5; // Açık Mavi
   static const int backgroundColorValue = 0xFFFFFFFF; // Beyaz
   static const int surfaceColorValue = 0xFFFFFFFF; // Beyaz
   static const int cardColorValue = 0xFFF5F5F5; // Açık gri
   static const int textPrimaryColorValue = 0xFF111111; // Siyah
   static const int textSecondaryColorValue = 0xFF444444; // Koyu gri
   static const int textTertiaryColorValue = 0xFF888888; // Açık gri
-  static const int errorColorValue = 0xFFD32F2F; // Kırmızı
+  static const int errorColorValue = 0xFFE53935; // Kırmızı (sadece hata için)
   static const int successColorValue = 0xFF388E3C; // Yeşil
   static const int warningColorValue = 0xFFFFA000; // Turuncu
   static const int infoColorValue = 0xFF616161; // Gri
 
-  // Bordo renk (Burgundy)
-  static const Color burgundy = Color(0xFF800020); // Bordo
+  // Mavi varyasyonları
+  static const Color lightBlue = Color(0xFFE3F2FD); // Açık mavi
   static const int textColorValue = 0xFF111111; // Varsayılan siyah
 
   // Border Colors
@@ -51,7 +51,7 @@ class AppConstants {
   static const String isLoggedInKey = 'is_logged_in';
 
   // App Info
-  static const String appName = 'Sürücü Bul';
+  static const String appName = 'Şöför Uygulaması';
   static const String appVersion = '1.0.0';
   static const String welcomeMessage = 'Güvenli ve konforlu yolculuklar için doğru yerdesiniz.';
 
