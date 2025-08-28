@@ -240,16 +240,23 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                           child: Container(
                                                          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.07),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.white,
+                                  Color(AppConstants.accentColorValue).withOpacity(0.1),
+                                ],
+                              ),
                               borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
+                                  color: Color(AppConstants.primaryColorValue).withOpacity(0.3),
                                   blurRadius: 20,
                                   offset: Offset(0, 10),
                                 ),
                                 BoxShadow(
-                                  color: Color(0xFFE53E3E).withOpacity(0.1),
+                                  color: Color(AppConstants.accentColorValue).withOpacity(0.1),
                                   blurRadius: 15,
                                   offset: Offset(0, 5),
                                 ),
@@ -263,12 +270,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                     Container(
                                       padding: EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: Color(0xFFE53E3E).withOpacity(0.1),
+                                        color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
                                         borderRadius: BorderRadius.circular(12),
                                       ),
                                       child: Icon(
                                         Icons.login,
-                                        color: Color(0xFFE53E3E),
+                                        color: Color(AppConstants.primaryColorValue),
                                         size: 24,
                                       ),
                                     ),
@@ -278,17 +285,17 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            'Giriş Yap',
+                                            'Şöför Girişi',
                                             style: TextStyle(
-                                              color: Color(0xFF111111),
+                                              color: Color(AppConstants.primaryColorValue),
                                               fontSize: 26,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
                                           Text(
-                                            'Hesabınıza giriş yapın',
+                                            'Şöför hesabınıza güvenli giriş yapın',
                                             style: TextStyle(
-                                              color: Color(0xFF666666),
+                                              color: Color(AppConstants.textSecondaryColorValue),
                                               fontSize: 16,
                                             ),
                                           ),
@@ -366,14 +373,14 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
                                       colors: [
-                                        Color(0xFFE53E3E),
-                                        Color(0xFFC53030),
+                                        Color(AppConstants.primaryColorValue),
+                                        Color(AppConstants.secondaryColorValue),
                                       ],
                                     ),
                                     borderRadius: BorderRadius.circular(16),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Color(0xFFE53E3E).withOpacity(0.4),
+                                        color: Color(AppConstants.primaryColorValue).withOpacity(0.4),
                                         blurRadius: 12,
                                         offset: Offset(0, 6),
                                       ),
@@ -401,13 +408,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
                                               Icon(
-                                                Icons.login,
+                                                Icons.local_taxi,
                                                 color: Colors.white,
                                                 size: 20,
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                'Giriş Yap',
+                                                'Şöför Girişi',
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -425,9 +432,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Hesabınız yok mu? ',
+                                      'Şöför hesabınız yok mu? ',
                                       style: TextStyle(
-                                        color: Color(0xFF666666),
+                                        color: Color(AppConstants.textSecondaryColorValue),
                                         fontSize: 16,
                                       ),
                                     ),
@@ -438,9 +445,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                         );
                                       },
                                       child: Text(
-                                        'Kayıt Ol',
+                                        'Şöför Ol',
                                         style: TextStyle(
-                                          color: Color(0xFFE53E3E),
+                                          color: Color(AppConstants.primaryColorValue),
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           decoration: TextDecoration.underline,

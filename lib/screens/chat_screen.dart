@@ -1122,17 +1122,4 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     });
     // TODO: Ses oynatma/durdurma
   }
-
-  void _sendMessage() {
-    if (_messageController.text.trim().isNotEmpty) {
-      setState(() {
-        _messages.add({
-          'text': _messageController.text.trim(),
-          'isMe': true,
-          'time': DateTime.now().toString().substring(11, 16),
-        });
-      });
-      _messageController.clear();
-    }
-  }
 } 
