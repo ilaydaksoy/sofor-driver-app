@@ -108,10 +108,12 @@ flutter_launcher_icons:
   ios: true
   image_path: "assets/icons/icon.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
+  adaptive_icon_background: "#2196F3"  # Mavi arkaplan
+  adaptive_icon_foreground: "assets/icons/icon.png"
   web:
     generate: true
     image_path: "assets/icons/icon.png"
-    background_color: "#FFFFFF"
+    background_color: "#2196F3"  # Mavi arkaplan
     theme_color: "#2196F3"
   windows:
     generate: true
