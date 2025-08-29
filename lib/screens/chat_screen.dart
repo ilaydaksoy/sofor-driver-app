@@ -549,7 +549,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 width: 56,
                 height: 56,
                 child: Image.network(
-                  chat['driverImage'],
+                  chat['customerImage'] ?? '',
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Container(
@@ -606,7 +606,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: [
             Expanded(
               child: Text(
-                chat['customerName'],
+                chat['customerName'] ?? 'Müşteri',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -614,10 +614,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ),
             ),
-            _buildTripStatusChip(chat['tripStatus']),
+            _buildTripStatusChip(chat['tripStatus'] ?? 'unknown'),
             SizedBox(width: 8),
             Text(
-              chat['lastMessageTime'],
+              chat['lastMessageTime'] ?? '',
               style: TextStyle(
                 fontSize: 12,
                 color: Color(0xFF888888),
@@ -639,7 +639,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 SizedBox(width: 4),
                 Expanded(
                   child: Text(
-                    chat['destination'],
+                    chat['destination'] ?? 'Bilinmeyen Konum',
                     style: TextStyle(
                       fontSize: 12,
                       color: Color(AppConstants.textSecondaryColorValue),
@@ -656,7 +656,7 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    chat['lastMessage'],
+                    chat['lastMessage'] ?? 'Mesaj yok',
                     style: TextStyle(
                       fontSize: 14,
                       color: chat['isPlatformMessage'] == true 
@@ -718,6 +718,7 @@ class _ChatScreenState extends State<ChatScreen> {
         chipColor = Colors.blue;
         chipText = 'Tamamlandı';
         break;
+      case 'unknown':
       default:
         chipColor = Colors.grey;
         chipText = 'Bilinmiyor';
@@ -818,7 +819,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.chat['customerName'],
+                    widget.chat['customerName'] ?? 'Müşteri',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -826,7 +827,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     ),
                   ),
                   Text(
-                    widget.chat['destination'],
+                    widget.chat['destination'] ?? 'Bilinmeyen Konum',
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.8),
                       fontSize: 12,
@@ -997,7 +998,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 color: isMe
                     ? Color(AppConstants.primaryColorValue)
                     : isVoice 
-                        ? Color(0xFFE53E3E).withOpacity(0.8) // Sesli mesaj için kırmızı ton
+                        ? Color(AppConstants.primaryColorValue).withOpacity(0.8) // Sesli mesaj için kırmızı ton
                         : Color(0xFFE8E8E8),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16),

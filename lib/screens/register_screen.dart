@@ -145,83 +145,69 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Başlık
-                Column(
-                  children: [
-                    Icon(
-                      Icons.local_taxi,
-                      size: 45,
-                      color: Color(AppConstants.primaryColorValue),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Şöför Hesabı Oluştur',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Color(AppConstants.primaryColorValue),
+                const SizedBox(height: 10),
+                
+                // Logo
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withOpacity(0.9),
+                          Colors.white.withOpacity(0.7),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'Profesyonel şöför olarak platformumuza katılın',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(AppConstants.textSecondaryColorValue),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 24),
-                // Şöför Tipi Seçimi
-                Card(
-                  elevation: 2,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  margin: const EdgeInsets.only(bottom: 16),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _buildSectionTitle('Şöför Tipi'),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: Text('Bireysel'),
-                                value: 'Bireysel',
-                                groupValue: _driverType,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _driverType = value!;
-                                  });
-                                },
-                                activeColor: Color(AppConstants.primaryColorValue),
-                              ),
-                            ),
-                            Expanded(
-                              child: RadioListTile<String>(
-                                title: Text('Kurumsal'),
-                                value: 'Kurumsal',
-                                groupValue: _driverType,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _driverType = value!;
-                                  });
-                                },
-                                activeColor: Color(AppConstants.primaryColorValue),
-                              ),
-                            ),
-                          ],
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 10,
+                          offset: Offset(0, 5),
                         ),
                       ],
                     ),
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(AppConstants.primaryColorValue),
+                      ),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/icons/icon.png',
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Color(AppConstants.primaryColorValue),
+                                  width: 2,
+                                ),
+                              ),
+                              child: Icon(
+                                Icons.business,
+                                size: 30,
+                                color: Color(AppConstants.primaryColorValue),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                 ),
+                const SizedBox(height: 20),
+
                 // Kişisel Bilgiler Kartı
                 Card(
                   elevation: 2,
@@ -462,6 +448,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ],
+                        const SizedBox(height: 24),
+                        // Şöför Tipi Seçimi
+                        _buildSectionTitle('Şöför Tipi'),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: Text('Bireysel'),
+                                value: 'Bireysel',
+                                groupValue: _driverType,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _driverType = value!;
+                                  });
+                                },
+                                activeColor: Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<String>(
+                                title: Text('Kurumsal'),
+                                value: 'Kurumsal',
+                                groupValue: _driverType,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _driverType = value!;
+                                  });
+                                },
+                                activeColor: Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 16),
                         // Kurumsal bilgiler (sadece kurumsal seçilirse göster)
                         if (_driverType == 'Kurumsal') ...[
@@ -878,8 +898,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Consumer<AuthProvider>(
                   builder: (context, authProvider, child) {
                     return CustomButton(
-                      text: 'Şöför Hesabı Oluştur',
-                      icon: Icons.local_taxi,
+                      text: 'Hesap Oluştur',
+                      icon: Icons.person_add,
                       onPressed: (authProvider.isLoading || !_emailVerified || !_phoneVerified || !_kvkkAccepted || !_aydinlatmaAccepted) ? null : _register,
                       isLoading: authProvider.isLoading,
                     );

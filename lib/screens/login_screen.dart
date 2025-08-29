@@ -11,8 +11,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController(text: 'demo@sofor.com');
+  final _passwordController = TextEditingController(text: '123456');
   bool _isLoading = false;
   bool _obscurePassword = true;
   
@@ -107,6 +107,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(AppConstants.primaryColorValue),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -127,109 +128,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   
-                  // Logo ve Başlık Bölümü
-                  AnimatedBuilder(
-                    animation: _logoAnimationController,
-                    builder: (context, child) {
-                      return Transform.scale(
-                        scale: _logoScaleAnimation.value,
-                        child: Container(
-                                                     padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.08),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Color(AppConstants.accentColorValue),
-                                Colors.white,
-                                Color(AppConstants.accentColorValue),
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(24),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(AppConstants.accentColorValue).withOpacity(0.4),
-                                blurRadius: 20,
-                                offset: Offset(0, 10),
-                                spreadRadius: 2,
-                              ),
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 15,
-                                offset: Offset(0, 5),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            children: [
-                              // Animasyonlu logo container
-                              Container(
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    colors: [
-                                      Colors.white.withOpacity(0.3),
-                                      Colors.white.withOpacity(0.1),
-                                    ],
-                                  ),
-                                  shape: BoxShape.circle,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      blurRadius: 10,
-                                      offset: Offset(0, 5),
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  Icons.local_taxi,
-                                  size: 80,
-                                  color: Color(AppConstants.primaryColorValue),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                'Şöför Uygulaması',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'Profesyonel şöförler için tasarlandı',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.9),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                              const SizedBox(height: 16),
-                              // Özellikler
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildFeatureItem(Icons.security, 'Güvenli'),
-                                  _buildFeatureItem(Icons.speed, 'Hızlı'),
-                                  _buildFeatureItem(Icons.star, 'Kaliteli'),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-                  
-                  // Login Form
+                  // Tek Kart - Logo ve Login Form
                   AnimatedBuilder(
                     animation: _formAnimationController,
                     builder: (context, child) {
@@ -238,73 +139,108 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                         child: Opacity(
                           opacity: _formFadeAnimation.value,
                           child: Container(
-                                                         padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.07),
+                            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.08),
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [
-                                  Colors.white,
-                                  Color(AppConstants.accentColorValue).withOpacity(0.1),
+                                  Colors.white.withOpacity(0.95),
+                                  Colors.white.withOpacity(0.85),
+                                  Colors.white.withOpacity(0.95),
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(24),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Color(AppConstants.primaryColorValue).withOpacity(0.3),
+                                  color: Color(AppConstants.accentColorValue).withOpacity(0.4),
                                   blurRadius: 20,
                                   offset: Offset(0, 10),
+                                  spreadRadius: 2,
                                 ),
                                 BoxShadow(
-                                  color: Color(AppConstants.accentColorValue).withOpacity(0.1),
+                                  color: Colors.black.withOpacity(0.3),
                                   blurRadius: 15,
                                   offset: Offset(0, 5),
                                 ),
                               ],
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Icon(
-                                        Icons.login,
-                                        color: Color(AppConstants.primaryColorValue),
-                                        size: 24,
-                                      ),
+                                // Logo ve başlık bölümü
+                                Container(
+                                  padding: EdgeInsets.all(20),
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Colors.white.withOpacity(0.9),
+                                        Colors.white.withOpacity(0.7),
+                                      ],
                                     ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            'Şöför Girişi',
-                                            style: TextStyle(
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 10,
+                                        offset: Offset(0, 5),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Color(AppConstants.primaryColorValue),
+                                    ),
+                                    child: ClipOval(
+                                      child: Image.asset(
+                                        'assets/icons/icon.png',
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.contain,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          print('Logo yükleme hatası: $error');
+                                          return Container(
+                                            width: 70,
+                                            height: 70,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                color: Color(AppConstants.primaryColorValue),
+                                                width: 2,
+                                              ),
+                                            ),
+                                            child: Icon(
+                                              Icons.business,
+                                              size: 40,
                                               color: Color(AppConstants.primaryColorValue),
-                                              fontSize: 26,
-                                              fontWeight: FontWeight.bold,
                                             ),
-                                          ),
-                                          Text(
-                                            'Şöför hesabınıza güvenli giriş yapın',
-                                            style: TextStyle(
-                                              color: Color(AppConstants.textSecondaryColorValue),
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        ],
+                                          );
+                                        },
                                       ),
                                     ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                // Özellikler
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildFeatureItem(Icons.security, 'Güvenli'),
+                                    _buildFeatureItem(Icons.speed, 'Hızlı'),
+                                    _buildFeatureItem(Icons.star, 'Kaliteli'),
                                   ],
                                 ),
-                                SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                                
+                                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                                
+                                // Form kısmı - giriş başlığı kaldırıldı
                                 
                                 // Email Field
                                 _buildInputField(
@@ -414,7 +350,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                'Şöför Girişi',
+                                                'Giriş Yap',
                                                 style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -432,7 +368,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      'Şöför hesabınız yok mu? ',
+                                      'Hesabınız yok mu? ',
                                       style: TextStyle(
                                         color: Color(AppConstants.textSecondaryColorValue),
                                         fontSize: 16,
@@ -445,12 +381,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                         );
                                       },
                                       child: Text(
-                                        'Şöför Ol',
+                                        'Kayıt Ol',
                                         style: TextStyle(
                                           color: Color(AppConstants.primaryColorValue),
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           decoration: TextDecoration.underline,
+                                          decorationColor: Color(AppConstants.primaryColorValue),
                                         ),
                                       ),
                                     ),
@@ -478,12 +415,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         Container(
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withOpacity(0.8),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(
             icon,
-            color: Colors.white,
+            color: Color(AppConstants.primaryColorValue),
             size: 20,
           ),
         ),
@@ -491,7 +428,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
         Text(
           text,
           style: TextStyle(
-            color: Colors.white.withOpacity(0.9),
+            color: Color(AppConstants.primaryColorValue),
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -534,12 +471,12 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             child: Container(
               padding: EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Color(0xFFE53E3E).withOpacity(0.1),
+                color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
                 icon,
-                color: Color(0xFFE53E3E),
+                color: Color(AppConstants.primaryColorValue),
                 size: 20,
               ),
             ),
@@ -557,13 +494,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: Color(0xFFE53E3E).withOpacity(0.3),
+              color: Color(AppConstants.primaryColorValue).withOpacity(0.3),
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(
-              color: Color(0xFFE53E3E),
+              color: Color(AppConstants.primaryColorValue),
               width: 2,
             ),
           ),

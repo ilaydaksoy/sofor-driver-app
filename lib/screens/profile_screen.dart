@@ -15,97 +15,152 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(AppConstants.primaryColorValue),
-      appBar: AppBar(
-        backgroundColor: Color(0xFF111111),
-        foregroundColor: Colors.white,
-        elevation: 1,
-        title: const Text(
-          'Profil',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Şöför Profil Kartı
-            Card(
-              elevation: 2,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+      backgroundColor: Colors.grey[50],
+      body: CustomScrollView(
+        slivers: [
+          // Modern App Bar
+          SliverAppBar(
+            expandedHeight: 120,
+            floating: false,
+            pinned: true,
+            backgroundColor: Color(AppConstants.primaryColorValue),
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(
+                'Profil',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    // Profil Fotoğrafı
-                    Stack(
-                      children: [
-                        ClipOval(
-                          child: Container(
-                            width: 100,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              color: Color(AppConstants.primaryColorValue),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.person, size: 50, color: Colors.white),
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2),
-                            ),
-                            child: Icon(Icons.verified, color: Colors.white, size: 16),
-                          ),
-                        ),
-                      ],
+              centerTitle: true,
+            ),
+          ),
+          
+          // Content
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  // Modern Profil Kartı
+                  _buildModernProfileCard(),
+                  SizedBox(height: 16),
+                  
+                                // Compact Stats
+              _buildCompactStats(),
+              SizedBox(height: 16),
+                  
+                  // Vehicle Information
+                  _buildVehicleInfo(),
+                  SizedBox(height: 16),
+                  
+                  // Quick Actions
+                  _buildQuickActions(context),
+                  SizedBox(height: 16),
+                  
+                  // Account Settings
+                  _buildAccountSettings(context),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildModernProfileCard() {
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Profil Resmi ve Temel Bilgiler
+          Row(
+            children: [
+              // Profil Fotoğrafı
+              Stack(
+                children: [
+                  ClipOval(
+                    child: Container(
+                      width: 70,
+                      height: 70,
+                      decoration: BoxDecoration(
+                        color: Color(AppConstants.primaryColorValue),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(Icons.person, size: 35, color: Colors.white),
                     ),
-                    const SizedBox(height: 16),
-                    // Şöför Adı
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      width: 20,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: Icon(Icons.verified, color: Colors.white, size: 12),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(width: 16),
+              
+              // Şöför Bilgileri
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
                       'Ahmet Yılmaz',
-                      style: const TextStyle(
-                        fontSize: 24,
+                      style: TextStyle(
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF111111),
+                        color: Color(AppConstants.textPrimaryColorValue),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    // E-posta
+                    SizedBox(height: 4),
                     Text(
                       'ahmet.yilmaz@sofor.com',
                       style: TextStyle(
-                        fontSize: 16,
-                        color: const Color(0xFF444444),
+                        fontSize: 14,
+                        color: Color(AppConstants.textSecondaryColorValue),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8),
                     // Müsaitlik Durumu
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.green.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.green),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.circle, size: 12, color: Colors.green),
-                          const SizedBox(width: 6),
+                          Container(
+                            width: 8,
+                            height: 8,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                          SizedBox(width: 6),
                           Text(
                             'Müsait',
                             style: TextStyle(
@@ -120,311 +175,109 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCompactStats() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 8,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(child: _buildCompactStatItem('127', 'Sefer', Icons.directions_car, Colors.blue)),
+          Container(width: 1, height: 40, color: Colors.grey[200]),
+          Expanded(child: _buildCompactStatItem('4.8', 'Puan', Icons.star, Colors.amber)),
+          Container(width: 1, height: 40, color: Colors.grey[200]),
+          Expanded(child: _buildCompactStatItem('5 Yıl', 'Deneyim', Icons.work, Colors.purple)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCompactStatItem(String value, String label, IconData icon, Color color) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 20),
+        SizedBox(height: 4),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: Color(AppConstants.textPrimaryColorValue),
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 10,
+            color: Color(AppConstants.textSecondaryColorValue),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildModernStatCard(String value, String label, IconData icon, Color color) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
             ),
-            const SizedBox(height: 24),
-            // İstatistikler
-            Row(
+            child: Icon(icon, color: color, size: 20),
+          ),
+          SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: _buildStatCard(
-                    'Toplam Sefer',
-                    '127',
-                    Icons.directions_car,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatCard(
-                    'Puan',
-                    '4.8',
-                    Icons.star,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    'Bu Ay Kazanç',
-                    '12.800 TL',
-                    Icons.account_balance_wallet,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatCard(
-                    'Deneyim',
-                    '5 Yıl',
-                    Icons.work,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Kişisel Bilgiler (Belgeye Göre)
-            _buildInfoCard(
-              'Kişisel Bilgiler',
-              [
-                _buildInfoRow('Telefon', '+90 555 123 4567'),
-                _buildInfoRow('Ehliyet No', 'E-123456789'),
-                _buildInfoRow('Ehliyet Tarihi', '15.03.2019'),
-                _buildInfoRow('Deneyim Süresi', '5 Yıl'),
-                _buildInfoRow('Doğum Tarihi', '12.05.1985'),
-                _buildInfoRow('Şehir', 'İstanbul'),
-                _buildPersonalIntroduction(),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Araç Detayları (Belgeye Göre)
-            _buildInfoCard(
-              'Araç Detayları',
-              [
-                _buildInfoRow('Marka/Model', 'Mercedes C200'),
-                _buildInfoRow('Plaka', '34 ABC 123'),
-                _buildInfoRow('Renk', 'Siyah'),
-                _buildInfoRow('Yıl', '2020'),
-                _buildInfoRow('Yakıt Tipi', 'Dizel'),
-                _buildInfoRow('Koltuk Sayısı', '4+1'),
-                _buildInfoRow('Klima', 'Var'),
-                _buildInfoRow('Bagaj Hacmi', 'Büyük'),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Dil Yetkinlikleri (Belgeye Göre)
-            _buildInfoCard(
-              'Dil Yetkinlikleri',
-              [
-                _buildLanguageChips(['Türkçe', 'İngilizce', 'Almanca']),
-                SizedBox(height: 8),
                 Text(
-                  'Konuşma düzeyleri belirlenmesi',
+                  value,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                Text(
+                  label,
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(AppConstants.textSecondaryColorValue),
-                    fontStyle: FontStyle.italic,
                   ),
                 ),
               ],
-            ),
-            const SizedBox(height: 16),
-            // Başvuru Sistemi (Belgeye Göre)
-            _buildInfoCard(
-              'Başvuru Sistemi',
-              [
-                _buildStatusRow('Platform Onayı', 'Onaylandı', true),
-                _buildInfoRow('Onay Tarihi', '15.03.2020'),
-                _buildInfoRow('Son Güncelleme', '28.11.2024'),
-                _buildInfoRow('Hesap Tipi', 'Bireysel'),
-                _buildInfoRow('Durum', 'Aktif'),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Performans İstatistikleri
-            _buildInfoCard(
-              'Performans İstatistikleri',
-              [
-                _buildInfoRow('Profil Görüntülenme', '1,247 kez'),
-                _buildInfoRow('Mesaj Yanıt Oranı', '%98'),
-                _buildInfoRow('Ortalama Yanıt Süresi', '5 dakika'),
-                _buildInfoRow('Müşteri Memnuniyeti', '4.8/5.0'),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Aksiyon Butonları
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    icon: Icon(Icons.edit, color: Color(0xFF111111)),
-                    label: Text('Düzenle', style: TextStyle(color: Color(0xFF111111))),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(AppConstants.primaryColorValue),
-                      foregroundColor: Color(0xFF111111),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 2,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProfileEditScreen()),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    icon: Icon(Icons.settings, color: Colors.white),
-                    label: Text('Ayarlar', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF111111),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 2,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SettingsScreen()),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    icon: Icon(Icons.rate_review, color: Color(0xFF111111)),
-                    label: Text('Yorumlar', style: TextStyle(color: Color(0xFF111111))),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(AppConstants.primaryColorValue),
-                      foregroundColor: Color(0xFF111111),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 2,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ReviewsScreen()),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    icon: Icon(Icons.help, color: Colors.white),
-                    label: Text('Yardım', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF111111),
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 2,
-                    ),
-                    onPressed: () {},
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              icon: Icon(Icons.logout, color: Colors.white),
-              label: Text('Çıkış Yap', style: TextStyle(color: Colors.white)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 2,
-                minimumSize: Size(double.infinity, 48),
-              ),
-              onPressed: () => _showLogoutDialog(context),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatCard(String title, String value, IconData icon) {
-    return Card(
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              color: const Color(AppConstants.primaryColorValue),
-              size: 32,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF111111),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 12,
-                color: const Color(0xFF444444),
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoCard(String title, List<Widget> children) {
-    return Card(
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF111111),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ...children,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              color: const Color(0xFF444444),
-            ),
-          ),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFF111111),
             ),
           ),
         ],
@@ -432,93 +285,58 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLanguageChips(List<String> languages) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: languages.map((language) => Container(
-        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: Color(AppConstants.primaryColorValue).withOpacity(0.3),
+  Widget _buildQuickActions(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 4,
+            offset: Offset(0, 2),
           ),
-        ),
-        child: Text(
-          language,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: Color(AppConstants.primaryColorValue),
-          ),
-        ),
-      )).toList(),
-    );
-  }
-
-  Widget _buildPersonalIntroduction() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 12),
-        Text(
-          'Kişisel Tanıtım',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: Color(AppConstants.textPrimaryColorValue),
-          ),
-        ),
-        SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey[300]!),
-          ),
-          child: Text(
-            'Merhaba! Ben Ahmet, 5 yıllık tecrübeli bir şöförüm. Güvenli ve konforlu seyahatler için bana ulaşabilirsiniz. İngilizce ve Almanca konuşabiliyorum.',
-            style: TextStyle(
-              fontSize: 13,
-              color: Color(AppConstants.textPrimaryColorValue),
-              height: 1.4,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatusRow(String label, String value, bool isPositive) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            label,
+            'Hızlı İşlemler',
             style: TextStyle(
-              fontSize: 14,
-              color: const Color(0xFF444444),
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(AppConstants.textPrimaryColorValue),
             ),
           ),
+          SizedBox(height: 12),
           Row(
             children: [
-              Icon(
-                isPositive ? Icons.check_circle : Icons.cancel,
-                size: 16,
-                color: isPositive ? Colors.green : Colors.red,
+              Expanded(
+                child: _buildActionButton(
+                  'Düzenle',
+                  Icons.edit,
+                  Color(AppConstants.primaryColorValue),
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileEditScreen())),
+                ),
               ),
-              SizedBox(width: 4),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: isPositive ? Colors.green : Colors.red,
+              SizedBox(width: 8),
+              Expanded(
+                child: _buildActionButton(
+                  'Yorumlar',
+                  Icons.star,
+                  Colors.amber,
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => ReviewsScreen())),
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: _buildActionButton(
+                  'Performans',
+                  Icons.analytics,
+                  Colors.green,
+                  () => Navigator.push(context, MaterialPageRoute(builder: (context) => PerformanceAnalyticsScreen())),
                 ),
               ),
             ],
@@ -528,36 +346,404 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildActionButton(String label, IconData icon, Color color, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 12),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Column(
+          children: [
+            Icon(icon, color: color, size: 20),
+            SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: color,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAccountSettings(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Hesap',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Color(AppConstants.textPrimaryColorValue),
+            ),
+          ),
+          SizedBox(height: 12),
+          _buildSettingItem(
+            'Ayarlar',
+            Icons.settings,
+            () => Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsScreen())),
+          ),
+          _buildSettingItem(
+            'Yardım & Destek',
+            Icons.help_outline,
+            () {},
+          ),
+
+          Divider(),
+          _buildSettingItem(
+            'Çıkış Yap',
+            Icons.logout,
+            () => _showLogoutDialog(context),
+            isDestructive: true,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingItem(String title, IconData icon, VoidCallback onTap, {bool isDestructive = false}) {
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Icon(
+        icon, 
+        color: isDestructive ? Colors.red : Color(AppConstants.textSecondaryColorValue),
+        size: 20,
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 14,
+          color: isDestructive ? Colors.red : Color(AppConstants.textPrimaryColorValue),
+        ),
+      ),
+      trailing: Icon(
+        Icons.chevron_right,
+        color: Color(AppConstants.textSecondaryColorValue),
+        size: 18,
+      ),
+      onTap: onTap,
+    );
+  }
+
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Çıkış Yap'),
-        content: const Text('Hesabınızdan çıkış yapmak istediğinizden emin misiniz?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('İptal'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.of(context).pop();
-              final authProvider = Provider.of<AuthProvider>(context, listen: false);
-              await authProvider.logout();
-              if (context.mounted) {
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Çıkış Yap'),
+          content: Text('Hesabınızdan çıkış yapmak istediğinizden emin misiniz?'),
+          actions: [
+            TextButton(
+              child: Text('İptal'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text('Çıkış Yap', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Provider.of<AuthProvider>(context, listen: false).logout();
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                   (route) => false,
                 );
-              }
-            },
-            child: Text(
-              'Çıkış Yap',
-              style: TextStyle(color: Color(AppConstants.primaryColorValue)),
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildVehicleInfo() {
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 10,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Icon(
+                  Icons.directions_car,
+                  color: Color(AppConstants.primaryColorValue),
+                  size: 24,
+                ),
+              ),
+              SizedBox(width: 12),
+              Text(
+                'Araç Bilgileri',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(AppConstants.textPrimaryColorValue),
+                ),
+              ),
+            ],
+          ),
+          
+          SizedBox(height: 20),
+          
+          // Vehicle Photo Gallery
+          Container(
+            height: 180,
+            child: Column(
+              children: [
+                // Gallery
+                Expanded(
+                  child: PageView.builder(
+                    itemCount: 10,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 4),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(AppConstants.primaryColorValue).withOpacity(0.1),
+                              Color(AppConstants.accentColorValue).withOpacity(0.1),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: Color(AppConstants.primaryColorValue).withOpacity(0.2),
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.directions_car,
+                              size: 50,
+                              color: Color(AppConstants.primaryColorValue).withOpacity(0.7),
+                            ),
+                            SizedBox(height: 8),
+                            Text(
+                              'Araç Fotoğrafı ${index + 1}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color(AppConstants.primaryColorValue),
+                              ),
+                            ),
+                            Text(
+                              'Mercedes C200',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Color(AppConstants.textSecondaryColorValue),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 8),
+                // Page Indicators
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(10, (index) {
+                    return Container(
+                      margin: EdgeInsets.symmetric(horizontal: 2),
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: index == 0 
+                          ? Color(AppConstants.primaryColorValue) 
+                          : Color(AppConstants.primaryColorValue).withOpacity(0.3),
+                        shape: BoxShape.circle,
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            ),
+          ),
+          
+          SizedBox(height: 20),
+          
+          // Vehicle Details Grid
+          GridView.count(
+            crossAxisCount: 2,
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 2.5,
+            children: [
+              _buildVehicleDetailCard('Marka/Model', 'Mercedes C200', Icons.car_rental),
+              _buildVehicleDetailCard('Plaka', '34 ABC 123', Icons.confirmation_number),
+              _buildVehicleDetailCard('Yıl', '2020', Icons.calendar_today),
+              _buildVehicleDetailCard('Renk', 'Siyah', Icons.palette),
+              _buildVehicleDetailCard('Yakıt Tipi', 'Dizel', Icons.local_gas_station),
+              _buildVehicleDetailCard('Koltuk Sayısı', '4+1', Icons.airline_seat_recline_normal),
+            ],
+          ),
+          
+          SizedBox(height: 16),
+          
+          // Vehicle Features
+          Container(
+            padding: EdgeInsets.all(12), // 16'dan 12'ye
+            decoration: BoxDecoration(
+              color: Color(AppConstants.primaryColorValue).withOpacity(0.05),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Araç Özellikleri',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                SizedBox(height: 8), // 12'den 8'e
+                Wrap(
+                  spacing: 6, // 8'den 6'ya
+                  runSpacing: 6, // 8'den 6'ya
+                  children: [
+                    _buildFeatureChip('Klima', Icons.ac_unit, Colors.blue),
+                    _buildFeatureChip('GPS', Icons.navigation, Colors.green),
+                    _buildFeatureChip('Bluetooth', Icons.bluetooth, Colors.purple),
+                    _buildFeatureChip('USB Şarj', Icons.usb, Colors.orange),
+                    _buildFeatureChip('Wi-Fi', Icons.wifi, Colors.teal),
+                    _buildFeatureChip('Kamera', Icons.videocam, Colors.red), // Daha kısa isim
+                    _buildFeatureChip('Navigasyon', Icons.map, Colors.indigo),
+                    _buildFeatureChip('Müzik', Icons.music_note, Colors.pink),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
-} 
+
+  Widget _buildVehicleDetailCard(String label, String value, IconData icon) {
+    return Container(
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 18,
+            color: Color(AppConstants.primaryColorValue),
+          ),
+          SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Color(AppConstants.textPrimaryColorValue),
+                  ),
+                ),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: Color(AppConstants.textSecondaryColorValue),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureChip(String label, IconData icon, Color color) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4), // Daha küçük padding
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16), // Daha küçük radius
+        border: Border.all(
+          color: color.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            size: 14, // 16'dan 14'e
+            color: color,
+          ),
+          SizedBox(width: 4), // 6'dan 4'e
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 10, // 12'den 10'a
+              color: color,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

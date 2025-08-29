@@ -42,6 +42,11 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
   final List<String> _cities = [
     'İstanbul', 'Ankara', 'İzmir', 'Antalya', 'Bursa', 'Adana', 'Konya', 'Gaziantep'
   ];
+  
+  // Araç fotoğrafları
+  List<String> _vehiclePhotos = [
+    'photo1.jpg', 'photo2.jpg', 'photo3.jpg' // Simulasyon için
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -326,6 +331,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               ),
             ],
           ),
+          SizedBox(height: 20),
+          // Araç Fotoğrafları
+          _buildVehiclePhotosSection(),
         ],
       ),
     );
@@ -548,6 +556,246 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildVehiclePhotosSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Araç Fotoğrafları',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(AppConstants.textPrimaryColorValue),
+              ),
+            ),
+            TextButton.icon(
+              onPressed: _addVehiclePhoto,
+              icon: Icon(Icons.add_photo_alternate, size: 18),
+              label: Text('Ekle'),
+              style: TextButton.styleFrom(
+                foregroundColor: Color(AppConstants.primaryColorValue),
+                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 12),
+        Container(
+          height: 100,
+          child: _vehiclePhotos.isEmpty
+              ? Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey[300]!),
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.add_photo_alternate, 
+                             color: Colors.grey[400], size: 32),
+                        SizedBox(height: 8),
+                        Text(
+                          'Araç fotoğrafı ekleyin',
+                          style: TextStyle(
+                            color: Colors.grey[500],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: _vehiclePhotos.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == _vehiclePhotos.length) {
+                      return Container(
+                        width: 100,
+                        margin: EdgeInsets.only(right: 8),
+                        child: GestureDetector(
+                          onTap: _addVehiclePhoto,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(color: Colors.grey[300]!),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.add, color: Colors.grey[400], size: 24),
+                                SizedBox(height: 4),
+                                Text(
+                                  'Ekle',
+                                  style: TextStyle(
+                                    color: Colors.grey[500],
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    
+                    return Container(
+                      width: 100,
+                      margin: EdgeInsets.only(right: 8),
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Color(AppConstants.primaryColorValue).withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Color(AppConstants.primaryColorValue).withOpacity(0.3),
+                              ),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.directions_car, 
+                                       color: Color(AppConstants.primaryColorValue), 
+                                       size: 32),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    'Fotoğraf ${index + 1}',
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Color(AppConstants.primaryColorValue),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: 4,
+                            right: 4,
+                            child: GestureDetector(
+                              onTap: () => _removeVehiclePhoto(index),
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.close,
+                                  color: Colors.white,
+                                  size: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+        ),
+        if (_vehiclePhotos.isNotEmpty) ...[
+          SizedBox(height: 8),
+          Text(
+            '${_vehiclePhotos.length}/10 fotoğraf',
+            style: TextStyle(
+              fontSize: 12,
+              color: Color(AppConstants.textSecondaryColorValue),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  void _addVehiclePhoto() {
+    if (_vehiclePhotos.length >= 10) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('En fazla 10 fotoğraf ekleyebilirsiniz'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+    
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.camera_alt),
+              title: Text('Kamera'),
+              onTap: () {
+                Navigator.pop(context);
+                // Simulasyon için yeni fotoğraf ekle
+                setState(() {
+                  _vehiclePhotos.add('photo${_vehiclePhotos.length + 1}.jpg');
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Fotoğraf eklendi')),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.photo_library),
+              title: Text('Galeri'),
+              onTap: () {
+                Navigator.pop(context);
+                // Simulasyon için yeni fotoğraf ekle
+                setState(() {
+                  _vehiclePhotos.add('photo${_vehiclePhotos.length + 1}.jpg');
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Fotoğraf eklendi')),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _removeVehiclePhoto(int index) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Fotoğrafı Sil'),
+        content: Text('Bu fotoğrafı silmek istediğinizden emin misiniz?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('İptal'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              setState(() {
+                _vehiclePhotos.removeAt(index);
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Fotoğraf silindi')),
+              );
+            },
+            child: Text('Sil', style: TextStyle(color: Colors.red)),
+          ),
+        ],
       ),
     );
   }

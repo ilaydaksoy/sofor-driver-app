@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/app_constants.dart';
+import 'help_center_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool pushNotifications = true;
   bool emailNotifications = false;
   bool smsNotifications = true;
-  bool locationAccess = true;
+
   bool darkMode = false;
   bool autoAcceptTrips = false;
   
@@ -37,13 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               'Uygulama Ayarları',
               [
                 _buildLanguageSelector(),
-                _buildSwitchTile(
-                  'Karanlık Mod', 
-                  'Koyu tema kullan',
-                  darkMode, 
-                  Icons.dark_mode,
-                  (value) => setState(() => darkMode = value),
-                ),
+
                 _buildSwitchTile(
                   'Otomatik Seyahat Kabul', 
                   'Uygun seyahatleri otomatik kabul et',
@@ -90,13 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildSettingsSection(
               'Gizlilik ve Güvenlik',
               [
-                _buildSwitchTile(
-                  'Konum Erişimi', 
-                  'Konum servislerini kullan',
-                  locationAccess, 
-                  Icons.location_on,
-                  (value) => setState(() => locationAccess = value),
-                ),
+
                 _buildNavigationTile(
                   'Veri ve Gizlilik',
                   'Veri kullanımı ve gizlilik ayarları',
@@ -142,16 +131,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               [
                 _buildNavigationTile(
                   'Yardım Merkezi',
-                  'SSS ve yardım konuları',
+                  'SSS, iletişim ve yardım konuları',
                   Icons.help,
                   () => _openHelpCenter(),
                 ),
-                _buildNavigationTile(
-                  'İletişim',
-                  'Bizimle iletişime geçin',
-                  Icons.contact_support,
-                  () => _openContact(),
-                ),
+
                 _buildNavigationTile(
                   'Uygulama Hakkında',
                   'Versiyon ve yasal bilgiler',
@@ -275,7 +259,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       trailing: Switch(
         value: value,
         onChanged: onChanged,
-        activeColor: Color(AppConstants.primaryColorValue),
+        activeColor: Colors.white,
+        activeTrackColor: Color(AppConstants.primaryColorValue),
+        inactiveThumbColor: Colors.white,
+        inactiveTrackColor: Colors.grey[400],
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
     );
   }
@@ -554,18 +542,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _openHelpCenter() {
-    // TODO: Yardım merkezi sayfasını aç
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Yardım merkezi açılıyor...')),
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HelpCenterScreen(),
+      ),
     );
   }
 
-  void _openContact() {
-    // TODO: İletişim sayfasını aç
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('İletişim sayfası açılıyor...')),
-    );
-  }
+
 
   void _showAboutDialog() {
     showAboutDialog(

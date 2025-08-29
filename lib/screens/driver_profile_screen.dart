@@ -54,7 +54,7 @@ class _DriverProfileScreenState extends State<DriverProfileScreen> {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
               decoration: BoxDecoration(
-                color: Color(0xFFE53E3E),
+                color: Color(AppConstants.primaryColorValue),
                 borderRadius: const BorderRadius.only(
                   bottomLeft: Radius.circular(32),
                   bottomRight: Radius.circular(32),

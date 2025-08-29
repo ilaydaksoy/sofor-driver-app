@@ -38,21 +38,21 @@ class ApiService {
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       // Test API için demo kullanıcı bilgileri
-      if (email == 'demo@turist.com' && password == '123456') {
+      if (email == 'demo@sofor.com' && password == '123456') {
         return {
           'token': 'demo_token_123456',
                   'user': {
           'id': '1',
-          'name': 'Demo Sürücü',
-          'email': 'demo@turist.com',
+          'name': 'Ahmet Yılmaz',
+          'email': 'demo@sofor.com',
           'phone': '+90 555 123 4567',
           'profile_image': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
-          'license_number': 'ABC123456',
-          'vehicle_model': 'Mercedes Vito',
+          'license_number': 'E-123456789',
+          'vehicle_model': 'Mercedes C200',
           'vehicle_plate': '34 ABC 123',
           'is_online': true,
           'rating': 4.8,
-          'total_trips': 156,
+          'total_trips': 127,
         }
         };
       }
