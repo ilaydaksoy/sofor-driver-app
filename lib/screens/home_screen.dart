@@ -95,6 +95,7 @@ class _HomeContentState extends State<_HomeContent> {
   bool isAvailable = true;
   String workingStatus = 'Müsait';
   int todayTrips = 3;
+  int weeklyTrips = 24;
   double todayEarnings = 450.0;
   double weeklyEarnings = 2450.0;
   double rating = 4.8;
@@ -245,24 +246,7 @@ class _HomeContentState extends State<_HomeContent> {
                 ),
                 const SizedBox(height: 15),
                 
-                // Fiyat Aralığı
-                Text(
-                  'Fiyat Aralığı: ${priceRange.start.toInt()} - ${priceRange.end.toInt()} TL',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(AppConstants.textPrimaryColorValue),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                RangeSlider(
-                  values: priceRange,
-                  min: 0,
-                  max: 500,
-                  divisions: 50,
-                  activeColor: Color(AppConstants.primaryColorValue),
-                  onChanged: (values) => setState(() => priceRange = values),
-                ),
+                // Removed price range filter
                 const SizedBox(height: 15),
                 
                 // Butonlar
@@ -485,30 +469,10 @@ class _HomeContentState extends State<_HomeContent> {
                                 ),
                               ),
                               
-                              // Earnings Section
+                              // Expanded area for better spacing
                               Expanded(
                                 flex: 2,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      'Bugün Kazandığım',
-                                      style: TextStyle(
-                                        color: Colors.white.withOpacity(0.8),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      '${todayEarnings.toStringAsFixed(0)} TL',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                child: SizedBox(),
                               ),
                               
                               // Switch Section
@@ -1029,7 +993,6 @@ class _HomeContentState extends State<_HomeContent> {
       {
         'name': 'Ahmet Y.',
         'route': 'Taksim → Havalimanı',
-        'price': '150 TL',
         'time': '14:30',
         'rating': '5.0',
         'status': 'completed'
@@ -1037,7 +1000,6 @@ class _HomeContentState extends State<_HomeContent> {
       {
         'name': 'Fatma Ö.',
         'route': 'Kadıköy → Bostancı',
-        'price': '85 TL',
         'time': '12:15',
         'rating': '4.8',
         'status': 'completed'
@@ -1045,7 +1007,6 @@ class _HomeContentState extends State<_HomeContent> {
       {
         'name': 'Mehmet K.',
         'route': 'Şişli → Levent',
-        'price': '65 TL',
         'time': '09:45',
         'rating': '4.9',
         'status': 'completed'
@@ -1192,18 +1153,10 @@ class _HomeContentState extends State<_HomeContent> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      trip['price']!,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF00C853), // Parlak yeşil
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
                       trip['time']!,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                         color: Color(AppConstants.textSecondaryColorValue),
                       ),
                     ),
@@ -1281,7 +1234,7 @@ class _HomeContentState extends State<_HomeContent> {
             ),
           ),
           
-          // Orta - Bugünkü Kazanç
+          // Orta - Bugünkü Seyahat
           Expanded(
             flex: 2,
             child: Column(
@@ -1295,10 +1248,10 @@ class _HomeContentState extends State<_HomeContent> {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  '${todayEarnings.toStringAsFixed(0)} TL',
+                  '$todayTrips seyahat',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -1390,28 +1343,7 @@ class _HomeContentState extends State<_HomeContent> {
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Bugün Kazandığım',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    '${todayEarnings.toStringAsFixed(0)} TL',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+              SizedBox(), // Removed earnings display
             ],
           ),
           SizedBox(height: 16),
@@ -1461,7 +1393,7 @@ class _HomeContentState extends State<_HomeContent> {
                     ),
                     SizedBox(height: 4),
                     Text(
-                      '${weeklyEarnings.toStringAsFixed(0)} TL',
+                      '$weeklyTrips seyahat',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -1522,9 +1454,9 @@ class _HomeContentState extends State<_HomeContent> {
       childAspectRatio: 1.4,
       children: [
         _buildCleanStatCard(
-          'Haftalık Kazanç',
-          '${weeklyEarnings.toStringAsFixed(0)} TL',
-          Icons.account_balance_wallet,
+          'Haftalık Seyahat',
+          '$weeklyTrips seyahat',
+          Icons.route,
           Colors.green,
         ),
         _buildCleanStatCard(
@@ -1534,8 +1466,8 @@ class _HomeContentState extends State<_HomeContent> {
           Colors.blue,
         ),
         _buildCleanStatCard(
-          'Bu Ay Kazanç',
-          '8,650 TL',
+          'Bu Ay Seyahat',
+          '89 seyahat',
           Icons.calendar_month,
           Colors.purple,
         ),
@@ -1633,28 +1565,7 @@ class _HomeContentState extends State<_HomeContent> {
             ),
           ],
         ),
-        SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: _buildStatCard(
-                'Haftalık Kazanç',
-                '${weeklyEarnings.toStringAsFixed(0)} TL',
-                Icons.account_balance_wallet,
-                Colors.green,
-              ),
-            ),
-            SizedBox(width: 12),
-            Expanded(
-              child: _buildStatCard(
-                'Bugünkü Kazanç',
-                '${todayEarnings.toStringAsFixed(0)} TL',
-                Icons.today,
-                Color(AppConstants.primaryColorValue),
-              ),
-            ),
-          ],
-        ),
+        // Removed earnings statistics
       ],
     );
   }
@@ -1736,8 +1647,8 @@ class _HomeContentState extends State<_HomeContent> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildSummaryItem('Seyahat', '$todayTrips', Icons.route),
-              _buildSummaryItem('Kazanç', '${todayEarnings.toInt()} TL', Icons.monetization_on),
               _buildSummaryItem('Süre', '6 saat', Icons.access_time),
+              _buildSummaryItem('Mesafe', '85 km', Icons.location_on),
             ],
           ),
         ],
@@ -1927,9 +1838,9 @@ class _HomeContentState extends State<_HomeContent> {
 
   Widget _buildCleanRecentTrips() {
     final trips = [
-      {'name': 'Ahmet Y.', 'route': 'Taksim → Havalimanı', 'price': '150 TL', 'time': '14:30'},
-      {'name': 'Fatma Ö.', 'route': 'Kadıköy → Bostancı', 'price': '85 TL', 'time': '12:15'},
-      {'name': 'Mehmet K.', 'route': 'Şişli → Levent', 'price': '65 TL', 'time': '09:45'},
+      {'name': 'Ahmet Y.', 'route': 'Taksim → Havalimanı', 'time': '14:30'},
+      {'name': 'Fatma Ö.', 'route': 'Kadıköy → Bostancı', 'time': '12:15'},
+      {'name': 'Mehmet K.', 'route': 'Şişli → Levent', 'time': '09:45'},
     ];
 
     return Container(
@@ -2008,17 +1919,10 @@ class _HomeContentState extends State<_HomeContent> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      trip['price']!,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                    Text(
                       trip['time']!,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                         color: Color(AppConstants.textSecondaryColorValue),
                       ),
                     ),
@@ -2033,9 +1937,7 @@ class _HomeContentState extends State<_HomeContent> {
   }
 
   Widget _buildTodaySummaryWithGoals() {
-    double targetEarnings = 600.0;
     double targetTrips = 8.0;
-    double earningsProgress = todayEarnings / targetEarnings;
     double tripsProgress = todayTrips / targetTrips;
     
     return Container(
@@ -2072,7 +1974,7 @@ class _HomeContentState extends State<_HomeContent> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  '${((earningsProgress + tripsProgress) * 50).toInt()}% tamamlandı',
+                  '${(tripsProgress * 100).toInt()}% tamamlandı',
                   style: TextStyle(
                     fontSize: 12,
                     color: Color(AppConstants.primaryColorValue),
@@ -2083,45 +1985,6 @@ class _HomeContentState extends State<_HomeContent> {
             ],
           ),
           SizedBox(height: 20),
-          
-          // Kazanç hedefi
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Kazanç Hedefi',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(AppConstants.textPrimaryColorValue),
-                    ),
-                  ),
-                  Text(
-                    '${todayEarnings.toInt()} / ${targetEarnings.toInt()} TL',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Color(AppConstants.textSecondaryColorValue),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              LinearProgressIndicator(
-                value: earningsProgress.clamp(0.0, 1.0),
-                backgroundColor: Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  earningsProgress >= 1.0 ? Colors.green : Color(AppConstants.primaryColorValue),
-                ),
-                minHeight: 8,
-              ),
-            ],
-          ),
-          
-          SizedBox(height: 16),
           
           // Seyahat hedefi
           Column(
@@ -2301,7 +2164,7 @@ class _HomeContentState extends State<_HomeContent> {
         'from': 'Taksim',
         'to': 'İstanbul Havalimanı',
         'time': '14:30',
-        'amount': '150 TL',
+
         'status': 'Tamamlandı',
       },
       {
@@ -2309,7 +2172,7 @@ class _HomeContentState extends State<_HomeContent> {
         'from': 'Kadıköy',
         'to': 'Bostancı',
         'time': '12:15',
-        'amount': '85 TL',
+
         'status': 'Tamamlandı',
       },
       {
@@ -2317,7 +2180,7 @@ class _HomeContentState extends State<_HomeContent> {
         'from': 'Şişli',
         'to': 'Levent',
         'time': '09:45',
-        'amount': '65 TL',
+
         'status': 'Tamamlandı',
       },
     ];
@@ -2389,13 +2252,10 @@ class _HomeContentState extends State<_HomeContent> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    trip['amount']!,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Color(AppConstants.primaryColorValue),
-                    ),
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 16,
                   ),
                   SizedBox(height: 4),
                   Text(
@@ -2441,11 +2301,11 @@ class _HomeContentState extends State<_HomeContent> {
             SizedBox(width: 12),
             Expanded(
               child: _buildActionCard(
-                'Kazanç Raporu',
-                'Detaylı gelir analizi',
+                'İstatistikler',
+                'Seyahat istatistikleri',
                 Icons.analytics,
                 Colors.green,
-                () => Navigator.pushNamed(context, '/earnings'),
+                () => Navigator.pushNamed(context, '/stats'),
               ),
             ),
           ],
@@ -2513,7 +2373,7 @@ class _HomeContentState extends State<_HomeContent> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Haftalık Kazanç Grafiği',
+                'Haftalık Seyahat Grafiği',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -2521,7 +2381,7 @@ class _HomeContentState extends State<_HomeContent> {
                 ),
               ),
               Text(
-                '${weeklyEarnings.toStringAsFixed(0)} TL',
+                '$weeklyTrips seyahat',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -2598,10 +2458,9 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
   double selectedRating = 0.0;
   bool showOnlineOnly = false;
   bool showVerifiedOnly = false;
-  String selectedPaymentMethod = 'Nakit';
+  // Removed payment method functionality
   String selectedLanguage = 'Tümü';
-  double minPrice = 0.0;
-  double maxPrice = 500.0;
+  // Removed price variables
   
   final List<String> categories = [
     'Tümü',
@@ -2654,7 +2513,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'isOnline': true,
       'isVerified': true,
       'category': 'Havalimanı Transferi',
-      'price': '150 TL',
+
       'languages': ['Türkçe', 'İngilizce'],
       'specialties': ['Havalimanı Transferi', 'İş Seyahati'],
       'totalRides': 1247,
@@ -2671,7 +2530,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'isOnline': true,
       'isVerified': true,
       'category': 'VIP Hizmet',
-      'price': '200 TL',
+
       'languages': ['Türkçe', 'İngilizce', 'Almanca'],
       'specialties': ['VIP Hizmet', 'Şehir Turu'],
       'totalRides': 892,
@@ -2688,7 +2547,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'isOnline': false,
       'isVerified': true,
       'category': 'İş Seyahati',
-      'price': '120 TL',
+
       'languages': ['Türkçe', 'İngilizce'],
       'specialties': ['İş Seyahati'],
       'totalRides': 567,
@@ -2705,7 +2564,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'isOnline': true,
       'isVerified': true,
       'category': 'Grup Seyahati',
-      'price': '180 TL',
+
       'languages': ['Türkçe', 'İngilizce', 'Rusça'],
       'specialties': ['Grup Seyahati', 'Turistik Transfer'],
       'totalRides': 734,
@@ -2749,8 +2608,8 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
 
   final List<Map<String, dynamic>> banners = [
     {
-      'title': 'İlk Yolculuğunda %20 İndirim!',
-      'desc': 'Kampanyadan hemen yararlan.',
+      'title': 'Hoş Geldin Kampanyası!',
+      'desc': 'İlk seyahatinde özel avantajlar.',
       'color': '0xFFD32F2F',
       'icon': Icons.local_offer,
     },
@@ -2779,7 +2638,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'brand': 'Mercedes',
       'model': 'S-Class',
       'year': '2023',
-      'price': '500 TL',
+
       'image': 'https://images.unsplash.com/photo-1563720223186-11003d516935?auto=format&fit=crop&w=300&h=200&q=80',
       'features': ['Lüks', 'Klima', 'WiFi'],
     },
@@ -2787,7 +2646,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'brand': 'BMW',
       'model': '7 Series',
       'year': '2023',
-      'price': '450 TL',
+
       'image': 'https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=300&h=200&q=80',
       'features': ['Lüks', 'Klima', 'WiFi'],
     },
@@ -2795,7 +2654,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'brand': 'Audi',
       'model': 'A8',
       'year': '2023',
-      'price': '480 TL',
+
       'image': 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?auto=format&fit=crop&w=300&h=200&q=80',
       'features': ['Lüks', 'Klima', 'WiFi'],
     },
@@ -2803,7 +2662,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'brand': 'Tesla',
       'model': 'Model S',
       'year': '2023',
-      'price': '600 TL',
+
       'image': 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=300&h=200&q=80',
       'features': ['Elektrikli', 'Lüks', 'WiFi'],
     },
@@ -2935,12 +2794,12 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
               const SizedBox(width: 8),
               Expanded(
                 child: _buildActionCard(
-                  icon: _getPaymentIcon(selectedPaymentMethod),
-                  title: 'Ödeme',
-                  subtitle: selectedPaymentMethod,
-                  color: _getPaymentColor(selectedPaymentMethod),
+                  icon: Icons.support_agent,
+                  title: 'Destek',
+                  subtitle: '7/24 Hizmet',
+                  color: Colors.purple,
                   onTap: () {
-                    _showPaymentMethodDialog();
+                    // Show support dialog
                   },
                 ),
               ),
@@ -2953,85 +2812,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
     );
   }
 
-    Widget _buildPaymentOptions() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Ödeme Yöntemi',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Color(AppConstants.textPrimaryColorValue),
-          ),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-            color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-          child: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: _getPaymentColor(selectedPaymentMethod).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  _getPaymentIcon(selectedPaymentMethod),
-                  color: _getPaymentColor(selectedPaymentMethod),
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                      selectedPaymentMethod,
-                          style: TextStyle(
-                        fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                        color: Color(AppConstants.textPrimaryColorValue),
-                          ),
-                        ),
-                        Text(
-                      _getPaymentSubtitle(selectedPaymentMethod),
-                          style: TextStyle(
-                        fontSize: 14,
-                        color: Color(AppConstants.textSecondaryColorValue),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-              IconButton(
-                onPressed: () {
-                  _showPaymentMethodDialog();
-                },
-                icon: Icon(
-                  Icons.arrow_forward_ios,
-                  color: Color(AppConstants.textSecondaryColorValue),
-                  size: 20,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+  // Removed payment options widget
 
 
 
@@ -3389,13 +3170,10 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                                   color: Color(AppConstants.textPrimaryColorValue),
                   ),
                               ),
-                              Text(
-                                ad['price'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(AppConstants.primaryColorValue),
-                                ),
+                              Icon(
+                                Icons.verified,
+                                color: Colors.green,
+                                size: 20,
                               ),
                             ],
                           ),
@@ -4043,109 +3821,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
     );
   }
 
-  void _selectPaymentMethod(String method) {
-    setState(() {
-      selectedPaymentMethod = method;
-    });
-    
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Ödeme yöntemi: $method seçildi'),
-        backgroundColor: Color(AppConstants.primaryColorValue),
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
-
-  Color _getPaymentColor(String method) {
-    switch (method) {
-      case 'Nakit':
-        return Colors.green;
-      case 'Kredi Kartı':
-        return Colors.blue;
-      case 'Dijital Cüzdan':
-        return Colors.purple;
-      default:
-        return Colors.green;
-    }
-  }
-
-  IconData _getPaymentIcon(String method) {
-    switch (method) {
-      case 'Nakit':
-        return Icons.money;
-      case 'Kredi Kartı':
-        return Icons.credit_card;
-      case 'Dijital Cüzdan':
-        return Icons.account_balance_wallet;
-      default:
-        return Icons.money;
-    }
-  }
-
-  String _getPaymentSubtitle(String method) {
-    switch (method) {
-      case 'Nakit':
-        return 'Peşin Ödeme';
-      case 'Kredi Kartı':
-        return 'Güvenli Ödeme';
-      case 'Dijital Cüzdan':
-        return 'PayPal, Apple Pay';
-      default:
-        return 'Peşin Ödeme';
-    }
-  }
-
-  void _showPaymentMethodDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Ödeme Yöntemi Seçin'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildPaymentOptionTile('Nakit', 'Peşin Ödeme', Icons.money, Colors.green),
-            _buildPaymentOptionTile('Kredi Kartı', 'Güvenli Ödeme', Icons.credit_card, Colors.blue),
-            _buildPaymentOptionTile('Dijital Cüzdan', 'PayPal, Apple Pay', Icons.account_balance_wallet, Colors.purple),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('İptal'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPaymentOptionTile(String title, String subtitle, IconData icon, Color color) {
-    final isSelected = selectedPaymentMethod == title;
-    
-    return ListTile(
-      leading: Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Icon(icon, color: color, size: 20),
-      ),
-      title: Text(
-        title,
-        style: TextStyle(
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          color: isSelected ? color : Color(AppConstants.textPrimaryColorValue),
-        ),
-      ),
-      subtitle: Text(subtitle),
-      trailing: isSelected ? Icon(Icons.check, color: color) : null,
-      onTap: () {
-        _selectPaymentMethod(title);
-        Navigator.pop(context);
-      },
-    );
-  }
+  // Removed all payment method functionality
 
 
 
@@ -4291,27 +3967,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                 ),
                 const SizedBox(height: 12),
                 
-                // Fiyat Aralığı
-                Text(
-                  'Fiyat Aralığı: ${minPrice.toInt()} - ${maxPrice.toInt()} TL',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Color(AppConstants.textPrimaryColorValue),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                RangeSlider(
-                  values: RangeValues(minPrice, maxPrice),
-                  min: 0,
-                  max: 500,
-                  divisions: 50,
-                  activeColor: Color(AppConstants.primaryColorValue),
-                  onChanged: (values) => setState(() {
-                    minPrice = values.start;
-                    maxPrice = values.end;
-                  }),
-                ),
+                // Removed price range section
                 const SizedBox(height: 15),
                 
                 // Butonlar
@@ -4328,8 +3984,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
                             showOnlineOnly = false;
                             showVerifiedOnly = false;
                             selectedLanguage = 'Tümü';
-                            minPrice = 0.0;
-                            maxPrice = 500.0;
+                            // Removed price range reset
                           });
                           Navigator.pop(context);
                         },
@@ -4600,12 +4255,19 @@ class _DriverCardState extends State<_DriverCard> {
                       ],
                     ),
                     SizedBox(height: 2),
-                    Text(
-                      widget.driver['price'],
-                      style: TextStyle(
-                        color: Color(AppConstants.primaryColorValue),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        'Müsait',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     SizedBox(height: 2),
@@ -4688,7 +4350,7 @@ class _DriverCardState extends State<_DriverCard> {
         children: [
           _buildDetailRow(Icons.work, 'Deneyim', widget.driver['experience']),
           _buildDetailRow(Icons.category, 'Kategori', widget.driver['category']),
-          _buildDetailRow(Icons.attach_money, 'Fiyat', widget.driver['price']),
+          _buildDetailRow(Icons.verified_user, 'Durum', 'Aktif'),
           _buildDetailRow(Icons.access_time, 'Yanıt Süresi', widget.driver['responseTime']),
           _buildDetailRow(Icons.directions_car_filled, 'Toplam Seyahat', '${widget.driver['totalRides']}'),
 

@@ -108,9 +108,9 @@ void showTripHistory(BuildContext context) {
               itemCount: 15,
               itemBuilder: (context, index) {
                 final trips = [
-                  {'from': 'Taksim', 'to': 'Havalimanı', 'price': '150 TL', 'time': '14:30'},
-                  {'from': 'Kadıköy', 'to': 'Bostancı', 'price': '85 TL', 'time': '12:15'},
-                  {'from': 'Şişli', 'to': 'Levent', 'price': '65 TL', 'time': '09:45'},
+                  {'from': 'Taksim', 'to': 'Havalimanı', 'time': '14:30'},
+                  {'from': 'Kadıköy', 'to': 'Bostancı', 'time': '12:15'},
+                  {'from': 'Şişli', 'to': 'Levent', 'time': '09:45'},
                 ];
                 final trip = trips[index % trips.length];
                 
@@ -136,8 +136,7 @@ void showTripHistory(BuildContext context) {
                           ],
                         ),
                       ),
-                      Text(trip['price'] as String, 
-                           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+                      Icon(Icons.check_circle, color: Colors.green, size: 16),
                     ],
                   ),
                 );
