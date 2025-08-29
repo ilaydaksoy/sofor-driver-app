@@ -1,4 +1,4 @@
-package com.example.turist_driver_app
+package com.example.sofor_driver_app
 
 import io.flutter.embedding.android.FlutterActivity
 
