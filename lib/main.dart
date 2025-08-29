@@ -198,60 +198,85 @@ class MyApp extends StatelessWidget {
             surfaceTint: Color(AppConstants.primaryColorValue),
           ),
         ),
-        home: Consumer<AuthProvider>(
-          builder: (context, authProvider, child) {
-            return FutureBuilder<void>(
-              future: authProvider.initialize(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Scaffold(
-                    backgroundColor: Color(AppConstants.primaryColorValue),
-                    body: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Icon(
-                              Icons.local_taxi,
-                              size: 40,
-                              color: Color(AppConstants.primaryColorValue),
-                            ),
-                          ),
-                          SizedBox(height: 24),
-                          Text(
-                            'Şöför Uygulaması',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          CircularProgressIndicator(
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-                
-                return authProvider.isLoggedIn ? HomeScreen() : LoginScreen();
-              },
-            );
-          },
-        ),
+        home: AppInitializer(),
         routes: {
           '/login': (context) => LoginScreen(),
           '/chat': (context) => ChatScreen(),
         },
       ),
+    );
+  }
+}
+
+class AppInitializer extends StatefulWidget {
+  @override
+  _AppInitializerState createState() => _AppInitializerState();
+}
+
+class _AppInitializerState extends State<AppInitializer> {
+  bool _isInitialized = false;
+  
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+  
+  Future<void> _initializeApp() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    await authProvider.initialize();
+    if (mounted) {
+      setState(() {
+        _isInitialized = true;
+      });
+    }
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return Scaffold(
+        backgroundColor: Color(AppConstants.primaryColorValue),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Icon(
+                  Icons.local_taxi,
+                  size: 40,
+                  color: Color(AppConstants.primaryColorValue),
+                ),
+              ),
+              SizedBox(height: 24),
+              Text(
+                'Şöför Uygulaması',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 16),
+              CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    
+    return Consumer<AuthProvider>(
+      builder: (context, authProvider, child) {
+        return authProvider.isLoggedIn ? HomeScreen() : LoginScreen();
+      },
     );
   }
 }
