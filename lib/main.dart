@@ -6,7 +6,8 @@ import 'screens/home_screen.dart';
 import 'screens/chat_screen.dart';
 import 'constants/app_constants.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -199,7 +200,51 @@ class MyApp extends StatelessWidget {
         ),
         home: Consumer<AuthProvider>(
           builder: (context, authProvider, child) {
-            return authProvider.isLoggedIn ? HomeScreen() : LoginScreen();
+            return FutureBuilder<void>(
+              future: authProvider.initialize(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Scaffold(
+                    backgroundColor: Color(AppConstants.primaryColorValue),
+                    body: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Icon(
+                              Icons.local_taxi,
+                              size: 40,
+                              color: Color(AppConstants.primaryColorValue),
+                            ),
+                          ),
+                          SizedBox(height: 24),
+                          Text(
+                            'Şöför Uygulaması',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          CircularProgressIndicator(
+                            color: Colors.white,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                
+                return authProvider.isLoggedIn ? HomeScreen() : LoginScreen();
+              },
+            );
           },
         ),
         routes: {
