@@ -3,7 +3,7 @@
     "short_name": "turist_driver_app",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#FFFFFF",
+    "background_color": "#2196F3",
     "theme_color": "#2196F3",
     "description": "A new Flutter project.",
     "orientation": "portrait-primary",
