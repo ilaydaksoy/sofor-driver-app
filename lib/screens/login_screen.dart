@@ -97,18 +97,18 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Giriş başarısız: ${e.toString()}'),
-            backgroundColor: Color(AppConstants.errorColorValue),
-          ),
-        );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Giriş başarısız: ${e.toString()}'),
+          backgroundColor: Color(AppConstants.errorColorValue),
+        ),
+      );
       }
     } finally {
       if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
+      setState(() {
+        _isLoading = false;
+      });
       }
     }
   }

@@ -10,7 +10,7 @@ class AppConstants {
   static const String tripsUrl = '/users'; // Using users endpoint for demo trips
 
   // Demo credentials
-  static const String demoEmail = 'demo@turist.com';
+  static const String demoEmail = 'demo@sofor.com';
   static const String demoPassword = 'demo123';
 
   // Colors - Mavi ve Beyaz Paleti

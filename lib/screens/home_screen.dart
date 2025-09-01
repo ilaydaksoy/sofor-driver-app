@@ -2566,7 +2566,7 @@ class _HomeContentBodyState extends State<_HomeContentBody> {
       'category': 'Grup Seyahati',
 
       'languages': ['Türkçe', 'İngilizce', 'Rusça'],
-      'specialties': ['Grup Seyahati', 'Turistik Transfer'],
+      'specialties': ['Grup Seyahati', 'Şöför Transfer'],
       'totalRides': 734,
       'responseTime': '3 dk',
     },
@@ -4263,10 +4263,10 @@ class _DriverCardState extends State<_DriverCard> {
                       ),
                       child: Text(
                         'Müsait',
-                        style: TextStyle(
+                      style: TextStyle(
                           color: Colors.green,
                           fontSize: 12,
-                          fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

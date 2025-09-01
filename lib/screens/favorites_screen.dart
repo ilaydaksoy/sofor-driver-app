@@ -42,7 +42,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       'isOnline': false,
       'lastSeen': '1 saat önce',
       'languages': ['Türkçe', 'İngilizce', 'Rusça'],
-      'specialties': ['Turistik Transfer', 'Grup Seyahati', 'VIP Hizmet'],
+eden       'specialties': ['Şöför Transfer', 'Grup Seyahati', 'VIP Hizmet'],
       'reviews': [
         {'user': 'Ali V.', 'rating': 10.0, 'comment': 'Mükemmel hizmet, çok memnun kaldım'},
         {'user': 'Zeynep K.', 'rating': 9.5, 'comment': 'Çok nazik ve yardımsever'},

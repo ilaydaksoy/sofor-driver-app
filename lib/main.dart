@@ -202,7 +202,6 @@ class MyApp extends StatelessWidget {
         routes: {
           '/login': (context) => LoginScreen(),
           '/chat': (context) => ChatScreen(),
-          '/': (context) => AppInitializer(),
         },
       ),
     );
